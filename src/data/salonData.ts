@@ -95,7 +95,7 @@ export const STAFFS: Staff[] = [
     kana: "Haruka Ikeda",
     role: "店長 / パラジェルエデュケーター",
     experience: "歴9年",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500&auto=format&fit=crop&q=80",
+    image: "/images/spring_nail.jpg",
     specialty: ["パラジェルフィルイン", "大人ニュアンス", "秋色ボルドー・くすみカラー", "美爪育成"],
     favoriteStyle: "自爪を傷めずに3〜4週間持続させるフィルイン技術と、奥行き感のある絶妙なニュアンスアートが得意です。",
     message: "爪が薄くてお悩みの方や、ジェルネイルを長く続けたい方へ。削らないパラジェルの心地よさと、イチゴミルクのように愛らしく洗練された指先をお届けします。"
@@ -106,7 +106,7 @@ export const STAFFS: Staff[] = [
     kana: "Yuki Takahashi",
     role: "トップネイリスト",
     experience: "歴6年",
-    image: "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?w=500&auto=format&fit=crop&q=80",
+    image: "/images/hero.jpg",
     specialty: ["50種以上のマグネットネイル", "水光・強光マグネット", "オフィスネイル", "丁寧なネイルケア"],
     favoriteStyle: "オフィスでも褒められるピンクベージュ系の水光マグネットと、肌馴染みの良いちゅるんカラーが得意です。",
     message: "当サロン自慢のマグネットネイルは光り方や角度に徹底的にこだわっています。他店では出会えない特別な煌めきをぜひご体感ください。"
@@ -117,7 +117,7 @@ export const STAFFS: Staff[] = [
     kana: "Aoi Mizuno",
     role: "ネイリスト",
     experience: "歴4年",
-    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600&auto=format&fit=crop&q=80",
     specialty: ["春夏秋冬の季節アート", "手描きフラワー・桜・ひまわり", "トレンドフットネイル", "パーツアート"],
     favoriteStyle: "季節の移ろいを感じるフラワーアートや、サンダルが楽しくなるフットネイルが得意です。",
     message: "春の桜や夏の海、冬のパーツアートなど、見るたびに心がときめくデザインをご提案します。お子様やペット連れの方もお気軽にお越しください！"

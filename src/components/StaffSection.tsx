@@ -44,8 +44,13 @@ export default function StaffSection() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
 
+                  {/* ネイル作品バッジ */}
+                  <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-black text-[#ff3366] shadow-md flex items-center gap-1">
+                    <span>💅 担当シグネチャーネイル</span>
+                  </div>
+
                   {/* 経験年数バッジ */}
-                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-black text-[#ff3366] shadow-md">
+                  <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold text-white shadow-md">
                     {staff.experience}
                   </div>
 
