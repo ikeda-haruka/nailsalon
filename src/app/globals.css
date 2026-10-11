@@ -2,78 +2,39 @@
 
 @layer base {
   :root {
-    --bg-cream: #fff9fa;
-    --bg-milk: #fff3f5;
-    --pink-light: #ffe5ec;
-    --pink-soft: #ffb3c6;
-    --pink-main: #ff758f;
-    --pink-vivid: #e8436e;
-    --cocoa-dark: #3a2b2c;
-    --cocoa-soft: #5e4748;
-    --cocoa-muted: #8c7374;
-    --gold: #d4af37;
-    --gold-light: #fef8e7;
+    --strawberry-bg: #fff5f7;
+    --strawberry-milk: #ffe8ee;
+    --strawberry-pink: #ff85a1;
+    --strawberry-vivid: #ff3366;
+    --strawberry-dark: #2c181b;
+    --aurora-1: rgba(255, 182, 193, 0.45);
+    --aurora-2: rgba(255, 223, 235, 0.55);
+    --aurora-3: rgba(255, 240, 245, 0.8);
+    --font-sans: var(--font-jakarta), var(--font-sans-jp), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-serif: var(--font-playfair), "Hiragino Mincho ProN", serif;
   }
 
   html {
     scroll-behavior: smooth;
-    color: var(--cocoa-dark);
-    background-color: var(--bg-cream);
+    color: var(--strawberry-dark);
+    background-color: #fff8f9;
   }
 
   body {
-    font-family: var(--font-shippori), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
-    color: var(--cocoa-dark);
-    background: #fffafb;
+    font-family: var(--font-sans);
+    color: var(--strawberry-dark);
+    background: #fff8f9;
     overflow-x: hidden;
+    letter-spacing: -0.01em;
+  }
+
+  h1, h2, h3, .font-display {
+    letter-spacing: -0.02em;
   }
 }
 
-/* イチゴミルク風のグラデーション & アニメーション効果 */
-.strawberry-glass {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 182, 193, 0.3);
-}
-
-.strawberry-gradient {
-  background: linear-gradient(135deg, #fff0f3 0%, #ffd1dc 50%, #fca5b9 100%);
-}
-
-.strawberry-gradient-subtle {
-  background: linear-gradient(180deg, #fffafb 0%, #fff0f3 50%, #ffe5ec 100%);
-}
-
-.strawberry-button {
-  background: linear-gradient(135deg, #ff758f 0%, #e8436e 100%);
-  color: white;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 15px rgba(232, 67, 110, 0.3);
-}
-
-.strawberry-button:hover {
-  background: linear-gradient(135deg, #e8436e 0%, #cc2855 100%);
-  box-shadow: 0 6px 20px rgba(232, 67, 110, 0.45);
-  transform: translateY(-2px);
-}
-
-.strawberry-card {
-  background: #ffffff;
-  border: 1px solid #ffe3e9;
-  border-radius: 1.5rem;
-  box-shadow: 0 10px 30px rgba(232, 67, 110, 0.05);
-  transition: all 0.3s ease;
-}
-
-.strawberry-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 15px 35px rgba(232, 67, 110, 0.12);
-  border-color: #ffb3c6;
-}
-
-/* マグネットネイル風の水光きらめきアニメーション */
-@keyframes water-glow {
+/* 令和トレンド: オーロラ・イチゴミルク背景アニメーション */
+@keyframes aurora-flow {
   0% {
     background-position: 0% 50%;
   }
@@ -85,23 +46,132 @@
   }
 }
 
-.magnet-shimmer {
-  background: linear-gradient(270deg, #ffd1dc, #ffffff, #fca5b9, #ffe3e9);
+.aurora-bg {
+  background: linear-gradient(125deg, #fff0f3, #ffe3ea, #ffd6e0, #fff5f8, #f8e8ee);
   background-size: 300% 300%;
-  animation: water-glow 6s ease infinite;
+  animation: aurora-flow 12s ease infinite;
 }
 
-/* カスタムスクロールバー */
-::-webkit-scrollbar {
-  width: 8px;
+/* ぷっくりツヤ感（Jelly Glassmorphism） */
+.jelly-glass {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 12px 35px -8px rgba(255, 105, 180, 0.12),
+              0 2px 6px rgba(255, 182, 193, 0.15),
+              inset 0 1px 1px rgba(255, 255, 255, 0.9);
 }
-::-webkit-scrollbar-track {
-  background: #fff0f3;
+
+.jelly-glass-hover {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
-::-webkit-scrollbar-thumb {
-  background: #ffb3c6;
-  border-radius: 4px;
+
+.jelly-glass-hover:hover {
+  transform: translateY(-4px) scale(1.01);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 20px 40px -10px rgba(255, 105, 180, 0.22),
+              0 4px 12px rgba(255, 182, 193, 0.25),
+              inset 0 1px 2px rgba(255, 255, 255, 1);
+  border-color: rgba(255, 133, 161, 0.4);
 }
-::-webkit-scrollbar-thumb:hover {
-  background: #ff758f;
+
+/* ぷっくり3Dジェルボタン (Jelly Button) */
+.jelly-button {
+  background: linear-gradient(180deg, #ff6584 0%, #ff3366 100%);
+  color: white;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 20px -4px rgba(255, 51, 102, 0.45),
+              inset 0 1px 2px rgba(255, 255, 255, 0.6),
+              inset 0 -2px 4px rgba(180, 0, 45, 0.2);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.jelly-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 45%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0) 100%);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.jelly-button:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 25px -4px rgba(255, 51, 102, 0.6),
+              inset 0 1px 3px rgba(255, 255, 255, 0.8);
+}
+
+.jelly-button:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+/* キラキラ・スパークル光彩アニメーション */
+@keyframes sparkle-twinkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(0.8) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2) rotate(180deg);
+  }
+}
+
+.animate-twinkle {
+  animation: sparkle-twinkle 3s ease-in-out infinite;
+}
+
+.animate-twinkle-fast {
+  animation: sparkle-twinkle 1.8s ease-in-out infinite;
+}
+
+/* 水光マグネット・リアル光彩エフェクト */
+@keyframes water-shimmer-sweep {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.water-glow-text {
+  background: linear-gradient(90deg, #ff3366, #ff758f, #ffffff, #ff758f, #ff3366);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: water-shimmer-sweep 5s linear infinite;
+}
+
+/* Instagram ストーリーズ風リンググラデーション */
+.story-ring {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  padding: 2.5px;
+  border-radius: 9999px;
+  display: inline-block;
+  box-shadow: 0 4px 12px rgba(220, 39, 67, 0.25);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.story-ring-pink {
+  background: linear-gradient(45deg, #ff85a1 0%, #ff3366 50%, #ffd1dc 100%);
+  padding: 2.5px;
+  border-radius: 9999px;
+  display: inline-block;
+  box-shadow: 0 4px 14px rgba(255, 51, 102, 0.25);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.story-ring:hover, .story-ring-pink:hover {
+  transform: scale(1.08);
+}
+
+/* ネオンピンクのやわらかなグロー */
+.pink-glow {
+  filter: drop-shadow(0 0 15px rgba(255, 105, 180, 0.45));
 }

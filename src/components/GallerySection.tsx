@@ -2,21 +2,22 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { Sparkles, Calendar, Heart, Eye, X, Clock, Check, ChevronRight } from "lucide-react";
+import { Sparkles, Calendar, Heart, Eye, X, Clock, Check, ChevronRight, Bookmark } from "lucide-react";
 import { DESIGNS, NailDesign, SALON_INFO } from "@/data/salonData";
 
 export default function GallerySection() {
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [selectedDesign, setSelectedDesign] = useState<NailDesign | null>(null);
+  const [likedIds, setLikedIds] = useState<Record<string, boolean>>({});
 
   const categories = [
-    { id: "all", label: "All Designs", jp: "すべて" },
-    { id: "spring", label: "Spring", jp: "春（桜・タンポポ）" },
-    { id: "summer", label: "Summer", jp: "夏（ひまわり・海・フット）" },
-    { id: "autumn", label: "Autumn", jp: "秋（ボルドー・くすみ）" },
-    { id: "winter", label: "Winter", jp: "冬（ホワイト・パーツ）" },
-    { id: "magnet", label: "Magnet", jp: "水光マグネット（50種+）" },
-    { id: "office", label: "Office", jp: "オフィス・シンプル" },
+    { id: "all", label: "ALL", jp: "すべて" },
+    { id: "spring", label: "SPRING", jp: "春（桜・タンポポ）" },
+    { id: "summer", label: "SUMMER", jp: "夏（ひまわり・フット）" },
+    { id: "autumn", label: "AUTUMN", jp: "秋（ボルドー・くすみ）" },
+    { id: "winter", label: "WINTER", jp: "冬（ホワイト・パーツ）" },
+    { id: "magnet", label: "MAGNET", jp: "水光マグネット50色+" },
+    { id: "office", label: "OFFICE", jp: "オフィス・シンプル" },
   ];
 
   const filteredDesigns =
@@ -24,162 +25,150 @@ export default function GallerySection() {
       ? DESIGNS
       : DESIGNS.filter((d) => d.category === activeCategory);
 
+  const toggleLike = (e: React.MouseEvent, id: string) => {
+    e.stopPropagation();
+    setLikedIds((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
   return (
-    <section id="gallery" className="py-24 bg-[#fffafb] relative">
+    <section id="gallery" className="py-24 bg-[#fff8f9] relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* セクションヘッダー */}
-        <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ffe5ec] text-[#e8436e] text-xs font-semibold">
-            <Sparkles className="w-3.5 h-3.5 text-[#ff758f]" />
-            <span>Seasonal & Trend Nail Catalog</span>
+        <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-100 text-[#ff3366] text-xs font-black tracking-wider uppercase">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Nail Art Catalog</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#3a2b2c]">
-            豊富なデザインと、<br className="sm:hidden" />
-            50種以上のマグネットカラー
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-black text-[#2c181b]">
+            最旬デザインカタログ
           </h2>
-          <p className="text-sm text-[#5e4748] leading-relaxed">
-            春夏秋冬の季節を彩る華やかなデザインから、オフィスにも溶け込む上品ネイルまで。<br className="hidden sm:inline" />
-            他店では手に入らない特殊な水光マグネットや強光マグネットを豊富に取り揃えています。
+          <p className="text-xs sm:text-sm text-[#5e4748] font-medium">
+            季節のトレンドから、他店と被らない50種類の水光マグネットまで。<br className="hidden sm:inline" />
+            思わず指先に見惚れてしまうデザインがきっと見つかります。
           </p>
         </div>
 
-        {/* 特殊マグネットネイル 特長ハイライトバナー */}
-        <div className="mb-14 p-6 sm:p-8 rounded-3xl magnet-shimmer border border-[#ffb3c6] shadow-sm">
-          <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="space-y-2 text-center md:text-left">
-              <span className="text-[11px] font-bold tracking-wider text-[#cc2855] uppercase bg-white/70 px-2.5 py-0.5 rounded-full inline-block">
-                ★ 当サロンの自慢・他店と被らない品揃え
-              </span>
-              <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#3a2b2c]">
-                マグネットカラーは常時50種類以上をご用意
-              </h3>
-              <p className="text-xs text-[#5e4748] leading-relaxed">
-                オフィスネイルやシンプル派の方には、大人可愛い<strong className="text-[#e8436e]">ピンクベージュ系のマグネットネイル</strong>が大人気！
-                水面のようにちゅるんと揺らめく「水光マグネット」や、光の筋がシャープに輝く「強光マグネット」など、特殊なカラーを取り揃えております。
-              </p>
-            </div>
-            <div className="shrink-0">
-              <button
-                onClick={() => setActiveCategory("magnet")}
-                className="strawberry-button px-6 py-3 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-md"
-              >
-                <span>マグネットデザインを見る</span>
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* カテゴリフィルタータブ */}
+        {/* カテゴリ切り替え（ぷっくりピルボタン） */}
         <div className="flex items-center justify-center gap-2 flex-wrap mb-12">
           {categories.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
-              className={`px-4 py-2.5 rounded-full text-xs font-semibold transition-all duration-300 ${
+              className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 ${
                 activeCategory === cat.id
-                  ? "bg-[#e8436e] text-white shadow-md shadow-pink-200 scale-105"
-                  : "bg-white text-[#5e4748] border border-[#ffe3e9] hover:border-[#ffb3c6] hover:bg-[#fff0f3]"
+                  ? "jelly-button shadow-md scale-105"
+                  : "bg-white text-[#5e4748] border border-pink-100 hover:bg-pink-50"
               }`}
             >
-              <span className="block text-[10px] opacity-80 uppercase tracking-wider">{cat.label}</span>
-              <span>{cat.jp}</span>
+              <span>{cat.label}</span>
+              <span className="text-[10px] ml-1.5 opacity-80">({cat.jp})</span>
             </button>
           ))}
         </div>
 
-        {/* ギャラリーグリッド */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-          {filteredDesigns.map((design) => (
-            <div
-              key={design.id}
-              onClick={() => setSelectedDesign(design)}
-              className="strawberry-card overflow-hidden group cursor-pointer flex flex-col justify-between"
-            >
-              <div>
-                {/* 画像コンテナ */}
-                <div className="relative h-64 overflow-hidden bg-[#ffe5ec]">
-                  <Image
-                    src={design.image}
-                    alt={design.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  {/* カテゴリバッジ */}
-                  <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-full text-[11px] font-bold text-[#e8436e] shadow-sm">
-                    {design.categoryLabel}
-                  </div>
-                  {/* ホバー時オーバレイ */}
-                  <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
-                    <span className="px-3 py-1.5 rounded-full bg-white/30 backdrop-blur-md text-xs font-medium flex items-center gap-1">
-                      <Eye className="w-3.5 h-3.5" /> 詳細を見る
-                    </span>
-                  </div>
-                </div>
+        {/* Instagram風デザイングリッド */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+          {filteredDesigns.map((design) => {
+            const isLiked = likedIds[design.id];
+            return (
+              <div
+                key={design.id}
+                onClick={() => setSelectedDesign(design)}
+                className="jelly-glass rounded-3xl overflow-hidden group cursor-pointer flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl border border-white"
+              >
+                <div>
+                  {/* 画像コンテナ (Instagramスクエア風) */}
+                  <div className="relative aspect-square overflow-hidden bg-pink-100">
+                    <Image
+                      src={design.image}
+                      alt={design.title}
+                      fill
+                      sizes="(max-width: 768px) 50vw, 25vw"
+                      className="object-cover group-hover:scale-108 transition-transform duration-700"
+                    />
 
-                {/* コンテンツ */}
-                <div className="p-5 space-y-2.5">
-                  <h3 className="text-sm font-serif font-bold text-[#3a2b2c] group-hover:text-[#e8436e] transition-colors line-clamp-1">
-                    {design.title}
-                  </h3>
-                  <p className="text-xs text-[#8c7374] line-clamp-2 leading-relaxed">
-                    {design.description}
-                  </p>
+                    {/* カテゴリバッジ */}
+                    <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-black text-[#ff3366] shadow-sm">
+                      {design.categoryLabel}
+                    </div>
 
-                  {/* タグ */}
-                  <div className="flex flex-wrap gap-1 pt-1">
-                    {design.tags.slice(0, 3).map((tag, idx) => (
-                      <span
-                        key={idx}
-                        className="text-[10px] px-2 py-0.5 rounded-md bg-[#fff0f3] text-[#cc2855] font-medium"
-                      >
-                        #{tag}
+                    {/* いいねボタン */}
+                    <button
+                      onClick={(e) => toggleLike(e, design.id)}
+                      className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center transition-transform active:scale-125"
+                    >
+                      <Heart
+                        className={`w-4 h-4 transition-colors ${
+                          isLiked ? "fill-[#ff3366] text-[#ff3366]" : "text-[#5e4748]"
+                        }`}
+                      />
+                    </button>
+
+                    {/* ホバー時オーバレイ */}
+                    <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
+                      <span className="px-3.5 py-1.5 rounded-full bg-white/30 backdrop-blur-md text-xs font-bold flex items-center gap-1.5">
+                        <Eye className="w-4 h-4" /> 詳細を見る
                       </span>
-                    ))}
+                    </div>
+                  </div>
+
+                  {/* コンテンツ */}
+                  <div className="p-4 space-y-2">
+                    <h3 className="text-xs sm:text-sm font-bold text-[#2c181b] group-hover:text-[#ff3366] transition-colors line-clamp-1">
+                      {design.title}
+                    </h3>
+
+                    {/* ハッシュタグ */}
+                    <div className="flex flex-wrap gap-1">
+                      {design.tags.slice(0, 2).map((t, i) => (
+                        <span key={i} className="text-[10px] text-[#ff6584] font-semibold">
+                          #{t}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* カード下部: 料金 & 施術目安時間 */}
-              <div className="p-5 pt-0 border-t border-[#fff0f3] mt-3 flex items-center justify-between text-xs">
-                <span className="font-serif font-bold text-base text-[#e8436e]">
-                  {design.price}
-                </span>
-                <span className="text-[#8c7374] flex items-center gap-1 text-[11px]">
-                  <Clock className="w-3 h-3 text-[#ff758f]" />
-                  {design.duration}
-                </span>
+                {/* カード下部: 料金 & 施術時間 */}
+                <div className="p-4 pt-0 flex items-center justify-between text-xs">
+                  <span className="font-serif font-black text-sm sm:text-base text-[#ff3366]">
+                    {design.price}
+                  </span>
+                  <span className="text-[10px] text-[#8c7374] flex items-center gap-1 font-medium">
+                    <Clock className="w-3 h-3 text-pink-400" />
+                    {design.duration}
+                  </span>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
-        {/* 下部CTA */}
-        <div className="mt-16 text-center">
-          <p className="text-xs text-[#5e4748] mb-4">
-            「こんなデザインにしたい」「自分に似合う色が知りたい」など、持ち込みデザインやオーダーメイドもご相談ください。
-          </p>
+        {/* 下部予約CTA */}
+        <div className="mt-14 text-center">
           <a
             href={SALON_INFO.links.hotpepper}
             target="_blank"
             rel="noopener noreferrer"
-            className="strawberry-button inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-xs font-bold shadow-md"
+            className="jelly-button inline-flex items-center gap-2 px-8 py-4 rounded-full text-xs sm:text-sm font-bold shadow-xl"
           >
             <Calendar className="w-4 h-4" />
-            <span>HOT PEPPER Beauty でデザインクーポンを探す</span>
+            <span>HOT PEPPER Beauty で全デザイン・クーポンを見る</span>
           </a>
         </div>
 
       </div>
 
-      {/* デザイン詳細モーダル */}
+      {/* 詳細モーダル */}
       {selectedDesign && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+        <div
+          onClick={() => setSelectedDesign(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-200"
+        >
           <div
-            className="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-[#ffe3e9] relative animate-in zoom-in-95 duration-200"
             onClick={(e) => e.stopPropagation()}
+            className="bg-white rounded-[2.5rem] max-w-md w-full overflow-hidden shadow-2xl border border-pink-100 relative animate-in zoom-in-95 duration-200"
           >
             {/* 閉じるボタン */}
             <button
@@ -190,80 +179,58 @@ export default function GallerySection() {
             </button>
 
             {/* 写真 */}
-            <div className="relative h-72 w-full bg-[#ffe5ec]">
+            <div className="relative aspect-square w-full bg-pink-100">
               <Image
                 src={selectedDesign.image}
                 alt={selectedDesign.title}
                 fill
                 className="object-cover"
               />
-              <div className="absolute bottom-3 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-[#e8436e]">
+              <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-black text-[#ff3366]">
                 {selectedDesign.categoryLabel}
               </div>
             </div>
 
-            {/* 詳細情報 */}
+            {/* 詳細コンテンツ */}
             <div className="p-6 space-y-4">
               <div>
-                <h3 className="text-xl font-serif font-bold text-[#3a2b2c]">
+                <h3 className="text-lg font-serif font-black text-[#2c181b]">
                   {selectedDesign.title}
                 </h3>
-                <div className="flex items-center justify-between mt-2 pt-2 border-b border-[#ffe3e9] pb-3">
-                  <span className="text-2xl font-serif font-bold text-[#e8436e]">
+                <div className="flex items-center justify-between mt-2 pt-2 border-b border-pink-100 pb-3">
+                  <span className="text-2xl font-serif font-black text-[#ff3366]">
                     {selectedDesign.price}
                   </span>
-                  <span className="text-xs text-[#8c7374] flex items-center gap-1">
-                    <Clock className="w-3.5 h-3.5 text-[#ff758f]" />
+                  <span className="text-xs text-[#8c7374] flex items-center gap-1 font-semibold">
+                    <Clock className="w-3.5 h-3.5 text-[#ff6584]" />
                     施術目安: {selectedDesign.duration}
                   </span>
                 </div>
               </div>
 
-              <p className="text-xs text-[#5e4748] leading-relaxed">
+              <p className="text-xs text-[#5e4748] leading-relaxed font-medium">
                 {selectedDesign.description}
               </p>
 
-              {/* 特徴リスト */}
-              {selectedDesign.features && (
-                <div className="bg-[#fff9fa] p-3 rounded-xl border border-[#ffd1dc] space-y-1">
-                  <p className="text-[11px] font-bold text-[#3a2b2c]">✨ デザインのポイント:</p>
-                  <ul className="text-[11px] text-[#5e4748] space-y-0.5">
-                    {selectedDesign.features.map((feat, i) => (
-                      <li key={i} className="flex items-center gap-1.5">
-                        <Check className="w-3 h-3 text-[#e8436e]" />
-                        <span>{feat}</span>
-                      </li>
-                    ))}
-                    <li className="flex items-center gap-1.5 text-[#8c7374]">
-                      <Check className="w-3 h-3 text-[#e8436e]" />
-                      <span>自爪を削らないパラジェルベース ＆ フィルイン対応</span>
-                    </li>
-                  </ul>
-                </div>
-              )}
+              {/* 特徴ピル */}
+              <div className="p-3.5 rounded-2xl bg-pink-50/70 border border-pink-100 space-y-1 text-xs">
+                <p className="font-bold text-[#2c181b] text-[11px]">✨ デザインのポイント:</p>
+                <p className="text-[11px] text-[#ff3366] font-semibold">
+                  • 自爪を削らないパラジェルベース使用<br />
+                  • 3〜4週間浮かない高持続フィルイン対応
+                </p>
+              </div>
 
-              {/* 指名予約の案内 */}
-              <p className="text-[11px] text-[#8c7374]">
-                ※スタッフ指名の場合は指名料金 +550円（税込）を頂戴いたします。
-              </p>
-
-              {/* 予約ボタン */}
               <div className="pt-2 flex gap-3">
                 <a
                   href={SALON_INFO.links.hotpepper}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="strawberry-button flex-1 text-center py-3 rounded-full text-xs font-bold flex items-center justify-center gap-1.5 shadow-md"
+                  className="jelly-button flex-1 text-center py-3.5 rounded-full text-xs font-bold flex items-center justify-center gap-1.5 shadow-lg"
                 >
                   <Calendar className="w-4 h-4" />
                   <span>このデザインで予約する</span>
                 </a>
-                <button
-                  onClick={() => setSelectedDesign(null)}
-                  className="px-5 py-3 rounded-full text-xs font-medium border border-[#ffe3e9] text-[#5e4748] hover:bg-gray-50"
-                >
-                  閉じる
-                </button>
               </div>
             </div>
           </div>

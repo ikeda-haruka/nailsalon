@@ -1,34 +1,35 @@
 import type { Metadata } from "next";
-import { Shippori_Mincho, Noto_Sans_JP } from "next/font/google";
+import { Plus_Jakarta_Sans, Playfair_Display, Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FloatingReservationBar from "@/components/FloatingReservationBar";
 
-const shippori = Shippori_Mincho({
-  weight: ["400", "500", "600", "700"],
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-shippori",
+  variable: "--font-jakarta",
   display: "swap",
+  weight: ["400", "500", "600", "700", "800"],
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+  display: "swap",
+  weight: ["500", "600", "700", "800", "900"],
 });
 
 const notoSans = Noto_Sans_JP({
-  weight: ["300", "400", "500", "700"],
   subsets: ["latin"],
   variable: "--font-sans-jp",
   display: "swap",
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "Salon de Fraise (サロンドフレーズ) | パラジェル＆水光マグネット専門ネイルサロン",
-  description: "削らない自爪に優しいパラジェル専門店。丁寧なケアとフィルイン技術で3〜4週間綺麗な状態をキープ。50種類以上の水光マグネットカラーや季節のデザイン、大人可愛いイチゴミルクトーンの癒やし空間。ハンド2席・フット2席、お客様駐車場3台完備。ペット・お子様同伴OK。",
-  keywords: ["パラジェル", "フィルイン", "ネイルサロン", "マグネットネイル", "水光マグネット", "イチゴミルク", "春ネイル", "夏ネイル", "秋ネイル", "冬ネイル", "オフィスネイル"],
-  openGraph: {
-    title: "Salon de Fraise | パラジェル＆水光マグネット専門ネイルサロン",
-    description: "自爪を削らず守るパラジェルと、50種以上の水光マグネット。大人可愛いイチゴミルク空間で極上のネイル体験を。",
-    type: "website",
-    locale: "ja_JP",
-  },
+  title: "Salon de Fraise | パラジェル＆水光マグネットネイル専門店",
+  description: "削らない自爪に優しいパラジェル専門店。丁寧なケアとフィルイン技術で3〜4週間綺麗な状態をキープ。50種類以上の水光マグネットカラーや季節のデザイン、大人可愛いイチゴミルク空間。ハンド2席・フット2席、お客様駐車場3台完備。ペット・お子様同伴OK。",
+  keywords: ["パラジェル", "フィルイン", "ネイルサロン", "水光マグネット", "マグネットネイル", "イチゴミルク", "オフィスネイル"],
 };
 
 export default function RootLayout({
@@ -37,8 +38,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja" className={`${shippori.variable} ${notoSans.variable}`}>
-      <body className="antialiased selection:bg-[#ffb3c6] selection:text-[#3a2b2c]">
+    <html lang="ja" className={`${jakarta.variable} ${playfair.variable} ${notoSans.variable}`}>
+      <body className="antialiased selection:bg-[#ff85a1] selection:text-white">
         <Header />
         <main className="min-h-screen">
           {children}

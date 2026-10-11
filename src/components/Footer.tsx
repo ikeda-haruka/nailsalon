@@ -5,130 +5,129 @@ import { SALON_INFO } from "@/data/salonData";
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-b from-[#fff5f7] to-[#ffe8ee] text-[#3a2b2c] pt-16 pb-28 border-t border-[#ffd1dc]">
+    <footer className="bg-gradient-to-b from-[#fff0f3] to-[#ffe5ec] text-[#2c181b] pt-16 pb-28 border-t border-pink-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
-          {/* ブランド情報 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          
+          {/* ブランド */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-full bg-[#ff758f] flex items-center justify-center text-white shadow-md">
+            <div className="flex items-center gap-2.5">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#ff3366] to-[#ff85a1] flex items-center justify-center text-white shadow-md">
                 <Sparkles className="w-5 h-5" />
               </div>
               <div>
-                <span className="text-xl font-serif font-bold text-[#3a2b2c]">
+                <span className="text-xl font-serif font-black text-[#2c181b]">
                   Salon de Fraise
                 </span>
-                <p className="text-[10px] text-[#8c7374] tracking-wider">
-                  パラジェル＆水光マグネット専門
+                <p className="text-[10px] text-[#ff6584] font-bold tracking-widest uppercase">
+                  Paragel & Magnet Nails
                 </p>
               </div>
             </div>
-            <p className="text-xs text-[#5e4748] leading-relaxed">
-              削らない自爪に優しいパラジェル専門店。丁寧なケアとフィルイン技術で3〜4週間綺麗な状態を楽しんでいただける大人可愛いサロンです。
+            <p className="text-xs text-[#5e4748] font-medium leading-relaxed">
+              削らない自爪に優しいパラジェル専門店。丁寧なケアとフィルイン技術で3〜4週間綺麗な状態をキープ。
             </p>
-            <div className="pt-2 flex flex-wrap gap-2 text-[11px]">
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white border border-[#ffb3c6] text-[#e8436e]">
-                <Dog className="w-3 h-3" /> ペット同伴可
+            <div className="flex flex-wrap gap-1.5 text-[10px] font-bold">
+              <span className="px-2.5 py-1 rounded-full bg-white text-[#ff3366] shadow-xs">
+                🐾 ペット同伴可
               </span>
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white border border-[#ffb3c6] text-[#e8436e]">
-                <Baby className="w-3 h-3" /> お子様同伴可
+              <span className="px-2.5 py-1 rounded-full bg-white text-[#ff3366] shadow-xs">
+                👶 お子様同伴可
               </span>
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white border border-[#ffb3c6] text-[#e8436e]">
-                <Car className="w-3 h-3" /> 駐車場3台完備
+              <span className="px-2.5 py-1 rounded-full bg-white text-[#ff3366] shadow-xs">
+                🚗 駐車場3台
               </span>
             </div>
           </div>
 
-          {/* 営業時間・営業日・設備 */}
+          {/* 営業時間・設備 */}
           <div className="space-y-3">
-            <h3 className="text-sm font-bold tracking-wider text-[#3a2b2c] border-b border-[#ffb3c6] pb-2 flex items-center gap-1.5">
-              <Clock className="w-4 h-4 text-[#e8436e]" /> 営業時間・営業カレンダー
+            <h3 className="text-xs font-black tracking-wider text-[#2c181b] uppercase border-b border-pink-200 pb-2">
+              SALON INFO & HOURS
             </h3>
-            <ul className="text-xs text-[#5e4748] space-y-2">
+            <ul className="text-xs text-[#5e4748] space-y-2 font-medium">
               <li className="flex justify-between">
-                <span className="font-medium text-[#3a2b2c]">営業時間:</span>
-                <span>{SALON_INFO.hours}</span>
+                <span>営業時間:</span>
+                <span className="font-bold text-[#2c181b]">{SALON_INFO.hours}</span>
               </li>
               <li className="flex justify-between">
-                <span className="font-medium text-[#3a2b2c]">定休日:</span>
+                <span>定休日:</span>
                 <span>不定休</span>
               </li>
-              <li className="text-[11px] text-[#cc2855] bg-white/70 p-2 rounded-lg border border-[#ffd1dc] leading-relaxed">
-                ※年末年始を除き、GW・お盆休み・シルバーウィーク等の長期休暇も休まず営業中！
+              <li className="text-[11px] text-[#ff3366] font-bold bg-white/80 p-2.5 rounded-xl border border-pink-200">
+                🎀 年末年始を除き、GW・お盆・SWなどの連休中も休まず営業中！
               </li>
-              <li className="flex justify-between pt-1">
-                <span className="font-medium text-[#3a2b2c]">サロン設備:</span>
+              <li className="flex justify-between">
+                <span>設備席数:</span>
                 <span>ハンド2席 / フット2席</span>
               </li>
               <li className="flex justify-between">
-                <span className="font-medium text-[#3a2b2c]">駐車場:</span>
-                <span>お客様専用 3台（無料）</span>
+                <span>駐車場:</span>
+                <span>お客様専用 3台完備</span>
               </li>
             </ul>
           </div>
 
-          {/* お支払い方法・サービス */}
+          {/* 決済・おもてなし */}
           <div className="space-y-3">
-            <h3 className="text-sm font-bold tracking-wider text-[#3a2b2c] border-b border-[#ffb3c6] pb-2 flex items-center gap-1.5">
-              <CreditCard className="w-4 h-4 text-[#e8436e]" /> お支払い・おもてなし
+            <h3 className="text-xs font-black tracking-wider text-[#2c181b] uppercase border-b border-pink-200 pb-2">
+              PAYMENTS & AMENITIES
             </h3>
-            <div className="text-xs text-[#5e4748] space-y-2.5">
+            <div className="text-xs text-[#5e4748] space-y-2 font-medium">
               <div>
-                <p className="font-medium text-[#3a2b2c] mb-1">ご利用可能な決済方法:</p>
+                <p className="font-bold text-[#2c181b] mb-1">ご利用可能な決済方法:</p>
                 <p className="text-[11px] text-[#5e4748] leading-relaxed">
-                  クレジットカード（VISA, Master, JCB, Amex, Diners）、デビットカード、PayPay、交通系ICカード、現金
+                  クレジットカード（VISA, Master, JCB, Amex, Diners）、デビット、PayPay、交通系IC、現金
                 </p>
               </div>
               <div>
-                <p className="font-medium text-[#3a2b2c] mb-1 flex items-center gap-1">
-                  <Coffee className="w-3.5 h-3.5 text-[#e8436e]" /> ドリンクサービス（無料）:
-                </p>
-                <p className="text-[11px] text-[#8c7374] leading-relaxed">
-                  珈琲、紅茶、緑茶、烏龍茶、ほうじ茶、カフェラテ（ホット/アイス）
+                <p className="font-bold text-[#2c181b] mb-0.5">無料カフェドリンク（全6種）:</p>
+                <p className="text-[11px] text-[#8c7374]">
+                  珈琲・紅茶・緑茶・烏龍茶・ほうじ茶・カフェラテ
                 </p>
               </div>
             </div>
           </div>
 
-          {/* 予約・求人・アクセス */}
+          {/* 予約・採用リンク */}
           <div className="space-y-3">
-            <h3 className="text-sm font-bold tracking-wider text-[#3a2b2c] border-b border-[#ffb3c6] pb-2 flex items-center gap-1.5">
-              <Calendar className="w-4 h-4 text-[#e8436e]" /> ご予約・採用情報
+            <h3 className="text-xs font-black tracking-wider text-[#2c181b] uppercase border-b border-pink-200 pb-2">
+              RESERVATION & RECRUIT
             </h3>
-            <div className="space-y-2 text-xs">
+            <div className="space-y-2">
               <a
                 href={SALON_INFO.links.hotpepper}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block text-center py-2 px-3 bg-[#e8436e] text-white rounded-lg font-bold hover:bg-[#cc2855] transition-colors shadow-sm"
+                className="jelly-button block text-center py-2.5 px-3 rounded-full text-xs font-bold shadow-md"
               >
-                HOT PEPPER Beauty 24h予約
+                HOT PEPPER Beauty 24h即時予約
               </a>
               <a
                 href={SALON_INFO.links.line}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block text-center py-2 px-3 bg-[#06C755] text-white rounded-lg font-bold hover:bg-[#05a847] transition-colors"
+                className="block text-center py-2.5 px-3 rounded-full text-xs font-bold bg-[#06C755] hover:bg-[#05a847] text-white shadow-sm transition-all"
               >
-                公式LINE（クーポン・空席・回数券）
+                公式LINE（クーポン・回数券）
               </a>
-              <div className="pt-2 border-t border-[#ffd1dc] flex flex-col gap-1.5 text-[11px]">
-                <span className="font-medium text-[#3a2b2c]">ネイリスト採用情報（随時募集）:</span>
+              <div className="pt-2 border-t border-pink-200/80 flex flex-col gap-1 text-[11px]">
+                <span className="font-bold text-[#2c181b]">ネイリスト採用情報（随時募集中）:</span>
                 <div className="flex gap-2">
                   <a
                     href={SALON_INFO.links.hotpepperWork}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="underline text-[#e8436e] hover:text-[#cc2855] flex items-center gap-0.5"
+                    className="text-[#ff3366] hover:underline flex items-center gap-0.5 font-bold"
                   >
-                    HOT PEPPER Beauty WORK <ExternalLink className="w-2.5 h-2.5" />
+                    HOT PEPPER WORK <ExternalLink className="w-2.5 h-2.5" />
                   </a>
                   <span>/</span>
                   <a
                     href={SALON_INFO.links.indeed}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="underline text-[#e8436e] hover:text-[#cc2855] flex items-center gap-0.5"
+                    className="text-[#003A9B] hover:underline flex items-center gap-0.5 font-bold"
                   >
                     Indeed <ExternalLink className="w-2.5 h-2.5" />
                   </a>
@@ -136,13 +135,14 @@ export default function Footer() {
               </div>
             </div>
           </div>
+
         </div>
 
         {/* コピーライト */}
-        <div className="pt-8 border-t border-[#ffb3c6] text-center text-xs text-[#8c7374] flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="pt-8 border-t border-pink-200/80 text-center text-xs text-[#8c7374] flex flex-col sm:flex-row items-center justify-between gap-3 font-medium">
           <p>© {new Date().getFullYear()} Salon de Fraise. All rights reserved.</p>
           <p className="flex items-center gap-1 text-[11px]">
-            Portfolio Work Designed with <Heart className="w-3.5 h-3.5 text-[#e8436e] fill-[#e8436e]" /> for Haruka Ikeda
+            Portfolio Work Designed with <Heart className="w-3.5 h-3.5 text-[#ff3366] fill-[#ff3366]" /> for Haruka Ikeda
           </p>
         </div>
       </div>

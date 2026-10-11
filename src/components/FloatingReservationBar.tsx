@@ -10,8 +10,7 @@ export default function FloatingReservationBar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // 100pxスクロールしたら表示
-      setIsVisible(window.scrollY > 100);
+      setIsVisible(window.scrollY > 80);
       setShowTopBtn(window.scrollY > 400);
     };
     window.addEventListener("scroll", handleScroll);
@@ -26,27 +25,28 @@ export default function FloatingReservationBar() {
 
   return (
     <>
-      {/* ページトップへ戻るボタン */}
+      {/* ページトップボタン */}
       {showTopBtn && (
         <button
           onClick={scrollToTop}
           aria-label="ページトップへ戻る"
-          className="fixed bottom-24 right-4 z-40 w-11 h-11 rounded-full bg-white/90 border border-[#ffb3c6] text-[#e8436e] shadow-lg flex items-center justify-center hover:bg-[#ffe5ec] hover:scale-105 transition-all"
+          className="fixed bottom-24 right-4 z-40 w-11 h-11 rounded-full bg-white/90 backdrop-blur-md border border-pink-200 text-[#ff3366] shadow-xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all"
         >
           <ChevronUp className="w-5 h-5" />
         </button>
       )}
 
       {/* フローティングCTAバー */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-[#ffe3e9] py-2.5 px-4 shadow-[0_-4px_20px_rgba(232,67,110,0.12)]">
-        <div className="max-w-4xl mx-auto flex items-center justify-between gap-2 sm:gap-4">
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/85 backdrop-blur-xl border-t border-white/60 py-2.5 px-4 shadow-[0_-8px_30px_rgba(255,51,102,0.15)] animate-in slide-in-from-bottom-2 duration-300">
+        <div className="max-w-4xl mx-auto flex items-center justify-between gap-3">
+          
           <div className="hidden sm:flex flex-col">
-            <span className="text-xs font-bold text-[#3a2b2c] flex items-center gap-1">
-              <Sparkles className="w-3.5 h-3.5 text-[#e8436e]" />
-              WEB即時予約受付中（空席カレンダー閲覧可）
+            <span className="text-xs font-black text-[#2c181b] flex items-center gap-1">
+              <Sparkles className="w-3.5 h-3.5 text-[#ff3366]" />
+              リアルタイム空席受付中（24h即時予約OK）
             </span>
-            <span className="text-[10px] text-[#8c7374]">
-              営業時間 10:00〜20:00 / 不定休（GW・お盆・SW休まず営業）
+            <span className="text-[10px] text-[#ff6584] font-bold">
+              10:00〜20:00 / 不定休（GW・お盆・SW休まず営業中）
             </span>
           </div>
 
@@ -56,10 +56,10 @@ export default function FloatingReservationBar() {
               href={SALON_INFO.links.line}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-full bg-[#06C755] text-white text-xs font-bold shadow-sm hover:bg-[#05b34c] transition-all"
+              className="flex-1 sm:flex-initial flex items-center justify-center gap-1 px-3.5 sm:px-4 py-2.5 rounded-full bg-[#06C755] hover:bg-[#05a847] text-white text-xs font-bold shadow-md transition-all hover:scale-102"
             >
-              <MessageCircle className="w-4 h-4 shrink-0" />
-              <span className="truncate">LINE限定クーポン</span>
+              <MessageCircle className="w-3.5 h-3.5 shrink-0" />
+              <span className="truncate">LINEクーポン</span>
             </a>
 
             {/* HOT PEPPER Beauty */}
@@ -67,9 +67,9 @@ export default function FloatingReservationBar() {
               href={SALON_INFO.links.hotpepper}
               target="_blank"
               rel="noopener noreferrer"
-              className="strawberry-button flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-4 sm:px-6 py-2.5 rounded-full text-xs font-bold shadow-md"
+              className="jelly-button flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-5 sm:px-7 py-2.5 rounded-full text-xs font-bold shadow-xl"
             >
-              <Calendar className="w-4 h-4 shrink-0" />
+              <Calendar className="w-3.5 h-3.5 shrink-0" />
               <span className="truncate">空席確認・即時予約</span>
             </a>
 
@@ -77,11 +77,12 @@ export default function FloatingReservationBar() {
             <a
               href={`tel:${SALON_INFO.phone}`}
               aria-label="電話する"
-              className="w-10 h-10 rounded-full bg-[#ffe5ec] text-[#e8436e] flex items-center justify-center hover:bg-[#ffd1dc] transition-all shrink-0"
+              className="w-10 h-10 rounded-full bg-pink-100/80 text-[#ff3366] flex items-center justify-center hover:bg-pink-200 transition-all shrink-0 shadow-xs"
             >
               <Phone className="w-4 h-4" />
             </a>
           </div>
+
         </div>
       </div>
     </>

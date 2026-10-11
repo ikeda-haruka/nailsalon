@@ -1,36 +1,44 @@
 import HeroSection from "@/components/HeroSection";
+import StoryHighlights from "@/components/StoryHighlights";
 import ConceptSection from "@/components/ConceptSection";
 import GallerySection from "@/components/GallerySection";
+import MagnetGlowLab from "@/components/MagnetGlowLab";
+import InteractiveSection from "@/components/InteractiveSection";
 import MenuSection from "@/components/MenuSection";
 import StaffSection from "@/components/StaffSection";
 import SalonInfoSection from "@/components/SalonInfoSection";
-import InteractiveSection from "@/components/InteractiveSection";
-import RecruitSection from "@/components/RecruitSection";
 import FaqSection from "@/components/FaqSection";
+import RecruitSection from "@/components/RecruitSection";
 import ReservationSection from "@/components/ReservationSection";
 
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
-      {/* ヒーローセクション */}
+      {/* ヒーローセクション（オーロラ＆イチゴミルク背景、ぷっくりジェルボタン） */}
       <HeroSection />
 
-      {/* コンセプト・パラジェル＆フィルイン・3〜4週持続ケアのこだわり */}
+      {/* Instagramストーリーズ風ハイライト（春ネイル・水光50色・削らない・ドリンク・駐車場・同伴） */}
+      <StoryHighlights />
+
+      {/* コンセプト（パラジェル専門・アセトン不使用フィルイン・3〜4週持続ケア） */}
       <ConceptSection />
 
-      {/* デザインカタログ（春夏秋冬・50種水光マグネット・オフィス） */}
+      {/* 最旬デザインカタログ（Instagram風タイル・いいね・モーダル詳細） */}
       <GallerySection />
 
-      {/* インタラクティブ診断 ＆ 空席シミュレーター */}
+      {/* 水光マグネット体験シミュレーター（光筋が動くリアルタイム体験） */}
+      <MagnetGlowLab />
+
+      {/* インタラクティブ診断（3問で似合うネイル提案） ＆ 空席目安カレンダー */}
       <InteractiveSection />
 
-      {/* 施術メニュー・料金・回数券・LINEクーポン */}
+      {/* メニュー・料金（明朗会計・回数券・LINE限定クーポンチケット） */}
       <MenuSection />
 
       {/* スタッフ紹介（池田・高橋・水野 / 指名料+550円） */}
       <StaffSection />
 
-      {/* サロン設備・営業時間・連休営業・駐車場3台・ドリンク・同伴OK */}
+      {/* サロン設備・無料カフェドリンク全6種・駐車場3台・ペット＆子連れOK */}
       <SalonInfoSection />
 
       {/* よくあるご質問 (FAQ) */}

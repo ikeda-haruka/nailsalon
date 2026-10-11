@@ -2,69 +2,83 @@
 
 import React from "react";
 import Image from "next/image";
-import { Sparkles, Calendar, MessageCircle, ShieldCheck, Heart, Clock, Award, ChevronDown } from "lucide-react";
+import { Sparkles, Calendar, MessageCircle, Heart, Star, ShieldCheck, Clock, Award } from "lucide-react";
 import { SALON_INFO } from "@/data/salonData";
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-[92vh] flex items-center pt-24 pb-16 overflow-hidden bg-gradient-to-b from-[#fff3f5] via-[#fff9fa] to-white">
-      {/* 背景の装飾サークル & ふんわりブラー */}
-      <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-gradient-to-tr from-[#ffe5ec] to-[#fff0f3] rounded-full blur-3xl opacity-70 -z-10 pointer-events-none" />
-      <div className="absolute top-1/3 -right-20 w-80 h-80 bg-[#ffd1dc] rounded-full blur-2xl opacity-40 -z-10 pointer-events-none" />
+    <section className="relative min-h-[92vh] flex items-center pt-24 pb-12 overflow-hidden aurora-bg">
+      {/* 浮遊するキラキラ星装飾 */}
+      <div className="absolute top-28 left-8 sm:left-20 text-2xl sm:text-3xl animate-twinkle pointer-events-none">✨</div>
+      <div className="absolute top-40 right-10 sm:right-32 text-xl sm:text-2xl animate-twinkle-fast pointer-events-none text-pink-400">💖</div>
+      <div className="absolute bottom-24 left-16 text-xl animate-twinkle pointer-events-none text-rose-300">🌸</div>
+      <div className="absolute top-1/2 right-6 text-3xl animate-twinkle-fast pointer-events-none">🍓</div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+      {/* ふんわりオーロラグロー */}
+      <div className="absolute -top-32 -left-32 w-96 h-96 bg-[#ff85a1]/30 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/3 -right-24 w-[32rem] h-[32rem] bg-[#ffd1dc]/50 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           
-          {/* 左カラム: キャッチコピー＆説明＆CTA */}
+          {/* 左カラム: コピー & CTA */}
           <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
+            
             {/* 上部バッジ */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 border border-[#ffb3c6] shadow-sm text-xs text-[#e8436e] font-semibold animate-bounce duration-1000">
-              <Sparkles className="w-4 h-4 fill-[#ff758f] text-[#ff758f]" />
-              <span>自爪を削らないパラジェル専門サロン</span>
-              <span className="hidden sm:inline text-[#8c7374]">| 表参道・原宿</span>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-pink-200 shadow-sm text-xs font-bold text-[#ff3366] hover:scale-105 transition-transform cursor-default">
+              <span className="flex h-2 w-2 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ff3366] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#ff3366]"></span>
+              </span>
+              <span>PARAGEL SPECIALTY SALON</span>
+              <span className="text-[#a08587]">|</span>
+              <span className="text-[#2c181b]">表参道・原宿</span>
             </div>
 
-            {/* メイン見出し */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-[#3a2b2c] leading-[1.25] tracking-tight">
-              削らない、痛まない。<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#e8436e] via-[#ff758f] to-[#ff99ac]">
-                いちごみるく
-              </span>
-              のように<br className="sm:hidden" />
-              愛らしく艶めく指先へ
-            </h1>
+            {/* 大見出し */}
+            <div className="space-y-2">
+              <p className="font-serif italic text-base sm:text-xl text-[#ff6584] font-medium tracking-wide">
+                — Stay Glossy, Stay Healthy —
+              </p>
+              <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-[#2c181b] leading-[1.2] tracking-tight">
+                削らない、痛まない。<br />
+                <span className="water-glow-text">いちごみるく</span>の<br className="sm:hidden" />
+                ちゅるんとうるツヤ爪へ
+              </h1>
+            </div>
 
-            {/* サブテキスト */}
-            <p className="text-sm sm:text-base text-[#5e4748] leading-relaxed max-w-2xl mx-auto lg:mx-0 font-sans">
-              シンプルから最旬トレンドまで、お気に入りがきっと見つかる豊富なデザイン。<br className="hidden sm:inline" />
-              丁寧なウォーターケアと自爪に優しい<strong className="text-[#e8436e] font-semibold">【フィルイン技術】</strong>で、3〜4週間ずっと美しい指先を楽しんでいただけます。
+            {/* リード文 */}
+            <p className="text-sm sm:text-base text-[#5e4748] leading-relaxed max-w-xl mx-auto lg:mx-0 font-medium">
+              自爪を削らず守る<strong className="text-[#ff3366] font-bold">「パラジェル専門」</strong>。
+              丁寧なケアとフィルイン技術で、<strong className="text-[#2c181b] font-bold">3〜4週間綺麗な状態</strong>をキープ。
+              50色以上の水光マグネットやトレンドアートで、私史上最高に可愛い指先を叶えます。
             </p>
 
-            {/* 特長ピルタグ */}
+            {/* 令和チックなピルタグ群 */}
             <div className="flex flex-wrap justify-center lg:justify-start gap-2 pt-1">
-              <span className="text-xs px-3 py-1 rounded-full bg-[#ffe5ec] text-[#cc2855] font-medium border border-pink-200">
-                ✨ 自爪削りなし（パラジェル）
+              <span className="px-3 py-1.5 rounded-full bg-white/80 backdrop-blur-sm text-xs font-bold text-[#2c181b] border border-pink-200/80 shadow-sm flex items-center gap-1.5">
+                💅 <span>自爪削りなし</span>
               </span>
-              <span className="text-xs px-3 py-1 rounded-full bg-[#ffe5ec] text-[#cc2855] font-medium border border-pink-200">
-                💅 水光マグネット50色以上
+              <span className="px-3 py-1.5 rounded-full bg-white/80 backdrop-blur-sm text-xs font-bold text-[#2c181b] border border-pink-200/80 shadow-sm flex items-center gap-1.5">
+                ✨ <span>水光マグネット50色+</span>
               </span>
-              <span className="text-xs px-3 py-1 rounded-full bg-[#ffe5ec] text-[#cc2855] font-medium border border-pink-200">
-                🚗 無料駐車場3台
+              <span className="px-3 py-1.5 rounded-full bg-white/80 backdrop-blur-sm text-xs font-bold text-[#2c181b] border border-pink-200/80 shadow-sm flex items-center gap-1.5">
+                🚗 <span>無料駐車場3台</span>
               </span>
-              <span className="text-xs px-3 py-1 rounded-full bg-[#ffe5ec] text-[#cc2855] font-medium border border-pink-200">
-                🐾 ペット・お子様同伴歓迎
+              <span className="px-3 py-1.5 rounded-full bg-white/80 backdrop-blur-sm text-xs font-bold text-[#2c181b] border border-pink-200/80 shadow-sm flex items-center gap-1.5">
+                🐾 <span>ペット・子連れOK</span>
               </span>
             </div>
 
             {/* CTAボタン群 */}
-            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+            <div className="pt-3 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5">
               <a
                 href={SALON_INFO.links.hotpepper}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="strawberry-button w-full sm:w-auto px-8 py-4 rounded-full text-sm font-bold flex items-center justify-center gap-2 group"
+                className="jelly-button w-full sm:w-auto px-8 py-4 rounded-full text-sm font-bold flex items-center justify-center gap-2 group shadow-xl"
               >
-                <Calendar className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                <Calendar className="w-4 h-4 group-hover:scale-110 transition-transform" />
                 <span>HOT PEPPER Beauty で予約</span>
               </a>
 
@@ -72,107 +86,102 @@ export default function HeroSection() {
                 href={SALON_INFO.links.line}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto px-7 py-4 rounded-full text-sm font-bold bg-[#06C755] text-white hover:bg-[#05a847] shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-7 py-4 rounded-full text-sm font-bold bg-[#06C755] hover:bg-[#05b34c] text-white shadow-lg shadow-green-600/20 flex items-center justify-center gap-2 transition-all hover:scale-105"
               >
-                <MessageCircle className="w-5 h-5" />
-                <span>公式LINEで限定クーポンGET</span>
+                <MessageCircle className="w-4 h-4" />
+                <span>公式LINE限定クーポンGET</span>
               </a>
             </div>
 
-            {/* 営業案内マイクロテキスト */}
-            <div className="text-xs text-[#8c7374] flex items-center justify-center lg:justify-start gap-4 pt-1">
-              <span className="flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5 text-[#e8436e]" />
-                営業時間 10:00〜20:00
-              </span>
-              <span>•</span>
-              <span className="text-[#e8436e] font-semibold">
-                GW・お盆・SWも休まず営業中
-              </span>
+            {/* 連休営業告知マイクロバナー */}
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-pink-100/70 border border-pink-200 text-xs font-bold text-[#ff3366]">
+              <span>🎀 GW・お盆・シルバーウィークも休まず営業中（10:00〜20:00）</span>
             </div>
 
-            {/* 実績バッジエリア */}
-            <div className="grid grid-cols-3 gap-3 pt-6 border-t border-[#ffd1dc]/60 max-w-lg mx-auto lg:mx-0">
-              <div className="text-center p-2 rounded-xl bg-white/70 border border-[#ffe3e9]">
-                <div className="text-xl sm:text-2xl font-serif font-bold text-[#e8436e]">3〜4週</div>
-                <div className="text-[10px] text-[#8c7374]">美しさ長持ちキープ</div>
+            {/* ハイライト数値 */}
+            <div className="grid grid-cols-3 gap-3 pt-4 max-w-md mx-auto lg:mx-0">
+              <div className="jelly-glass p-3 rounded-2xl text-center">
+                <span className="block font-serif font-black text-2xl text-[#ff3366]">3〜4w</span>
+                <span className="text-[10px] font-bold text-[#5e4748]">高持続キープ</span>
               </div>
-              <div className="text-center p-2 rounded-xl bg-white/70 border border-[#ffe3e9]">
-                <div className="text-xl sm:text-2xl font-serif font-bold text-[#e8436e]">50+</div>
-                <div className="text-[10px] text-[#8c7374]">マグネットカラー</div>
+              <div className="jelly-glass p-3 rounded-2xl text-center">
+                <span className="block font-serif font-black text-2xl text-[#ff3366]">50+</span>
+                <span className="text-[10px] font-bold text-[#5e4748]">マグネット色数</span>
               </div>
-              <div className="text-center p-2 rounded-xl bg-white/70 border border-[#ffe3e9]">
-                <div className="text-xl sm:text-2xl font-serif font-bold text-[#e8436e]">100%</div>
-                <div className="text-[10px] text-[#8c7374]">パラジェル使用</div>
+              <div className="jelly-glass p-3 rounded-2xl text-center">
+                <span className="block font-serif font-black text-2xl text-[#ff3366]">0 yen</span>
+                <span className="text-[10px] font-bold text-[#5e4748]">自爪サンディング</span>
               </div>
             </div>
+
           </div>
 
-          {/* 右カラム: ビジュアル写真 & フローティングバッジ */}
+          {/* 右カラム: ビジュアルフォト ＆ インスタライクなUI */}
           <div className="lg:col-span-5 relative">
-            <div className="relative mx-auto max-w-md lg:max-w-none">
-              {/* 装飾の背後フレーム */}
-              <div className="absolute -inset-4 bg-gradient-to-tr from-[#ffb3c6] via-[#ffd1dc] to-[#ffe5ec] rounded-[2.5rem] rotate-2 blur-sm opacity-60" />
+            <div className="relative mx-auto max-w-sm sm:max-w-md lg:max-w-none">
               
-              {/* メイン画像コンテナ */}
-              <div className="relative rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white bg-white">
-                <Image
-                  src="/images/hero.jpg"
-                  alt="Salon de Fraise パラジェル＆水光マグネットネイル"
-                  width={600}
-                  height={500}
-                  priority
-                  className="w-full h-[420px] sm:h-[480px] object-cover hover:scale-105 transition-transform duration-700"
-                />
+              {/* フォトカード本体 */}
+              <div className="relative rounded-[2.5rem] overflow-hidden p-3 bg-white/70 backdrop-blur-xl border border-white shadow-[0_20px_50px_rgba(255,105,180,0.25)]">
+                <div className="relative rounded-[2rem] overflow-hidden h-[420px] sm:h-[480px]">
+                  <Image
+                    src="/images/hero.jpg"
+                    alt="Salon de Fraise パラジェル＆水光マグネットネイル"
+                    fill
+                    priority
+                    className="object-cover hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
 
-                {/* 写真内のグラデーションオーバーレイ */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+                  {/* 写真上のインスタ風リアクションバッジ */}
+                  <div className="absolute top-4 right-4 flex flex-col gap-2">
+                    <div className="w-10 h-10 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-[#ff3366] shadow-md hover:scale-110 transition-transform">
+                      <Heart className="w-5 h-5 fill-[#ff3366]" />
+                    </div>
+                    <div className="w-10 h-10 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-amber-500 shadow-md">
+                      <Star className="w-5 h-5 fill-amber-400" />
+                    </div>
+                  </div>
 
-                {/* 写真内下部テキスト */}
-                <div className="absolute bottom-4 left-4 right-4 text-white">
-                  <span className="text-[10px] uppercase tracking-widest text-[#ffd1dc] font-semibold">
-                    Signature Design
-                  </span>
-                  <p className="text-base font-serif font-bold text-white drop-shadow">
-                    うるうる水光マグネット × イチゴミルクニュアンス
-                  </p>
+                  {/* 写真下部キャプション */}
+                  <div className="absolute bottom-5 left-5 right-5 text-white">
+                    <span className="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-[#ff3366] uppercase tracking-wider inline-block mb-1.5 shadow-sm">
+                      Signature Look
+                    </span>
+                    <h3 className="font-serif font-bold text-lg text-white drop-shadow-md">
+                      うるうる水光マグネット × いちごみるく
+                    </h3>
+                    <p className="text-xs text-pink-100 font-medium">
+                      透け感ピンクベージュ / 50種類以上のマグネットカラー
+                    </p>
+                  </div>
                 </div>
               </div>
 
-              {/* フローティングバッジ1: パラジェル認定 */}
-              <div className="absolute -top-4 -left-4 sm:-left-6 bg-white/95 backdrop-blur-md border border-[#ffb3c6] shadow-xl rounded-2xl p-3 flex items-center gap-3 animate-pulse duration-3000">
-                <div className="w-10 h-10 rounded-full bg-[#ffe5ec] flex items-center justify-center text-[#e8436e]">
-                  <ShieldCheck className="w-6 h-6" />
+              {/* フローティングカード1: パラジェル認定 */}
+              <div className="absolute -top-4 -left-4 sm:-left-8 jelly-glass p-3.5 rounded-2xl flex items-center gap-3 shadow-xl animate-bounce duration-1000">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#ff3366] to-[#ff85a1] flex items-center justify-center text-white shrink-0">
+                  <ShieldCheck className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-[#3a2b2c]">サンディング不要</p>
-                  <p className="text-[10px] text-[#8c7374]">自爪を削らないパラジェル</p>
+                  <p className="text-xs font-extrabold text-[#2c181b]">自爪を削らない</p>
+                  <p className="text-[10px] text-[#ff6584] font-bold">パラジェル専門店</p>
                 </div>
               </div>
 
-              {/* フローティングバッジ2: 丁寧なケアと長持ち */}
-              <div className="absolute -bottom-4 -right-4 sm:-right-6 bg-white/95 backdrop-blur-md border border-[#ffb3c6] shadow-xl rounded-2xl p-3 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#ff758f] flex items-center justify-center text-white">
-                  <Award className="w-5 h-5" />
+              {/* フローティングカード2: フィルイン */}
+              <div className="absolute -bottom-4 -right-4 sm:-right-6 jelly-glass p-3.5 rounded-2xl flex items-center gap-3 shadow-xl">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-pink-400 to-rose-400 flex items-center justify-center text-white shrink-0">
+                  <Sparkles className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-[#3a2b2c]">高持続フィルイン技術</p>
-                  <p className="text-[10px] text-[#e8436e] font-semibold">3〜4週間綺麗な状態キープ</p>
+                  <p className="text-xs font-extrabold text-[#2c181b]">高持続フィルイン</p>
+                  <p className="text-[10px] text-[#ff3366] font-bold">3〜4週間浮かない</p>
                 </div>
               </div>
+
             </div>
           </div>
-        </div>
 
-        {/* スクロールダウンインジケーター */}
-        <div className="mt-12 text-center">
-          <a
-            href="#concept"
-            className="inline-flex flex-col items-center text-xs text-[#8c7374] hover:text-[#e8436e] transition-colors"
-          >
-            <span>詳しく見る</span>
-            <ChevronDown className="w-4 h-4 animate-bounce mt-1 text-[#ff758f]" />
-          </a>
         </div>
       </div>
     </section>

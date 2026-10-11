@@ -2,147 +2,169 @@
 
 import React from "react";
 import Image from "next/image";
-import { Sparkles, ShieldCheck, Heart, Droplets, Clock, CheckCircle2, AlertCircle } from "lucide-react";
+import { Sparkles, ShieldCheck, Heart, Droplets, Clock, CheckCircle2, Star, Coffee, Car, Dog, Baby } from "lucide-react";
 import { SALON_INFO } from "@/data/salonData";
 
 export default function ConceptSection() {
   const points = [
     {
-      num: "01",
+      step: "POINT 01",
       title: "自爪を一切削らない「パラジェル専門」",
-      subtitle: "Non-Sanding Gel",
-      desc: "従来のジェルネイルは密着を高めるために自爪の表面を削る必要がありましたが、パラジェルは最高峰の密着技術により爪を全く削りません。自爪が薄くならず、健康な美爪を保ったままジェルネイルを長く楽しんでいただけます。",
-      icon: ShieldCheck,
-      highlight: "爪が薄くて痛む・ジェルをお休みしていた方にも安心"
+      tag: "Non-Sanding",
+      desc: "従来のジェルネイルは密着のため爪表面を削る必要がありましたが、パラジェルは最高峰の吸着力で【自爪サンディング不要】。薄く傷んだ爪も、自爪を健康に育てながらジェルを楽しめます。",
+      highlight: "爪が薄い・痛むお悩みから解放",
+      badge: "自爪ダメージ0%",
     },
     {
-      num: "02",
-      title: "丁寧なケア＆高持続「フィルイン技術」",
-      subtitle: "Fill-in Technique",
-      desc: "ジェルオフ時に自爪や皮膚を乾燥させるアセトン溶剤を使わず、ベースジェルを一層残して付け替える「フィルイン技術」を採用。丁寧なウォーターケアで甘皮周りを整え、爪への負担を極限まで抑えます。",
-      icon: Sparkles,
-      highlight: "アセトンを使わない一層残しで爪の健康を第一に"
+      step: "POINT 02",
+      title: "アセトンを使わない「高持続フィルイン」",
+      tag: "Fill-in Tech",
+      desc: "付け替え時に皮膚や爪を極度に乾燥させるアセトン溶剤を使わず、ベースを一層残して新しく塗布。爪周りの丁寧なウォーターケアと美フォルム形成で、浮きにくく美しい仕上がりに。",
+      highlight: "爪周りの皮膚や自爪を守る一層残し",
+      badge: "アセトン不使用",
     },
     {
-      num: "03",
+      step: "POINT 03",
       title: "3〜4週間ずっと綺麗な状態をキープ",
-      subtitle: "Long Lasting & Care",
-      desc: "ネイルの持ちは爪の状態、水仕事や生活習慣、保湿ケアによっても変化します。当店では一人ひとりの爪質に合わせたベースジェルの選定と丁寧なフォルム形成を行い、3〜4週間浮きのない美しい仕上がりを実現します。",
-      icon: Clock,
-      highlight: "施術後のオイル保湿や美爪ケア方法もしっかりサポート"
-    }
+      tag: "Long Lasting",
+      desc: "水仕事や生活習慣、乾燥に負けない丁寧なベース設計。日々のオイル保湿アドバイスもしっかりお伝えし、次回のご来店まで浮きや欠けのない快適な生活をお約束します。",
+      highlight: "ホームケアのアドバイスも充実",
+      badge: "3〜4週キープ",
+    },
   ];
 
   return (
-    <section id="concept" className="py-24 bg-white relative overflow-hidden">
-      {/* 背景装飾 */}
-      <div className="absolute top-1/2 left-0 w-72 h-72 bg-[#fff0f3] rounded-full blur-3xl -z-10 pointer-events-none" />
-
+    <section id="concept" className="py-24 bg-gradient-to-b from-white via-pink-50/20 to-white relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
         {/* セクションヘッダー */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ffe5ec] text-[#e8436e] text-xs font-semibold">
-            <Heart className="w-3.5 h-3.5 fill-[#e8436e]" />
-            <span>Salon de Fraise のこだわり</span>
+        <div className="text-center max-w-3xl mx-auto mb-16 space-y-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-100 text-[#ff3366] text-xs font-black tracking-wider uppercase">
+            <Heart className="w-3.5 h-3.5 fill-[#ff3366]" />
+            <span>Why Salon de Fraise?</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#3a2b2c]">
-            美しさと健康を両立する、<br className="sm:hidden" />
-            パラジェル専門サロン
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-black text-[#2c181b]">
+            ずっと美しい指先を保つ、<br />
+            3つの理由
           </h2>
-          <p className="text-sm text-[#5e4748] leading-relaxed">
-            豊富なデザイン数があり、シンプルからトレンドまでお気に入りがきっと見つかります。<br className="hidden sm:inline" />
-            傷んだ爪をいたわり、ずっとネイルを楽しんでほしいという想いから生まれたサロンです。
+          <p className="text-xs sm:text-sm text-[#5e4748] font-medium leading-relaxed">
+            ジェルネイルを続けると爪が薄くなる…そんな不安をゼロに。<br className="hidden sm:inline" />
+            丁寧なケアと最新技術で、あなたの手元を最高に輝かせます。
           </p>
         </div>
 
-        {/* 3つの強みカード */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-          {points.map((point) => {
-            const Icon = point.icon;
-            return (
-              <div
-                key={point.num}
-                className="strawberry-card p-8 relative flex flex-col justify-between group hover:border-[#ff758f]"
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-6">
-                    <span className="text-3xl font-serif font-bold text-[#ffd1dc] group-hover:text-[#ff758f] transition-colors">
-                      {point.num}
-                    </span>
-                    <div className="w-12 h-12 rounded-2xl bg-[#fff0f3] flex items-center justify-center text-[#e8436e] group-hover:scale-110 transition-transform">
-                      <Icon className="w-6 h-6" />
-                    </div>
-                  </div>
+        {/* 3つのポイントカード（雑誌LOOKBOOK風） */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-20">
+          {points.map((p, idx) => (
+            <div
+              key={idx}
+              className="jelly-glass jelly-glass-hover rounded-3xl p-8 flex flex-col justify-between relative overflow-hidden group border border-white"
+            >
+              {/* 背景の淡いアクセントサークル */}
+              <div className="absolute -top-12 -right-12 w-32 h-32 bg-pink-100/50 rounded-full blur-2xl group-hover:scale-150 transition-transform pointer-events-none" />
 
-                  <span className="text-[10px] tracking-widest text-[#ff758f] font-bold uppercase block mb-1">
-                    {point.subtitle}
+              <div>
+                <div className="flex items-center justify-between mb-6">
+                  <span className="text-[11px] font-black tracking-widest text-[#ff3366] uppercase bg-pink-50 px-2.5 py-1 rounded-full border border-pink-100">
+                    {p.step}
                   </span>
-                  <h3 className="text-lg font-serif font-bold text-[#3a2b2c] mb-3 leading-snug">
-                    {point.title}
-                  </h3>
-                  <p className="text-xs text-[#5e4748] leading-relaxed mb-6">
-                    {point.desc}
-                  </p>
-                </div>
-
-                <div className="pt-4 border-t border-[#ffe3e9] flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-[#e8436e] shrink-0 mt-0.5" />
-                  <span className="text-[11px] font-medium text-[#cc2855]">
-                    {point.highlight}
+                  <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-white text-[#2c181b] shadow-sm">
+                    {p.badge}
                   </span>
                 </div>
+
+                <h3 className="text-lg font-bold text-[#2c181b] mb-3 leading-snug group-hover:text-[#ff3366] transition-colors">
+                  {p.title}
+                </h3>
+
+                <p className="text-xs text-[#5e4748] leading-relaxed mb-6 font-medium">
+                  {p.desc}
+                </p>
               </div>
-            );
-          })}
+
+              <div className="pt-4 border-t border-pink-100/80 flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-[#ff3366] shrink-0" />
+                <span className="text-xs font-bold text-[#ff3366]">
+                  {p.highlight}
+                </span>
+              </div>
+            </div>
+          ))}
         </div>
 
-        {/* サロン内観＆おもてなし訴求バナー */}
-        <div className="bg-gradient-to-r from-[#fff3f5] via-[#fff8f9] to-[#ffe8ee] rounded-[2.5rem] p-8 sm:p-12 border border-[#ffd1dc] shadow-sm">
+        {/* サロン内観 ＆ 快適設備バナー */}
+        <div className="jelly-glass rounded-[2.5rem] p-8 sm:p-12 border border-white shadow-xl relative overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             
-            <div className="lg:col-span-6 relative rounded-2xl overflow-hidden shadow-lg border-2 border-white">
+            {/* 左側: サロン内観写真 */}
+            <div className="lg:col-span-6 relative rounded-3xl overflow-hidden shadow-lg h-72 sm:h-96">
               <Image
                 src="/images/interior.jpg"
                 alt="Salon de Fraise サロン内観 ハンド2席・フット2席"
-                width={600}
-                height={400}
-                className="w-full h-[320px] object-cover hover:scale-105 transition-transform duration-700"
+                fill
+                className="object-cover hover:scale-105 transition-transform duration-700"
               />
-              <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold text-[#e8436e]">
+              <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3.5 py-1 rounded-full text-xs font-black text-[#ff3366] shadow-sm">
                 ハンド2席・フット2席
               </div>
             </div>
 
-            <div className="lg:col-span-6 space-y-4">
-              <span className="text-xs font-bold text-[#ff758f] tracking-wider uppercase">
-                Comfort & Hospitality
-              </span>
-              <h3 className="text-2xl font-serif font-bold text-[#3a2b2c]">
-                いちごみるくのような優しい空間で、<br />
-                心まで満たされる特別なひとときを
+            {/* 右側: 快適おもてなし案内 */}
+            <div className="lg:col-span-6 space-y-5">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-100 text-[#ff3366] text-xs font-black tracking-wider uppercase">
+                <span>Relaxing Atmosphere</span>
+              </div>
+
+              <h3 className="text-2xl sm:text-3xl font-serif font-black text-[#2c181b] leading-snug">
+                いちごみるくの甘く洗練された空間で、<br />
+                心までほどける贅沢なひとときを
               </h3>
-              <p className="text-xs sm:text-sm text-[#5e4748] leading-relaxed">
-                全席リクライニング仕様のハンド2席・フット2席をご用意。周りを気にせずゆったりおくつろぎいただけます。
-                ペットやお子様連れでのご来店も大歓迎！ベビーカーの横付けも可能です。
+
+              <p className="text-xs sm:text-sm text-[#5e4748] leading-relaxed font-medium">
+                全席リクライニングチェア仕様。ハンド席・フット席ともにゆったりとした空間を確保しています。
+                ペットやお子様連れ（ベビーカー入店OK）でのご来店も大歓迎です。
               </p>
 
-              {/* おもてなしスペックリスト */}
-              <div className="grid grid-cols-2 gap-3 pt-2 text-xs">
-                <div className="bg-white/80 p-3 rounded-xl border border-[#ffe3e9]">
-                  <p className="font-bold text-[#3a2b2c] mb-0.5">☕ 無料カフェドリンク</p>
-                  <p className="text-[11px] text-[#8c7374]">珈琲・紅茶・緑茶・ラテ等全6種</p>
+              {/* 4つのフィーチャーピル */}
+              <div className="grid grid-cols-2 gap-3 pt-2">
+                <div className="p-3.5 rounded-2xl bg-white/90 border border-pink-100 shadow-sm flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-pink-100 flex items-center justify-center text-[#ff3366] shrink-0">
+                    <Coffee className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-[#2c181b]">カフェドリンク6種</p>
+                    <p className="text-[10px] text-[#8c7374]">珈琲・紅茶・緑茶・ラテ等</p>
+                  </div>
                 </div>
-                <div className="bg-white/80 p-3 rounded-xl border border-[#ffe3e9]">
-                  <p className="font-bold text-[#3a2b2c] mb-0.5">🚗 お客様専用駐車場</p>
-                  <p className="text-[11px] text-[#8c7374]">無料駐車場3台完備</p>
+
+                <div className="p-3.5 rounded-2xl bg-white/90 border border-pink-100 shadow-sm flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-pink-100 flex items-center justify-center text-[#ff3366] shrink-0">
+                    <Car className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-[#2c181b]">お客様専用駐車場</p>
+                    <p className="text-[10px] text-[#8c7374]">無料パーキング3台完備</p>
+                  </div>
                 </div>
-                <div className="bg-white/80 p-3 rounded-xl border border-[#ffe3e9]">
-                  <p className="font-bold text-[#3a2b2c] mb-0.5">🐾 ペット同伴可能</p>
-                  <p className="text-[11px] text-[#8c7374]">愛犬・愛猫と一緒にご来店OK</p>
+
+                <div className="p-3.5 rounded-2xl bg-white/90 border border-pink-100 shadow-sm flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-pink-100 flex items-center justify-center text-[#ff3366] shrink-0">
+                    <Dog className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-[#2c181b]">ペット同伴歓迎</p>
+                    <p className="text-[10px] text-[#8c7374]">愛犬・愛猫と一緒にご来店OK</p>
+                  </div>
                 </div>
-                <div className="bg-white/80 p-3 rounded-xl border border-[#ffe3e9]">
-                  <p className="font-bold text-[#3a2b2c] mb-0.5">👶 お子様同伴可能</p>
-                  <p className="text-[11px] text-[#8c7374]">ベビーカーのままご入店いただけます</p>
+
+                <div className="p-3.5 rounded-2xl bg-white/90 border border-pink-100 shadow-sm flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-pink-100 flex items-center justify-center text-[#ff3366] shrink-0">
+                    <Baby className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-[#2c181b]">お子様連れOK</p>
+                    <p className="text-[10px] text-[#8c7374]">ベビーカーの横付け対応</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -150,19 +172,19 @@ export default function ConceptSection() {
           </div>
         </div>
 
-        {/* ネイルを3〜4週間綺麗に保つためのケアガイド・アドバイス */}
-        <div className="mt-16 p-6 sm:p-8 rounded-2xl bg-[#fff9fa] border border-[#ffd1dc] flex flex-col md:flex-row items-center gap-6">
-          <div className="w-14 h-14 rounded-2xl bg-[#ffe5ec] flex items-center justify-center text-[#e8436e] shrink-0">
+        {/* 3〜4週持続の秘訣・ケアアドバイスカード */}
+        <div className="mt-12 p-6 sm:p-8 rounded-3xl bg-pink-50/60 border border-pink-200/60 flex flex-col sm:flex-row items-center gap-6">
+          <div className="w-14 h-14 rounded-2xl bg-white text-[#ff3366] shadow-sm flex items-center justify-center shrink-0">
             <Droplets className="w-7 h-7" />
           </div>
-          <div className="space-y-1 text-center md:text-left flex-1">
-            <h4 className="text-base font-bold text-[#3a2b2c] flex items-center justify-center md:justify-start gap-2">
+          <div className="space-y-1 text-center sm:text-left flex-1">
+            <h4 className="text-sm sm:text-base font-bold text-[#2c181b] flex items-center justify-center sm:justify-start gap-2">
               <span>3〜4週間綺麗な状態を保つ秘訣【ネイリスト直伝のホームケア】</span>
-              <span className="text-[10px] bg-[#e8436e] text-white px-2 py-0.5 rounded-full">アドバイス</span>
+              <span className="text-[10px] bg-[#ff3366] text-white px-2 py-0.5 rounded-full font-bold">Point</span>
             </h4>
-            <p className="text-xs text-[#5e4748] leading-relaxed">
-              ネイルの持ちは、爪の状態はもちろん、水仕事や生活習慣、日々のオイルや保湿ケアによって大きく変わります。
-              指先の乾燥を防ぐため、1日2〜3回のネイルオイル塗布を推奨しています。施術時には爪質に合わせた最適なケア方法を丁寧にお伝えします。
+            <p className="text-xs text-[#5e4748] leading-relaxed font-medium">
+              ネイルの持ちは爪の状態、水仕事や生活習慣、日々のオイルや保湿ケアによって変わります。
+              1日数回のネイルオイル塗布でハイポニキウム（爪の裏側）を保湿することで、浮きのない美しい状態がずっと続きます。
             </p>
           </div>
         </div>

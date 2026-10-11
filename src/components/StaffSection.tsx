@@ -7,74 +7,72 @@ import { STAFFS, SALON_INFO } from "@/data/salonData";
 
 export default function StaffSection() {
   return (
-    <section id="staff" className="py-24 bg-[#fffafb] relative">
+    <section id="staff" className="py-24 bg-gradient-to-b from-white via-pink-50/30 to-white relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* セクションヘッダー */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ffe5ec] text-[#e8436e] text-xs font-semibold">
-            <Heart className="w-3.5 h-3.5 fill-[#e8436e]" />
-            <span>Our Nail Artists</span>
+        <div className="text-center max-w-2xl mx-auto mb-16 space-y-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-100 text-[#ff3366] text-xs font-black tracking-wider uppercase">
+            <Heart className="w-3.5 h-3.5 fill-[#ff3366]" />
+            <span>Top Nailists</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#3a2b2c]">
-            丁寧なケアと確かな技術。<br className="sm:hidden" />
-            在籍ネイリスト紹介
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-black text-[#2c181b]">
+            在籍ネイリスト
           </h2>
-          <p className="text-sm text-[#5e4748] leading-relaxed">
-            お客様一人ひとりの爪のコンディションやお好みに寄り添い、最高のおもてなしをご提供します。<br className="hidden sm:inline" />
-            在籍スタッフは3名。指名予約も承っております（指名料金: {SALON_INFO.nominationFee}）。
+          <p className="text-xs sm:text-sm text-[#5e4748] font-medium">
+            丁寧なカウンセリングと確かな技術で、理想の指先を叶えます。<br className="hidden sm:inline" />
+            スタッフ指名料: <strong className="text-[#ff3366] font-bold">{SALON_INFO.nominationFee}</strong>
           </p>
         </div>
 
-        {/* スタッフカード一覧 */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        {/* スタッフカード一覧（Instagramクリエイター風） */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-16">
           {STAFFS.map((staff) => (
             <div
               key={staff.id}
-              className="strawberry-card p-6 flex flex-col justify-between group overflow-hidden"
+              className="jelly-glass rounded-[2.5rem] p-6 flex flex-col justify-between group overflow-hidden border border-white hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
             >
               <div>
-                {/* 写真コンテナ */}
-                <div className="relative h-72 rounded-2xl overflow-hidden mb-6 bg-[#ffe5ec]">
+                {/* 写真ポートレート */}
+                <div className="relative h-80 rounded-3xl overflow-hidden mb-6 bg-pink-100">
                   <Image
                     src={staff.image}
                     alt={`${staff.name} (${staff.kana})`}
                     fill
                     sizes="(max-width: 768px) 100vw, 33vw"
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+
                   {/* 経験年数バッジ */}
-                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-bold text-[#e8436e] shadow-sm">
+                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-black text-[#ff3366] shadow-md">
                     {staff.experience}
                   </div>
-                  {/* 役職バッジ */}
-                  <div className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-medium text-white">
-                    {staff.role}
-                  </div>
-                </div>
 
-                {/* ネイリスト名 */}
-                <div className="mb-4">
-                  <div className="flex items-baseline gap-2">
-                    <h3 className="text-2xl font-serif font-bold text-[#3a2b2c]">
-                      {staff.name}
-                    </h3>
-                    <span className="text-xs text-[#8c7374] font-sans">
-                      {staff.kana}
+                  {/* 写真下部のネームオーバーレイ */}
+                  <div className="absolute bottom-4 left-4 right-4 text-white">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-pink-200">
+                      {staff.role}
                     </span>
+                    <h3 className="text-2xl font-serif font-bold text-white drop-shadow">
+                      {staff.name}
+                      <span className="text-xs font-sans font-normal ml-2 text-pink-100">
+                        {staff.kana}
+                      </span>
+                    </h3>
                   </div>
                 </div>
 
-                {/* 得意な技術・タグ */}
+                {/* 得意技術タグ */}
                 <div className="mb-4">
-                  <p className="text-[11px] font-bold text-[#3a2b2c] mb-1.5">
-                    ✨ 得意な施術・スタイル:
+                  <p className="text-[10px] font-bold text-[#a08587] uppercase tracking-wider mb-1.5">
+                    SPECIALTY
                   </p>
                   <div className="flex flex-wrap gap-1.5">
                     {staff.specialty.map((spec, i) => (
                       <span
                         key={i}
-                        className="text-[10px] px-2.5 py-1 rounded-full bg-[#fff0f3] text-[#cc2855] font-medium border border-[#ffd1dc]"
+                        className="text-[10px] px-2.5 py-1 rounded-full bg-white text-[#ff3366] font-bold border border-pink-200/70 shadow-xs"
                       >
                         {spec}
                       </span>
@@ -82,47 +80,30 @@ export default function StaffSection() {
                   </div>
                 </div>
 
-                {/* こだわり・スタイル */}
-                <p className="text-xs text-[#5e4748] leading-relaxed mb-4 bg-[#fff9fa] p-3 rounded-xl border border-[#ffe3e9]">
-                  {staff.favoriteStyle}
-                </p>
-
                 {/* メッセージ */}
-                <p className="text-xs text-[#8c7374] leading-relaxed mb-6 italic">
+                <p className="text-xs text-[#5e4748] leading-relaxed mb-6 font-medium bg-white/60 p-3.5 rounded-2xl border border-pink-100/60">
                   &ldquo;{staff.message}&rdquo;
                 </p>
               </div>
 
               {/* 指名予約ボタン */}
-              <div className="pt-4 border-t border-[#ffe3e9] space-y-2">
-                <div className="flex justify-between items-center text-[11px] text-[#8c7374]">
-                  <span>スタッフ指名料金</span>
-                  <span className="font-bold text-[#e8436e]">{SALON_INFO.nominationFee}</span>
+              <div className="pt-4 border-t border-pink-100/80 space-y-2">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="text-[11px] text-[#8c7374] font-medium">指名料金</span>
+                  <span className="font-extrabold text-[#ff3366]">{SALON_INFO.nominationFee}</span>
                 </div>
                 <a
                   href={SALON_INFO.links.hotpepper}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="strawberry-button w-full text-center py-2.5 rounded-full text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm"
+                  className="jelly-button w-full text-center py-3 rounded-full text-xs font-bold flex items-center justify-center gap-1.5 shadow-md"
                 >
                   <Calendar className="w-3.5 h-3.5" />
-                  <span>{staff.name} を指名して予約する</span>
+                  <span>{staff.name} を指名して予約</span>
                 </a>
               </div>
             </div>
           ))}
-        </div>
-
-        {/* 指名料金のご案内 */}
-        <div className="p-6 rounded-2xl bg-white border border-[#ffe3e9] shadow-sm max-w-2xl mx-auto text-center space-y-2">
-          <p className="text-xs font-bold text-[#3a2b2c] flex items-center justify-center gap-1.5">
-            <Award className="w-4 h-4 text-[#e8436e]" />
-            指名予約について
-          </p>
-          <p className="text-xs text-[#5e4748] leading-relaxed">
-            「ニュアンスや自爪育成なら池田」「マグネットやオフィスネイルなら高橋」「季節アートやフットなら水野」など、お好みのテイストに合わせてお気軽にご指名ください。
-            指名なしのフリー予約でも全スタッフが丁寧にご対応いたします。
-          </p>
         </div>
 
       </div>
