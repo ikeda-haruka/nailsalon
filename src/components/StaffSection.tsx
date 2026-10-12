@@ -30,7 +30,7 @@ export default function StaffSection() {
         </div>
 
         {/* スタッフカード一覧（クリエイター風ネイル作品ポートレート） */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
           {STAFFS.map((staff) => (
             <div
               key={staff.id}
@@ -44,7 +44,7 @@ export default function StaffSection() {
                       src={staff.image}
                       alt={`${staff.name} (${staff.kana}) ${staff.role}`}
                       fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                       onError={() => setFailedImages(prev => ({ ...prev, [staff.id]: true }))}
                       className="object-cover object-top group-hover:scale-105 transition-transform duration-700"
                     />
@@ -139,13 +139,13 @@ export default function StaffSection() {
         {/* 指名料金 ＆ 体制案内 */}
         <div className="text-center space-y-1.5 max-w-2xl mx-auto">
           <p className="text-xs text-plum-900 font-medium tracking-wide">
-            ✦ 在籍ネイリスト総勢12名体制（代表ネイリスト池田・高橋・水野をはじめ全12名が在籍／毎日2〜3名がシフト出勤）
+            ✦ 在籍ネイリスト総勢12名体制（全スタッフ指名料金一律550円／毎日2〜3名がシフト出勤）
           </p>
           <p className="text-[11px] text-plum-600 font-light tracking-wide">
-            ※毎日のサロンワークに加え、公式オンラインショップ（自爪を削らないネイルチップ等）の検品梱包・出荷業務もスタッフが兼任しております。
+            ※毎日のサロンワークに加え、公式オンラインショップ（自爪を削らないネイルチップ等）の検品梱包・出荷業務もスタッフが責任を持って兼任しております。
           </p>
           <p className="text-[11px] text-plum-500 font-light tracking-wide">
-            ※スタッフをご指名いただく場合、メニュー料金に追加で指名料金（550円）を頂戴いたします。
+            ※全スタッフ（池田 遥香、高橋 葵、水野 咲、佐藤 栞、小林 莉子、渡辺 結衣、伊藤 美月、中村 陽菜、加藤 綾乃、松本 楓、井上 琴音、木村 菜々美）をご指名いただけます（一律指名料550円税込）。
           </p>
         </div>
 

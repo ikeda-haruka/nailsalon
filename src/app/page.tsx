@@ -51,7 +51,7 @@ export default function Home() {
       {/* 提携メンズパラジェルサロン案内（Salon de Fraise HOMME） */}
       <MensBannerSection />
 
-      {/* スタッフ紹介（池田・高橋・水野 / 指名料+550円） */}
+      {/* スタッフ紹介（在籍ネイリスト全12名 / 指名料+550円） */}
       <StaffSection />
 
       {/* サロン設備・無料カフェドリンク全6種・駐車場3台・ペット＆子連れOK */}

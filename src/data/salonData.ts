@@ -101,7 +101,7 @@ export const SALON_INFO = {
 export const STAFFS: Staff[] = [
   {
     id: "ikeda",
-    name: "池田",
+    name: "池田 遥香",
     kana: "Haruka Ikeda",
     role: "店長 / パラジェルエデュケーター",
     experience: "歴9年",
@@ -114,9 +114,9 @@ export const STAFFS: Staff[] = [
   },
   {
     id: "takahashi",
-    name: "高橋",
+    name: "高橋 葵",
     kana: "Aoi Takahashi",
-    role: "トップネイリスト",
+    role: "トップネイリスト / 水光マグネットマイスター",
     experience: "歴6年",
     image: "/images/staff/takahashi.jpg",
     specialty: ["水光マグネット50色調合", "オフィス微粒子パール", "ワンカラー美フォルム"],
@@ -127,9 +127,9 @@ export const STAFFS: Staff[] = [
   },
   {
     id: "mizuno",
-    name: "水野",
+    name: "水野 咲",
     kana: "Saki Mizuno",
-    role: "ネイリスト",
+    role: "シニアネイリスト / フラワー＆ニュアンスディレクター",
     experience: "歴4年",
     image: "/images/staff/mizuno.jpg",
     specialty: ["季節のフラワーアート", "トレンドパーツ配置", "フット角質＆スパケア"],
@@ -137,6 +137,123 @@ export const STAFFS: Staff[] = [
     favoriteStyle: "季節のフラワー＆フットアート",
     signatureDesignId: "glam-spring-sakura",
     signatureDesignTitle: "春風の桜＆タンポポ パステルニュアンス"
+  },
+  {
+    id: "sato",
+    name: "佐藤 栞",
+    kana: "Shiori Sato",
+    role: "シニアネイリスト / フィルイン＆美爪育成スペシャリスト",
+    experience: "歴5年",
+    image: "/images/staff/sato.jpg",
+    specialty: ["二枚爪・薄爪改善", "アセトンフリーフィルイン", "ヌードベージュ美肌カラー"],
+    message: "爪が薄くてジェルをお休みしていた方も、削らないパラジェルで健康的に美しく伸ばせるよう丁寧に寄り添います。",
+    favoriteStyle: "美爪育成ヌードスキン",
+    signatureDesignId: "office-nude-sheer",
+    signatureDesignTitle: "血色感ヌードベージュ＆美フォルムスキンケア"
+  },
+  {
+    id: "kobayashi",
+    name: "小林 莉子",
+    kana: "Riko Kobayashi",
+    role: "ネイリスト / 上品オフィス＆スキンカラー専門",
+    experience: "歴4年",
+    image: "/images/staff/kobayashi.jpg",
+    specialty: ["オフィス血色感ネイル", "極細スキニーフレンチ", "手肌馴染みパーソナルカラー"],
+    message: "職場の規定が厳しい方でも褒められる、自然で清潔感のある『究極の素爪風美ネイル』をご提案します。",
+    favoriteStyle: "大人の極細スキニーフレンチ",
+    signatureDesignId: "french-skinny-gold",
+    signatureDesignTitle: "大人の極細スキニーフレンチ＆艶トップ"
+  },
+  {
+    id: "watanabe",
+    name: "渡辺 結衣",
+    kana: "Yui Watanabe",
+    role: "ネイリスト / メタリック＆立体ミラーアート専門",
+    experience: "歴3年",
+    image: "/images/staff/watanabe.jpg",
+    specialty: ["シャンパンゴールド立体ミラー", "リングアート", "アクセサリー調デザイン"],
+    message: "ジュエリーを身に纏ったような、繊細なゴールドラインや立体ミラーで大人の華やかさを演出します。",
+    favoriteStyle: "ジュエリーミラーアート",
+    signatureDesignId: "glam-gold-mirror",
+    signatureDesignTitle: "立体シャンパンゴールドミラーライン"
+  },
+  {
+    id: "ito",
+    name: "伊藤 美月",
+    kana: "Mizuki Ito",
+    role: "ネイリスト / 天然石＆シェルニュアンス専門",
+    experience: "歴3年",
+    image: "/images/staff/ito.jpg",
+    specialty: ["天然石風大理石アート", "本真珠パウダーシェル", "透明感奥行きレイヤー"],
+    message: "指先に光を閉じ込めたような、透明感あふれる天然石アートやシェルの奥行きデザインはお任せください。",
+    favoriteStyle: "天然シェル奥行きニュアンス",
+    signatureDesignId: "shell-autumn-nuance",
+    signatureDesignTitle: "天然シェル＆金箔フットニュアンス"
+  },
+  {
+    id: "nakamura",
+    name: "中村 陽菜",
+    kana: "Hina Nakamura",
+    role: "ネイリスト / 美フォルムワンカラー専門",
+    experience: "歴2年",
+    image: "/images/staff/nakamura.jpg",
+    specialty: ["ちゅるんワンカラー", "ハイポイント美形成", "爪先うるツヤトップ"],
+    message: "シンプルだからこそフォルムの美しさにこだわります。どの角度から見ても歪みのない艶玉を作ります。",
+    favoriteStyle: "極上ちゅるんワンカラー",
+    signatureDesignId: "simple-milky-lavender",
+    signatureDesignTitle: "透け感ミルキーラベンダー ちゅるんワンカラー"
+  },
+  {
+    id: "kato",
+    name: "加藤 綾乃",
+    kana: "Ayano Kato",
+    role: "ネイリスト / ガラスフレンチ＆グラデーション専門",
+    experience: "歴3年",
+    image: "/images/staff/kato.jpg",
+    specialty: ["ガラスフレンチ", "花びらグラデーション", "ブライダルセレモニーネイル"],
+    message: "指先をスラリと細く長く魅せるグラデーションと、光を受けてキラリと輝くガラスフレンチが得意です。",
+    favoriteStyle: "オーロラガラスフレンチ",
+    signatureDesignId: "magnet-sparkle-aurora",
+    signatureDesignTitle: "オーロラ光彩フレンチ＆極上ガラスコーティング"
+  },
+  {
+    id: "matsumoto",
+    name: "松本 楓",
+    kana: "Kaede Matsumoto",
+    role: "ネイリスト / 最旬トレンド＆ペディキュア専門",
+    experience: "歴2年",
+    image: "/images/staff/matsumoto.jpg",
+    specialty: ["最旬トレンドアート", "フット親指デザイン", "マグネット×ミラーコンビ"],
+    message: "毎月の新作トレンドアートをいち早くお届けします。お足元のフットネイルも年中お任せください。",
+    favoriteStyle: "最旬トレンドニュアンス",
+    signatureDesignId: "shell-autumn-nuance",
+    signatureDesignTitle: "天然石風ボルドー＆シェルニュアンス"
+  },
+  {
+    id: "inoue",
+    name: "井上 琴音",
+    kana: "Kotone Inoue",
+    role: "ネイリスト / 精密ウォーターケア＆自爪補強専門",
+    experience: "歴2年",
+    image: "/images/staff/inoue.jpg",
+    specialty: ["ウォーター甘皮ケア", "自爪亀裂シルク補修", "自爪育成サポート"],
+    message: "丁寧な甘皮ウォーターケアで自爪本来の健康と美しさを引き出します。爪のお悩み何でもご相談ください。",
+    favoriteStyle: "ウォーター甘皮ケア＆補強",
+    signatureDesignId: "office-nude-sheer",
+    signatureDesignTitle: "丁寧なウォーターケア＆パラジェル自爪補強"
+  },
+  {
+    id: "kimura",
+    name: "木村 菜々美",
+    kana: "Nanami Kimura",
+    role: "ネイリスト / カウンセリング＆ハンドスパ専門",
+    experience: "歴1年",
+    image: "/images/staff/kimura.jpg",
+    specialty: ["丁寧なご要望ヒアリング", "アロマハンドマッサージ", "パラポリッシュ時短仕上げ"],
+    message: "初めてご来店いただくお客様にもリラックスしていただけるよう、丁寧なカウンセリングを大切にしています。",
+    favoriteStyle: "リフレッシュハンドスパ",
+    signatureDesignId: "simple-milky-lavender",
+    signatureDesignTitle: "リフレッシュハンドスパ＆パラポリッシュ時短仕上げ"
   }
 ];
 
@@ -354,7 +471,7 @@ export const MENU_CATEGORIES: MenuItem[] = [
       },
       {
         name: "スタッフ指名料金",
-        description: "池田・高橋・水野の各スタッフをご指名いただく場合にかかる料金です。",
+        description: "在籍プロネイリスト（全12名）をご指名いただく場合にかかる料金です。全スタッフ一律550円でお好みの担当者をご指名いただけます。",
         price: "¥550",
         time: "-",
         paragel: false
@@ -378,7 +495,7 @@ export const FEE_TABLE = [
   { item: "オフのみ（他店ジェル・ネイルケア込）", price: "¥3,850", note: "整爪＋甘皮ケア＋保湿トリートメント" },
   { item: "自爪亀裂補強（シルクラップ補修）", price: "¥550 / 1本", note: "割れた爪を保護・補強してそのまま施術OK" },
   { item: "長さ出し（ジェルスカルプ）", price: "¥880 / 1本", note: "折れて短くなった爪の長さを揃えます" },
-  { item: "スタッフ指名料金", price: "¥550", note: "池田・高橋・水野のご指名（税込）" },
+  { item: "スタッフ指名料金", price: "¥550", note: "在籍ネイリスト全12名（一律550円税込）" },
 ];
 
 export const FAQS: FaqItem[] = [
