@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useMemo } from "react";
 import Image from "next/image";
@@ -329,12 +329,12 @@ export default function ShopPage() {
         </div>
 
         {/* ★ 新規会員登録1,000pt進呈バナー ＆ サロン・ショップ共通ポイント（1pt=1円換算） ＆ 20,000円以上送料無料 特集バナー */}
-        <div className="pearl-glass p-5 sm:p-7 rounded-3xl border-2 border-gold-300 shadow-md bg-linear-to-r from-gold-50/85 via-white to-lavender-50/80 relative overflow-hidden">
+        <div className="pearl-glass p-5 sm:p-7 rounded-3xl border-2 border-gold-300 shadow-md bg-gradient-to-r from-gold-50/85 via-white to-lavender-50/80 relative overflow-hidden">
           <div className="shimmer-sweep pointer-events-none opacity-30"></div>
           <div className="flex flex-col lg:flex-row items-center justify-between gap-6 relative z-10">
             <div className="space-y-2 text-center lg:text-left flex-1">
               <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2">
-                <span className="px-3 py-0.5 rounded-full bg-linear-to-r from-gold-400 to-amber-500 text-plum-950 text-xs font-serif font-bold tracking-wider shadow-2xs">
+                <span className="px-3 py-0.5 rounded-full bg-gradient-to-r from-gold-400 to-amber-500 text-plum-950 text-xs font-serif font-bold tracking-wider shadow-2xs">
                   新規会員登録特典
                 </span>
                 <span className="px-2.5 py-0.5 rounded-full bg-lavender-100 text-lavender-800 text-[11px] font-medium border border-lavender-200">
@@ -384,7 +384,7 @@ export default function ShopPage() {
               ) : (
                 <Link
                   href="/login"
-                  className="px-6 py-3.5 rounded-full bg-linear-to-r from-plum-900 to-purple-900 text-white font-medium text-xs shadow-md hover:shadow-xl hover:scale-105 active:scale-95 transition-all text-center flex items-center justify-center gap-2 tracking-wider"
+                  className="px-6 py-3.5 rounded-full bg-gradient-to-r from-plum-900 to-purple-900 text-white font-medium text-xs shadow-md hover:shadow-xl hover:scale-105 active:scale-95 transition-all text-center flex items-center justify-center gap-2 tracking-wider"
                 >
                   <Sparkles className="w-4 h-4 text-gold-300" />
                   <span>新規登録して1,000pt受け取る</span>
@@ -493,7 +493,7 @@ export default function ShopPage() {
           </div>
 
           {/* 2. 送料無料条件 */}
-          <div className="pearl-glass p-4 rounded-2xl border border-gold-300/80 space-y-1.5 bg-linear-to-br from-gold-50/40 via-white to-lavender-50/40">
+          <div className="pearl-glass p-4 rounded-2xl border border-gold-300/80 space-y-1.5 bg-gradient-to-br from-gold-50/40 via-white to-lavender-50/40">
             <div className="flex items-center gap-2 text-plum-950 font-serif font-medium">
               <div className="w-8 h-8 rounded-lg bg-gold-100 text-gold-800 flex items-center justify-center shrink-0">
                 <Gift className="w-4 h-4" />
@@ -542,7 +542,7 @@ export default function ShopPage() {
         </div>
 
         {/* ギフトラッピング ＆ メッセージカードの安心ご案内バナー */}
-        <div className="pearl-glass p-3.5 sm:p-4 rounded-2xl border border-gold-300/80 bg-linear-to-r from-lavender-50/70 via-white to-gold-50/70 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-2xs">
+        <div className="pearl-glass p-3.5 sm:p-4 rounded-2xl border border-gold-300/80 bg-gradient-to-r from-lavender-50/70 via-white to-gold-50/70 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-2xs">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-gold-100 text-gold-800 flex items-center justify-center shrink-0 border border-gold-300">
               <Gift className="w-4 h-4" />
@@ -569,7 +569,7 @@ export default function ShopPage() {
         {/* ======================================================== */}
         {/* ★ 商品コードで注文（クイックオーダー）セクション */}
         {/* ======================================================== */}
-        <div className="pearl-glass p-6 sm:p-7 rounded-3xl border-2 border-lavender-300 shadow-md bg-linear-to-r from-white via-lavender-50/50 to-white space-y-4">
+        <div className="pearl-glass p-6 sm:p-7 rounded-3xl border-2 border-lavender-300 shadow-md bg-gradient-to-r from-white via-lavender-50/50 to-white space-y-4">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-lavender-200/70 pb-3">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-lg bg-plum-900 text-gold-300 flex items-center justify-center">
@@ -997,7 +997,7 @@ export default function ShopPage() {
                 </div>
                 <div className="w-full bg-lavender-100 h-1.5 rounded-full overflow-hidden">
                   <div
-                    className="bg-linear-to-r from-lavender-500 to-gold-500 h-full transition-all duration-300"
+                    className="bg-gradient-to-r from-lavender-500 to-gold-500 h-full transition-all duration-300"
                     style={{ width: `${Math.min(100, (subtotal / 20000) * 100)}%` }}
                   />
                 </div>
@@ -1238,7 +1238,7 @@ export default function ShopPage() {
                               </div>
 
                               {/* プレビューカード */}
-                              <div className="p-2.5 rounded-xl bg-linear-to-br from-lavender-50/70 via-white to-gold-50/60 border border-gold-300 text-[10px] space-y-1">
+                              <div className="p-2.5 rounded-xl bg-gradient-to-br from-lavender-50/70 via-white to-gold-50/60 border border-gold-300 text-[10px] space-y-1">
                                 <div className="flex items-center justify-between text-[9px] text-gold-800 font-serif border-b border-gold-200/60 pb-1">
                                   <span>✦ Salon de Fraise Message Card ✦</span>
                                   <span className="font-mono">{selectedTheme.name}</span>
@@ -1611,7 +1611,7 @@ export default function ShopPage() {
               </p>
             </div>
 
-            <div className="p-3.5 rounded-2xl bg-linear-to-r from-gold-50/70 via-white to-lavender-50/70 border border-gold-300/80 text-left space-y-2 text-xs">
+            <div className="p-3.5 rounded-2xl bg-gradient-to-r from-gold-50/70 via-white to-lavender-50/70 border border-gold-300/80 text-left space-y-2 text-xs">
               <div className="flex items-start gap-2">
                 <Sparkles className="w-4 h-4 text-gold-600 shrink-0 mt-0.5" />
                 <p className="text-plum-900">

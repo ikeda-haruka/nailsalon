@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import Link from "next/link";
@@ -26,7 +26,7 @@ export default function MenuSection() {
         </div>
 
         {/* Salon Members 会員限定特典 ＆ ポイントシステムバナー (チケット風リッチUI) */}
-        <div className="mb-14 p-6 sm:p-8 rounded-2xl sm:rounded-3xl bg-linear-to-r from-gold-100/60 via-white to-lavender-100/60 border-2 border-gold-300/80 shadow-md relative overflow-hidden">
+        <div className="mb-14 p-6 sm:p-8 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-gold-100/60 via-white to-lavender-100/60 border-2 border-gold-300/80 shadow-md relative overflow-hidden">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-4 sm:gap-5">
               <div className="w-12 sm:w-14 h-12 sm:h-14 rounded-2xl bg-plum-900 text-gold-300 flex items-center justify-center shrink-0 shadow-md">

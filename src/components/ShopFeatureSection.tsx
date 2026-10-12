@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import Link from "next/link";
@@ -21,7 +21,7 @@ export default function ShopFeatureSection() {
         
         {/* セクションヘッダー */}
         <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-linear-to-r from-lavender-100 via-white to-gold-100 border border-gold-300/80 shadow-2xs mb-4">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-lavender-100 via-white to-gold-100 border border-gold-300/80 shadow-2xs mb-4">
             <ShoppingBag className="w-4 h-4 text-gold-600" />
             <span className="font-serif text-xs font-medium tracking-widest text-plum-950 uppercase">
               Official Online Shop
@@ -140,7 +140,13 @@ export default function ShopFeatureSection() {
         </div>
 
         {/* 公式オンラインショップへ進む 特大CTAバナー */}
-        <div className="rounded-3xl bg-linear-to-r from-plum-950 via-purple-950 to-[#180d26] text-white p-8 sm:p-12 relative overflow-hidden shadow-2xl border border-gold-400/40">
+        <div
+          style={{
+            backgroundColor: "#1a0b2b",
+            background: "linear-gradient(135deg, #1a0b2b 0%, #2e124d 50%, #150824 100%)",
+          }}
+          className="rounded-3xl bg-gradient-to-r from-plum-950 via-purple-950 to-[#180d26] text-white p-8 sm:p-12 relative overflow-hidden shadow-2xl border border-gold-400/50"
+        >
           <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-radial from-gold-400/20 via-transparent to-transparent blur-2xl pointer-events-none" />
           
           <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">

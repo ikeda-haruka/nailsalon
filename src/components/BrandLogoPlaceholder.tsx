@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import { Sparkles, ShieldCheck, Heart } from "lucide-react";
@@ -22,7 +22,7 @@ export default function BrandLogoPlaceholder({
 
   return (
     <div
-      className={`relative w-full h-full flex flex-col items-center justify-center p-4 overflow-hidden select-none bg-linear-to-br from-[#FBF9FD] via-[#F4ECF8] to-[#F7F1E5] ${className}`}
+      className={`relative w-full h-full flex flex-col items-center justify-center p-4 overflow-hidden select-none bg-gradient-to-br from-[#FBF9FD] via-[#F4ECF8] to-[#F7F1E5] ${className}`}
     >
       {/* 背景装飾：オーロラ光彩 ＆ ゴールド幾何学枠 */}
       <div className="absolute inset-2 sm:inset-3 border border-gold-300/60 rounded-2xl pointer-events-none" />

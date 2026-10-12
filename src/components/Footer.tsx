@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Sparkles, MapPin, Clock, Calendar, Phone, CreditCard, Car, Coffee, Dog, Baby, ExternalLink, Heart, ShoppingBag } from "lucide-react";
@@ -115,7 +115,7 @@ export default function Footer() {
               </a>
               <Link
                 href="/shop"
-                className="w-full text-center py-2.5 rounded-full bg-linear-to-r from-plum-900 to-lavender-900 text-white text-xs font-medium flex items-center justify-center gap-1.5 shadow-sm transition-all hover:scale-102 tracking-wide border border-gold-400/40"
+                className="w-full text-center py-2.5 rounded-full bg-gradient-to-r from-plum-900 to-lavender-900 text-white text-xs font-medium flex items-center justify-center gap-1.5 shadow-sm transition-all hover:scale-102 tracking-wide border border-gold-400/40"
               >
                 <ShoppingBag className="w-3.5 h-3.5 text-gold-300" />
                 <span>パラジェル公式ショップ（チップ＆ジェル）</span>

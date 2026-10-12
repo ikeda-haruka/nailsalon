@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
@@ -179,7 +179,7 @@ export default function Header() {
                 {/* 公式オンラインショップボタン */}
                 <Link
                   href="/shop"
-                  className="flex items-center gap-1.5 text-xs font-medium px-3 sm:px-3.5 py-2 rounded-full bg-linear-to-r from-lavender-50 via-white to-gold-50/60 text-plum-900 border border-lavender-200 hover:border-gold-400 hover:shadow-xs shadow-2xs transition-all tracking-wide whitespace-nowrap shrink-0 group"
+                  className="flex items-center gap-1.5 text-xs font-medium px-3 sm:px-3.5 py-2 rounded-full bg-gradient-to-r from-lavender-50 via-white to-gold-50/60 text-plum-900 border border-lavender-200 hover:border-gold-400 hover:shadow-xs shadow-2xs transition-all tracking-wide whitespace-nowrap shrink-0 group"
                   title="公式オンラインショップ"
                 >
                   <ShoppingBag className="w-3.5 h-3.5 text-gold-600 group-hover:scale-110 transition-transform shrink-0" />
@@ -276,7 +276,7 @@ export default function Header() {
 
               {/* 会員ステータスカード（ドロワー内上部） */}
               <div className="px-6 sm:px-8 pt-5">
-                <div className="pearl-glass p-4 rounded-2xl border border-gold-300/80 bg-linear-to-r from-gold-50/70 via-white to-lavender-50/70 space-y-2">
+                <div className="pearl-glass p-4 rounded-2xl border border-gold-300/80 bg-gradient-to-r from-gold-50/70 via-white to-lavender-50/70 space-y-2">
                   <div className="flex items-center justify-between text-xs">
                     <span className="font-serif font-medium text-plum-950 flex items-center gap-1.5">
                       <Sparkles className="w-3.5 h-3.5 text-gold-500" />
@@ -314,7 +314,11 @@ export default function Header() {
                 <Link
                   href="/shop"
                   onClick={() => setIsDrawerOpen(false)}
-                  className="block p-3.5 rounded-2xl bg-linear-to-r from-purple-950 via-plum-900 to-[#180d26] text-white shadow-md hover:shadow-lg transition-all border border-gold-400/50 group relative overflow-hidden"
+                  style={{
+                    backgroundColor: "#180d26",
+                    background: "linear-gradient(135deg, #2a123d 0%, #1a0b2b 50%, #180d26 100%)",
+                  }}
+                  className="block p-3.5 rounded-2xl bg-gradient-to-r from-purple-950 via-plum-900 to-[#180d26] text-white shadow-md hover:shadow-lg transition-all border border-gold-400/50 group relative overflow-hidden"
                 >
                   <div className="flex items-center justify-between relative z-10">
                     <div className="space-y-1">

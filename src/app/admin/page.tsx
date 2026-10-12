@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import Link from "next/link";
@@ -180,7 +180,7 @@ export default function AdminPage() {
         </div>
 
         {/* スタッフ切り替えセレクター */}
-        <div className="pearl-glass p-5 rounded-2xl border border-gold-300/80 bg-linear-to-r from-gold-50/70 via-white to-lavender-50/70 space-y-3">
+        <div className="pearl-glass p-5 rounded-2xl border border-gold-300/80 bg-gradient-to-r from-gold-50/70 via-white to-lavender-50/70 space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <UserCheck className="w-4 h-4 text-gold-600" />

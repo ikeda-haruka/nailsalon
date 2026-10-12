@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import Link from "next/link";
@@ -163,7 +163,7 @@ export default function MyPage() {
       perks: "還元率2% / パラジェルフィルイン無料 / 誕生月特別チケット"
     },
     Platinum: {
-      badge: "bg-linear-to-r from-lavender-600 to-plum-900 text-white font-semibold shadow-xs",
+      badge: "bg-gradient-to-r from-lavender-600 to-plum-900 text-white font-semibold shadow-xs",
       border: "border-lavender-400",
       bg: "from-purple-100 via-white to-gold-100/70",
       perks: "還元率3% / 水光アート常時1本無料 / 専任ネイリスト指名料無料"
@@ -239,7 +239,7 @@ export default function MyPage() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
           
           {/* デジタル会員証（左側：7カラム） */}
-          <div className="md:col-span-7 pearl-glass p-6 sm:p-7 rounded-[2rem] border-2 border-gold-300/80 shadow-lg relative overflow-hidden bg-linear-to-br from-white via-lavender-50/50 to-gold-50/40">
+          <div className="md:col-span-7 pearl-glass p-6 sm:p-7 rounded-[2rem] border-2 border-gold-300/80 shadow-lg relative overflow-hidden bg-gradient-to-br from-white via-lavender-50/50 to-gold-50/40">
             {/* 装飾ハイライト */}
             <div className="shimmer-sweep pointer-events-none opacity-40"></div>
             
@@ -329,7 +329,7 @@ export default function MyPage() {
                 </div>
                 <div className="w-full bg-lavender-200/60 h-2 rounded-full overflow-hidden">
                   <div
-                    className="bg-linear-to-r from-lavender-500 to-gold-500 h-full transition-all duration-500"
+                    className="bg-gradient-to-r from-lavender-500 to-gold-500 h-full transition-all duration-500"
                     style={{ width: `${Math.min(100, (user.points / 2000) * 100)}%` }}
                   />
                 </div>
@@ -638,7 +638,7 @@ export default function MyPage() {
         )}
 
         {/* 審査・デモ体験用フッターバナー */}
-        <div className="pearl-glass p-5 rounded-2xl border border-gold-300/80 bg-linear-to-r from-gold-50/70 via-white to-lavender-50/70 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="pearl-glass p-5 rounded-2xl border border-gold-300/80 bg-gradient-to-r from-gold-50/70 via-white to-lavender-50/70 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="space-y-1 text-center sm:text-left">
             <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-gold-400 text-plum-950 font-serif font-semibold">
               Demo Feature

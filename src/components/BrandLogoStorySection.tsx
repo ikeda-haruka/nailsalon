@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import Image from "next/image";
@@ -39,7 +39,7 @@ export default function BrandLogoStorySection() {
         
         {/* セクションヘッダー */}
         <div className="text-center max-w-3xl mx-auto space-y-3.5">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-linear-to-r from-lavender-100 via-white to-gold-100 border border-gold-300/80 shadow-2xs font-serif text-xs font-medium tracking-widest text-plum-950 uppercase">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-lavender-100 via-white to-gold-100 border border-gold-300/80 shadow-2xs font-serif text-xs font-medium tracking-widest text-plum-950 uppercase">
             <Sparkles className="w-3.5 h-3.5 text-gold-600" />
             <span>Brand Philosophy &amp; Emblem Message</span>
           </div>
@@ -59,7 +59,7 @@ export default function BrandLogoStorySection() {
           
           {/* 左側（5カラム）：ブランドロゴエンブレムの美しい拡大表示 */}
           <div className="lg:col-span-5 flex flex-col items-center">
-            <div className="pearl-glass p-8 sm:p-10 rounded-[2.5rem] border-2 border-gold-300 shadow-2xl relative overflow-hidden bg-linear-to-br from-white via-lavender-50/40 to-gold-50/30 max-w-md w-full text-center group">
+            <div className="pearl-glass p-8 sm:p-10 rounded-[2.5rem] border-2 border-gold-300 shadow-2xl relative overflow-hidden bg-gradient-to-br from-white via-lavender-50/40 to-gold-50/30 max-w-md w-full text-center group">
               {/* 光彩エフェクト */}
               <div className="shimmer-sweep pointer-events-none opacity-40" />
 
@@ -139,7 +139,13 @@ export default function BrandLogoStorySection() {
         </div>
 
         {/* ブランドステートメントバナー（サロンおよび公式オンラインショップ共通の誓い） */}
-        <div className="rounded-[2.5rem] bg-linear-to-r from-plum-950 via-purple-950 to-[#180d26] text-white p-8 sm:p-12 relative overflow-hidden shadow-2xl border border-gold-400/40 text-center space-y-4 max-w-4xl mx-auto">
+        <div
+          style={{
+            backgroundColor: "#1a0b2b",
+            background: "linear-gradient(135deg, #1a0b2b 0%, #2e124d 50%, #150824 100%)",
+          }}
+          className="rounded-[2.5rem] bg-gradient-to-r from-plum-950 via-purple-950 to-[#180d26] text-white p-8 sm:p-12 relative overflow-hidden shadow-2xl border border-gold-400/50 text-center space-y-4 max-w-4xl mx-auto"
+        >
           <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-radial from-gold-400/20 via-transparent to-transparent blur-2xl pointer-events-none" />
           
           <div className="relative z-10 space-y-3">
