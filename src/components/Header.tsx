@@ -2,12 +2,12 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Sparkles, Calendar, Menu, X, Heart, MessageCircle, Phone, Info } from "lucide-react";
+import { Sparkles, Calendar, Menu, X, Heart, MessageCircle, Phone, Info, ChevronRight, Clock, MapPin, Coffee, Car, Dog, Armchair } from "lucide-react";
 import { SALON_INFO } from "@/data/salonData";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,171 +17,283 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // ドロワー展開時は背景スクロールをロック
+  useEffect(() => {
+    if (isDrawerOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isDrawerOpen]);
+
+  // ESCキーでドロワーを閉じる
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsDrawerOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   const navLinks = [
-    { name: "Concept", jp: "こだわり", href: "#concept" },
-    { name: "Designs", jp: "デザイン", href: "#gallery" },
-    { name: "Magnet Lab", jp: "水光体験", href: "#magnet-lab" },
-    { name: "Menu", jp: "料金", href: "#menu" },
-    { name: "Staff", jp: "スタッフ", href: "#staff" },
-    { name: "Salon Info", jp: "サロン案内", href: "#salon-info" },
-    { name: "Recruit", jp: "採用", href: "#recruit" },
+    { num: "01", name: "Concept", jp: "サロンのこだわり・自爪育成", href: "#concept", desc: "削らないパラジェル＆高持続フィルイン" },
+    { num: "02", name: "Catalog", jp: "最旬デザインカタログ", href: "#gallery", desc: "季節のアート・オフィスシンプル" },
+    { num: "03", name: "Magnet Lab", jp: "水光マグネット体験", href: "#magnet-lab", desc: "50種類以上の光彩シミュレーター" },
+    { num: "04", name: "Menu & Price", jp: "明朗会計・料金表", href: "#menu", desc: "全コース丁寧なウォーターケア込み" },
+    { num: "05", name: "Staff", jp: "在籍ネイリスト", href: "#staff", desc: "池田・高橋・水野（指名料+550円）" },
+    { num: "06", name: "Salon Info", jp: "サロン案内・設備", href: "#salon-info", desc: "ハンド2/フット2・駐車場3台・カフェ" },
+    { num: "07", name: "Recruit", jp: "ネイリスト採用情報", href: "#recruit", desc: "HPB WORK & Indeed にて掲載中" },
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-      {/* サイト最上部固定：ポートフォリオ実績用・架空免責バー */}
-      <div className="bg-gradient-to-r from-plum-950 via-[#2d1b3d] to-plum-950 text-gold-200 border-b border-gold-400/30 py-1.5 px-3 sm:px-4 text-center select-none shadow-sm">
-        <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 text-[10px] sm:text-xs font-light tracking-wider">
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-gold-500/20 text-gold-300 border border-gold-400/40 font-serif text-[9px] uppercase tracking-widest shrink-0">
-            <Info className="w-3 h-3 text-gold-400 shrink-0" />
-            <span>PORTFOLIO DEMO</span>
-          </span>
-          <span className="truncate sm:overflow-visible sm:whitespace-normal">
-            当サイトは<strong className="text-white font-normal underline decoration-gold-400/60 underline-offset-2">ポートフォリオ実績用のサンプルサイト</strong>です。掲載されている店舗名（Salon de Fraise）・人物名・施術情報等はすべて架空のものであり、実在の人物・団体とは関係ありません。
-          </span>
-        </div>
-      </div>
-
-      {/* ナビゲーションバー本体 */}
-      <div
-        className={`transition-all duration-300 ${
-          isScrolled
-            ? "bg-white/90 backdrop-blur-xl py-2.5 sm:py-3 border-b border-lavender-200/80 shadow-[0_4px_25px_rgba(134,88,203,0.06)]"
-            : "bg-white/60 backdrop-blur-md py-3 sm:py-4 border-b border-white/60"
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
-            
-            {/* ロゴ */}
-            <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#9975cb] via-[#b895ea] to-[#d4af6e] flex items-center justify-center text-white shadow-md shadow-lavender-400/30 group-hover:scale-105 transition-transform relative overflow-hidden border border-white/60 shrink-0">
-                <span className="text-white text-base font-serif font-light">✦</span>
-                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xl sm:text-2xl font-serif font-normal tracking-wide text-plum-dark">
-                    Salon de Fraise
-                  </span>
-                  <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-lavender-100 text-lavender-700 border border-lavender-200 font-medium tracking-wider hidden sm:inline-block">
-                    PARAGEL
-                  </span>
-                </div>
-                <p className="text-[10px] text-gold-500 font-normal tracking-widest uppercase">
-                  Paragel & Water-Glow Magnet Salon
-                </p>
-              </div>
-            </Link>
-
-            {/* デスクトップ ナビゲーション */}
-            <nav className="hidden lg:flex items-center gap-7">
-              {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  className="group flex flex-col items-center text-xs font-normal text-plum-body hover:text-lavender-600 transition-colors py-1"
-                >
-                  <span className="font-serif tracking-widest text-sm font-normal text-plum-dark group-hover:text-lavender-600 transition-colors">
-                    {link.name}
-                  </span>
-                  <span className="text-[9px] text-plum-muted group-hover:text-gold-500 transition-colors font-light">
-                    {link.jp}
-                  </span>
-                </a>
-              ))}
-            </nav>
-
-            {/* 予約・CTAボタン群 */}
-            <div className="hidden sm:flex items-center gap-3">
-              <a
-                href={SALON_INFO.links.line}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-xs font-medium px-3.5 py-2 rounded-full bg-white text-[#06C755] border border-[#06C755]/30 hover:bg-[#06C755]/10 shadow-xs transition-all tracking-wide"
-              >
-                <MessageCircle className="w-4 h-4 fill-[#06C755]/10 text-[#06C755]" />
-                <span>LINEクーポン</span>
-              </a>
-
-              <a
-                href={SALON_INFO.links.hotpepper}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="luxe-button flex items-center gap-1.5 text-xs font-medium px-5 py-2.5 rounded-full tracking-wider"
-              >
-                <Calendar className="w-4 h-4" />
-                <span>即時予約・空席</span>
-              </a>
-            </div>
-
-            {/* モバイルトグル */}
-            <div className="lg:hidden flex items-center gap-2">
-              <a
-                href={SALON_INFO.links.hotpepper}
-                className="luxe-button text-xs px-3.5 py-2 rounded-full font-medium sm:hidden flex items-center gap-1"
-              >
-                <Calendar className="w-3.5 h-3.5" />
-                <span>予約</span>
-              </a>
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 rounded-xl text-plum-dark bg-white/90 border border-lavender-200 hover:bg-lavender-50 transition-colors"
-                aria-label="メニューを開く"
-              >
-                {mobileMenuOpen ? <X className="w-5 h-5 text-lavender-600" /> : <Menu className="w-5 h-5" />}
-              </button>
-            </div>
+    <>
+      <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        {/* サイト最上部固定：ポートフォリオ実績用・架空免責バー */}
+        <div className="bg-gradient-to-r from-plum-950 via-[#2d1b3d] to-plum-950 text-gold-200 border-b border-gold-400/30 py-1.5 px-3 sm:px-4 text-center select-none shadow-sm">
+          <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 text-[10px] sm:text-xs font-light tracking-wider">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-gold-500/20 text-gold-300 border border-gold-400/40 font-serif text-[9px] uppercase tracking-widest shrink-0">
+              <Info className="w-3 h-3 text-gold-400 shrink-0" />
+              <span>PORTFOLIO DEMO</span>
+            </span>
+            <span className="truncate sm:overflow-visible sm:whitespace-normal">
+              当サイトは<strong className="text-white font-normal underline decoration-gold-400/60 underline-offset-2">ポートフォリオ実績用のサンプルサイト</strong>です。掲載されている店舗名（Salon de Fraise）・人物名・施術情報等はすべて架空のものであり、実在の人物・団体とは関係ありません。
+            </span>
           </div>
         </div>
 
-        {/* モバイルメニュー */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden bg-white/95 backdrop-blur-2xl border-t border-b border-lavender-200 px-6 py-6 shadow-2xl animate-in slide-in-from-top-4 duration-300">
-            <div className="flex flex-col gap-3">
-              <div className="pb-3 border-b border-lavender-100 flex items-center justify-between text-xs">
-                <span className="font-light text-plum-body">10:00〜20:00（不定休・連休営業）</span>
-                <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-lavender-100 text-lavender-700 border border-lavender-200">駐車場3台完備</span>
-              </div>
+        {/* ナビゲーションバー本体 */}
+        <div
+          className={`transition-all duration-300 ${
+            isScrolled
+              ? "bg-white/90 backdrop-blur-xl py-2.5 sm:py-3 border-b border-lavender-200/80 shadow-[0_4px_25px_rgba(134,88,203,0.06)]"
+              : "bg-white/60 backdrop-blur-md py-3 sm:py-4 border-b border-white/60"
+          }`}
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between">
+              
+              {/* ロゴ */}
+              <Link href="/" className="flex items-center gap-3 group">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#9975cb] via-[#b895ea] to-[#d4af6e] flex items-center justify-center text-white shadow-md shadow-lavender-400/30 group-hover:scale-105 transition-transform relative overflow-hidden border border-white/60 shrink-0">
+                  <span className="text-white text-base font-serif font-light">✦</span>
+                  <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xl sm:text-2xl font-serif font-normal tracking-wide text-plum-dark">
+                      Salon de Fraise
+                    </span>
+                    <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-lavender-100 text-lavender-700 border border-lavender-200 font-medium tracking-wider hidden sm:inline-block">
+                      PARAGEL
+                    </span>
+                  </div>
+                  <p className="text-[10px] text-gold-500 font-normal tracking-widest uppercase font-serif">
+                    Paragel & Water-Glow Magnet Salon
+                  </p>
+                </div>
+              </Link>
 
-              <div className="grid grid-cols-2 gap-2 py-2">
-                {navLinks.map((link) => (
+              {/* デスクトップ用インラインナビゲーション */}
+              <nav className="hidden xl:flex items-center gap-7">
+                {navLinks.slice(0, 5).map((link) => (
                   <a
                     key={link.name}
                     href={link.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="p-3 rounded-2xl bg-lavender-50/60 hover:bg-lavender-100/80 border border-lavender-100 text-left transition-all"
+                    className="group flex flex-col items-center text-xs font-normal text-plum-body hover:text-lavender-600 transition-colors py-1"
                   >
-                    <span className="block font-serif font-normal text-sm text-plum-dark">{link.name}</span>
-                    <span className="block text-[10px] text-plum-muted">{link.jp}</span>
+                    <span className="font-serif tracking-widest text-sm font-normal text-plum-dark group-hover:text-lavender-600 transition-colors">
+                      {link.name}
+                    </span>
+                    <span className="text-[9px] text-plum-muted group-hover:text-gold-500 transition-colors font-light">
+                      {link.jp}
+                    </span>
                   </a>
                 ))}
-              </div>
+              </nav>
 
-              <div className="pt-2 flex flex-col gap-2">
-                <a
-                  href={SALON_INFO.links.hotpepper}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="luxe-button text-center py-3 rounded-full text-xs font-medium flex items-center justify-center gap-1.5 shadow-md"
-                >
-                  <Calendar className="w-4 h-4" />
-                  <span>HOT PEPPER Beauty 即時予約</span>
-                </a>
+              {/* 右側アクション群（予約ボタン ＆ ハンバーガーメニューボタン） */}
+              <div className="flex items-center gap-2.5 sm:gap-3">
+                {/* LINEクーポン（PC表示） */}
                 <a
                   href={SALON_INFO.links.line}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-center py-3 rounded-full bg-[#06C755] text-white text-xs font-medium flex items-center justify-center gap-1.5 shadow-sm"
+                  className="hidden sm:flex items-center gap-1.5 text-xs font-medium px-3.5 py-2 rounded-full bg-white text-[#06C755] border border-[#06C755]/30 hover:bg-[#06C755]/10 shadow-xs transition-all tracking-wide"
                 >
-                  <MessageCircle className="w-4 h-4" />
-                  <span>公式LINEで限定クーポン受け取り</span>
+                  <MessageCircle className="w-4 h-4 fill-[#06C755]/10 text-[#06C755]" />
+                  <span>LINEクーポン</span>
                 </a>
+
+                {/* 即時予約ボタン */}
+                <a
+                  href={SALON_INFO.links.hotpepper}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="luxe-button flex items-center gap-1.5 text-xs font-medium px-4 sm:px-5 py-2 sm:py-2.5 rounded-full tracking-wider"
+                >
+                  <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  <span>予約・空席</span>
+                </a>
+
+                {/* ★ 常時ハンバーガーメニューボタン（PC・スマホ両対応） */}
+                <button
+                  onClick={() => setIsDrawerOpen(true)}
+                  aria-label="ナビゲーションメニューを開く"
+                  className="flex items-center gap-2 px-3 sm:px-3.5 py-2 rounded-full bg-white/90 hover:bg-lavender-50 border border-lavender-200 text-plum-900 shadow-xs transition-all active:scale-95 group focus:outline-none"
+                >
+                  <span className="font-serif text-[11px] sm:text-xs font-normal tracking-widest text-plum-900 group-hover:text-lavender-700 select-none">
+                    MENU
+                  </span>
+                  <div className="w-4 h-3.5 flex flex-col justify-between py-0.5">
+                    <span className="block h-[1.5px] w-4 bg-plum-900 group-hover:bg-lavender-700 transition-colors rounded-full" />
+                    <span className="block h-[1.5px] w-3 bg-gold-500 rounded-full ml-auto group-hover:w-4 transition-all" />
+                    <span className="block h-[1.5px] w-4 bg-plum-900 group-hover:bg-lavender-700 transition-colors rounded-full" />
+                  </div>
+                </button>
               </div>
+
             </div>
           </div>
-        )}
-      </div>
-    </header>
+        </div>
+      </header>
+
+      {/* ★ ハンバーガードロワーメニュー（右スライドイン＆フルオーバーレイ） */}
+      {isDrawerOpen && (
+        <div className="fixed inset-0 z-[60] overflow-hidden animate-in fade-in duration-200">
+          {/* 背景暗転オーバーレイ */}
+          <div
+            onClick={() => setIsDrawerOpen(false)}
+            className="fixed inset-0 bg-plum-950/60 backdrop-blur-sm transition-opacity"
+            aria-hidden="true"
+          />
+
+          {/* ドロワーパネル本体 */}
+          <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
+            <div className="w-screen max-w-md bg-white/95 backdrop-blur-2xl border-l border-lavender-200 shadow-2xl flex flex-col justify-between overflow-y-auto animate-in slide-in-from-right duration-300">
+              
+              {/* ドロワーヘッダー */}
+              <div className="p-6 sm:p-8 border-b border-lavender-100 flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-lavender-500 to-gold-400 flex items-center justify-center text-white shadow-xs">
+                    <span className="font-serif font-light text-xs">✦</span>
+                  </div>
+                  <div>
+                    <span className="block font-serif font-normal text-base text-plum-900 tracking-wide leading-tight">
+                      Salon de Fraise
+                    </span>
+                    <span className="text-[9px] text-lavender-600 font-light tracking-widest font-serif uppercase">
+                      Menu Navigation
+                    </span>
+                  </div>
+                </div>
+
+                {/* 閉じるボタン */}
+                <button
+                  onClick={() => setIsDrawerOpen(false)}
+                  className="w-10 h-10 rounded-full bg-lavender-50 border border-lavender-200 text-plum-900 hover:text-lavender-700 hover:bg-lavender-100 flex items-center justify-center transition-all group"
+                  aria-label="メニューを閉じる"
+                >
+                  <X className="w-5 h-5 group-hover:rotate-90 transition-transform duration-200" />
+                </button>
+              </div>
+
+              {/* メインナビゲーションリスト */}
+              <div className="px-6 sm:px-8 py-6 space-y-2 flex-1">
+                <p className="text-[10px] text-plum-400 uppercase tracking-widest font-serif mb-3">
+                  SECTIONS & SERVICES
+                </p>
+
+                <div className="divide-y divide-lavender-100/70">
+                  {navLinks.map((link) => (
+                    <a
+                      key={link.name}
+                      href={link.href}
+                      onClick={() => setIsDrawerOpen(false)}
+                      className="py-3.5 flex items-center justify-between group hover:pl-2 transition-all duration-200"
+                    >
+                      <div className="space-y-0.5">
+                        <div className="flex items-baseline gap-2.5">
+                          <span className="font-serif text-[11px] text-gold-500 font-light tracking-wider">
+                            {link.num}
+                          </span>
+                          <span className="font-serif font-normal text-base sm:text-lg text-plum-900 group-hover:text-lavender-700 transition-colors tracking-wide">
+                            {link.name}
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-plum-500 font-light tracking-wide pl-6">
+                          {link.jp}
+                        </p>
+                      </div>
+                      <ChevronRight className="w-4 h-4 text-lavender-300 group-hover:text-lavender-700 group-hover:translate-x-1 transition-all" />
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+              {/* クイックアクション & サロン情報フッター */}
+              <div className="p-6 sm:p-8 bg-lavender-50/60 border-t border-lavender-200 space-y-4">
+                
+                {/* 予約・LINEボタン */}
+                <div className="space-y-2">
+                  <a
+                    href={SALON_INFO.links.hotpepper}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setIsDrawerOpen(false)}
+                    className="luxe-button w-full text-center py-3 rounded-full text-xs font-medium flex items-center justify-center gap-2 shadow-md tracking-wider"
+                  >
+                    <Calendar className="w-4 h-4" />
+                    <span>HOT PEPPER Beauty 即時予約</span>
+                  </a>
+
+                  <a
+                    href={SALON_INFO.links.line}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setIsDrawerOpen(false)}
+                    className="w-full text-center py-2.5 rounded-full bg-[#06C755] hover:bg-[#05a847] text-white text-xs font-medium flex items-center justify-center gap-2 shadow-xs transition-all tracking-wide"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    <span>公式LINE限定クーポンGET</span>
+                  </a>
+                </div>
+
+                {/* 営業時間・設備スペックまとめ */}
+                <div className="pt-2 border-t border-lavender-200/60 grid grid-cols-2 gap-2 text-[11px] text-plum-600 font-light">
+                  <div className="flex items-center gap-1.5">
+                    <Clock className="w-3.5 h-3.5 text-lavender-500 shrink-0" />
+                    <span>10:00〜20:00 (不定休)</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-gold-500 shrink-0" />
+                    <span>GW/お盆/SW営業</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <Armchair className="w-3.5 h-3.5 text-lavender-500 shrink-0" />
+                    <span>ハンド2席 / フット2席</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <Car className="w-3.5 h-3.5 text-lavender-500 shrink-0" />
+                    <span>専用駐車場3台完備</span>
+                  </div>
+                </div>
+
+                {/* 架空サイト免責注記 */}
+                <div className="p-2.5 rounded-xl bg-white/80 border border-lavender-200 text-[10px] text-plum-500 leading-relaxed font-light">
+                  ※当サイトはWeb制作ポートフォリオ実績用のサンプルサイトです。掲載されている店舗名・人物名等はすべて架空のものです。
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
