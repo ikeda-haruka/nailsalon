@@ -75,14 +75,20 @@ export default function Header() {
     <>
       <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         {/* サイト最上部固定：ポートフォリオ実績用・架空免責バー */}
-        <div className="bg-gradient-to-r from-plum-950 via-[#2d1b3d] to-plum-950 text-gold-200 border-b border-gold-400/30 py-1.5 px-3 sm:px-4 text-center select-none shadow-sm">
-          <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 text-[10px] sm:text-xs font-light tracking-wider">
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-gold-500/20 text-gold-300 border border-gold-400/40 font-serif text-[9px] uppercase tracking-widest shrink-0">
-              <Info className="w-3 h-3 text-gold-400 shrink-0" />
+        <div
+          style={{ backgroundColor: "#180d26", color: "#ffffff" }}
+          className="border-b border-[#d4af6e]/50 py-2 px-3 sm:px-4 text-center select-none shadow-md"
+        >
+          <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 text-xs font-normal tracking-wide">
+            <span
+              style={{ backgroundColor: "#d4af6e", color: "#180d26" }}
+              className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-serif font-bold text-[10px] uppercase tracking-wider shrink-0 shadow-2xs"
+            >
+              <Info className="w-3.5 h-3.5 shrink-0" />
               <span>PORTFOLIO DEMO</span>
             </span>
-            <span className="truncate sm:overflow-visible sm:whitespace-normal">
-              当サイトは<strong className="text-white font-normal underline decoration-gold-400/60 underline-offset-2">ポートフォリオ実績用のサンプルサイト</strong>です。掲載されている店舗名（Salon de Fraise）・人物名・施術情報等はすべて架空のものであり、実在の人物・団体とは関係ありません。
+            <span className="text-white/95 leading-relaxed truncate sm:overflow-visible sm:whitespace-normal font-sans">
+              当サイトは<strong className="text-[#f7dd9d] font-bold underline decoration-[#f7dd9d]/80 underline-offset-2 mx-1">ポートフォリオ実績用の架空サンプルサイト</strong>です。掲載されている店舗名（Salon de Fraise）・人物名・施術情報等はすべて架空のものであり、実在の人物・団体とは関係ありません。
             </span>
           </div>
         </div>
@@ -130,7 +136,7 @@ export default function Header() {
                     <span className="font-serif tracking-widest text-sm font-normal text-plum-dark group-hover:text-lavender-600 transition-colors">
                       {link.name}
                     </span>
-                    <span className="text-[9px] text-plum-muted group-hover:text-gold-500 transition-colors font-light">
+                    <span className="text-[10px] text-plum-700 group-hover:text-gold-600 transition-colors font-normal">
                       {link.jp}
                     </span>
                   </Link>

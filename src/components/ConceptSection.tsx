@@ -47,7 +47,7 @@ export default function ConceptSection() {
             ずっと美しい指先を保つ、<br />
             3つの理由
           </h2>
-          <p className="text-xs sm:text-sm text-plum-700 font-light leading-relaxed tracking-wide">
+          <p className="text-xs sm:text-sm text-plum-800 font-normal leading-relaxed tracking-wide">
             ジェルネイルを続けると爪が薄くなる…そんな不安をゼロに。<br className="hidden sm:inline" />
             丁寧なウォーターケアと最新技術で、大人の手元を品格ある輝きへ導きます。
           </p>
@@ -77,7 +77,7 @@ export default function ConceptSection() {
                   {p.title}
                 </h3>
 
-                <p className="text-xs text-plum-700 leading-relaxed mb-6 font-light tracking-wide">
+                <p className="text-xs text-plum-800 leading-relaxed mb-6 font-normal tracking-wide">
                   {p.desc}
                 </p>
               </div>
@@ -120,7 +120,7 @@ export default function ConceptSection() {
                 心までほどける贅沢なひとときを
               </h3>
 
-              <p className="text-xs sm:text-sm text-plum-700 leading-relaxed font-light tracking-wide">
+              <p className="text-xs sm:text-sm text-plum-800 leading-relaxed font-normal tracking-wide">
                 全席リクライニングチェア仕様。ハンド2席・フット2席の静かなプライベート空間で、ゆったりとした時間をお過ごしいただけます。
                 ペットやお子様連れ（ベビーカー入店OK）でのご来店も大歓迎です。
               </p>
@@ -132,8 +132,8 @@ export default function ConceptSection() {
                     <Coffee className="w-4 h-4" />
                   </div>
                   <div>
-                    <p className="text-xs font-normal text-plum-900 tracking-wide">カフェドリンク6種</p>
-                    <p className="text-[10px] text-plum-500 font-light">珈琲・紅茶・緑茶・ラテ等</p>
+                    <p className="text-xs font-medium text-plum-900 tracking-wide">カフェドリンク6種</p>
+                    <p className="text-[10px] text-plum-700 font-normal">珈琲・紅茶・緑茶・ラテ等</p>
                   </div>
                 </div>
 
@@ -142,8 +142,8 @@ export default function ConceptSection() {
                     <Car className="w-4 h-4" />
                   </div>
                   <div>
-                    <p className="text-xs font-normal text-plum-900 tracking-wide">お客様専用駐車場</p>
-                    <p className="text-[10px] text-plum-500 font-light">無料パーキング3台完備</p>
+                    <p className="text-xs font-medium text-plum-900 tracking-wide">お客様専用駐車場</p>
+                    <p className="text-[10px] text-plum-700 font-normal">無料パーキング3台完備</p>
                   </div>
                 </div>
 
@@ -152,8 +152,8 @@ export default function ConceptSection() {
                     <Dog className="w-4 h-4" />
                   </div>
                   <div>
-                    <p className="text-xs font-normal text-plum-900 tracking-wide">ペット同伴歓迎</p>
-                    <p className="text-[10px] text-plum-500 font-light">愛犬・愛猫と一緒にご来店OK</p>
+                    <p className="text-xs font-medium text-plum-900 tracking-wide">ペット同伴歓迎</p>
+                    <p className="text-[10px] text-plum-700 font-normal">愛犬・愛猫と一緒にご来店OK</p>
                   </div>
                 </div>
 

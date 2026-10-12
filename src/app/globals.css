@@ -24,6 +24,9 @@ body {
   overflow-x: hidden;
   letter-spacing: 0.04em;
   line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 /* 繊細で優美なタイポグラフィ設定 */

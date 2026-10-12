@@ -99,14 +99,14 @@ export default function MenuSection() {
                           {item.price}
                         </span>
                       </div>
-                      <p className="text-xs text-plum-700 leading-relaxed mb-4 font-light tracking-wide">
+                      <p className="text-xs text-plum-800 leading-relaxed mb-4 font-normal tracking-wide">
                         {item.description}
                       </p>
                     </div>
 
                     <div className="pt-3 border-t border-lavender-100/70 flex items-center justify-between text-xs">
-                      <span className="text-[10px] text-plum-500 flex items-center gap-1 font-light tracking-wide">
-                        <Clock className="w-3.5 h-3.5 text-lavender-400" />
+                      <span className="text-[10px] text-plum-700 flex items-center gap-1 font-normal tracking-wide">
+                        <Clock className="w-3.5 h-3.5 text-lavender-500" />
                         目安: {item.time}
                       </span>
                       <a

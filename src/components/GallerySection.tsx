@@ -243,11 +243,11 @@ export default function GallerySection() {
 
                   {/* カード下部: 料金 & 施術時間 */}
                   <div className="p-3 sm:p-4 pt-0 flex items-center justify-between text-xs border-t border-lavender-100/60 mt-1">
-                    <span className="font-serif font-light text-sm sm:text-base text-gold-600 tracking-wider">
+                    <span className="font-serif font-medium text-sm sm:text-base text-gold-700 tracking-wider">
                       {design.price}
                     </span>
-                    <span className="text-[10px] text-plum-500 flex items-center gap-1 font-light tracking-wide">
-                      <Clock className="w-3 h-3 text-lavender-400" />
+                    <span className="text-[10px] text-plum-700 flex items-center gap-1 font-normal tracking-wide">
+                      <Clock className="w-3 h-3 text-lavender-500" />
                       {design.duration}
                     </span>
                   </div>

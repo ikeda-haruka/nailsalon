@@ -43,9 +43,9 @@ export default function HeroSection() {
             </div>
 
             {/* リード文 */}
-            <p className="text-xs sm:text-sm text-plum-700 leading-relaxed max-w-xl mx-auto lg:mx-0 font-light tracking-wide">
-              自爪を削らず健やかに守る<strong className="text-lavender-700 font-medium">「パラジェル専門」</strong>。
-              丁寧なウォーターケアと高持続フィルインで、<strong className="text-plum-900 font-medium">3〜4週間綺麗な状態</strong>をキープ。
+            <p className="text-xs sm:text-sm text-plum-900 leading-relaxed max-w-xl mx-auto lg:mx-0 font-normal tracking-wide">
+              自爪を削らず健やかに守る<strong className="text-lavender-700 font-semibold">「パラジェル専門」</strong>。
+              丁寧なウォーターケアと高持続フィルインで、<strong className="text-plum-950 font-semibold">3〜4週間綺麗な状態</strong>をキープ。
               50色以上の水光マグネットと上品なニュアンスアートで、大人の手元に洗練された輝きを宿します。
             </p>
 
@@ -98,16 +98,16 @@ export default function HeroSection() {
             {/* ハイライト数値 */}
             <div className="grid grid-cols-3 gap-2.5 pt-2 max-w-sm mx-auto lg:mx-0">
               <div className="pearl-glass p-3 rounded-2xl text-center border border-lavender-100 shadow-2xs">
-                <span className="block font-serif font-light text-xl sm:text-2xl text-lavender-700 tracking-wider">3〜4w</span>
-                <span className="text-[10px] font-normal text-plum-600 tracking-wide">高持続フィルイン</span>
+                <span className="block font-serif font-medium text-xl sm:text-2xl text-lavender-700 tracking-wider">3〜4w</span>
+                <span className="text-[10px] font-medium text-plum-800 tracking-wide">高持続フィルイン</span>
               </div>
               <div className="pearl-glass p-3 rounded-2xl text-center border border-lavender-100 shadow-2xs">
-                <span className="block font-serif font-light text-xl sm:text-2xl text-gold-600 tracking-wider">50+</span>
-                <span className="text-[10px] font-normal text-plum-600 tracking-wide">マグネット色数</span>
+                <span className="block font-serif font-medium text-xl sm:text-2xl text-gold-600 tracking-wider">50+</span>
+                <span className="text-[10px] font-medium text-plum-800 tracking-wide">マグネット色数</span>
               </div>
               <div className="pearl-glass p-3 rounded-2xl text-center border border-lavender-100 shadow-2xs">
-                <span className="block font-serif font-light text-xl sm:text-2xl text-lavender-700 tracking-wider">0 yen</span>
-                <span className="text-[10px] font-normal text-plum-600 tracking-wide">自爪削り負担</span>
+                <span className="block font-serif font-medium text-xl sm:text-2xl text-lavender-700 tracking-wider">0 yen</span>
+                <span className="text-[10px] font-medium text-plum-800 tracking-wide">自爪削り負担</span>
               </div>
             </div>
 
