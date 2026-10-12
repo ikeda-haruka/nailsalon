@@ -1,8 +1,9 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import {
   Sparkles,
   Calendar,
@@ -28,6 +29,7 @@ import { SALON_INFO } from "@/data/salonData";
 import { useAuth } from "@/context/AuthContext";
 
 export default function Header() {
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { user } = useAuth();
@@ -196,16 +198,18 @@ export default function Header() {
                   <span className="whitespace-nowrap font-serif tracking-wider">HOMME <span className="text-[10px] text-neutral-400 font-sans">メンズ</span></span>
                 </Link>
 
-                {/* 即時予約ボタン（改行防止・1行表示を確実に固定） */}
-                <a
-                  href={SALON_INFO.links.hotpepper}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="luxe-button flex items-center gap-1.5 text-xs font-medium px-4 sm:px-5 py-2 sm:py-2.5 rounded-full tracking-wider whitespace-nowrap shrink-0 shadow-md"
-                >
-                  <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
-                  <span className="whitespace-nowrap">予約・空席</span>
-                </a>
+                {/* 即時予約ボタン（ログイン・マイページ・管理画面では非表示にして過度なアピールを防止） */}
+                {!pathname?.startsWith("/login") && !pathname?.startsWith("/mypage") && !pathname?.startsWith("/admin") && (
+                  <a
+                    href={SALON_INFO.links.hotpepper}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="luxe-button flex items-center gap-1.5 text-xs font-medium px-4 sm:px-5 py-2 sm:py-2.5 rounded-full tracking-wider whitespace-nowrap shrink-0 shadow-sm transition-all hover:opacity-95"
+                  >
+                    <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+                    <span className="whitespace-nowrap">予約・空席</span>
+                  </a>
+                )}
 
                 {/* ハンバーガーメニューボタン（MENU文字を排除し、洗練された記号・図形アイコンに一新） */}
                 <button

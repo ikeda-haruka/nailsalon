@@ -98,20 +98,20 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* 予約・採用リンク */}
+          {/* 関連リンク・採用 */}
           <div className="space-y-3">
             <h3 className="text-xs font-serif font-normal tracking-widest text-plum-900 uppercase border-b border-lavender-200 pb-2">
-              RESERVATION & RECRUIT
+              LINKS & RECRUIT
             </h3>
             <div className="space-y-2">
               <a
                 href={SALON_INFO.links.hotpepper}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="luxe-button w-full text-center py-2.5 rounded-full text-xs font-medium flex items-center justify-center gap-1.5 shadow-sm tracking-wider"
+                className="w-full text-center py-2 rounded-full bg-white text-plum-700 border border-lavender-200 hover:bg-lavender-50 text-[11px] font-normal flex items-center justify-center gap-1 transition-all tracking-wide"
               >
-                <Calendar className="w-3.5 h-3.5" />
-                <span>HOT PEPPER Beauty 予約</span>
+                <span>HOT PEPPER Beauty 掲載ページ</span>
+                <ExternalLink className="w-3 h-3 text-lavender-500" />
               </a>
               <Link
                 href="/shop"

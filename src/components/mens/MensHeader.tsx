@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import {
   Sparkles,
   Calendar,
@@ -19,6 +20,7 @@ import { MENS_SALON_INFO } from "@/data/mensSalonData";
 import { useAuth } from "@/context/AuthContext";
 
 export default function MensHeader() {
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { user } = useAuth();
@@ -137,16 +139,18 @@ export default function MensHeader() {
                   <span>メンズEC</span>
                 </Link>
 
-                {/* 即時WEB予約ボタン */}
-                <a
-                  href={MENS_SALON_INFO.links.hotpepper}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mens-button-white flex items-center gap-1.5 text-xs px-4 sm:px-5 py-2 sm:py-2.5 rounded-full tracking-wider whitespace-nowrap shadow-lg cursor-pointer"
-                >
-                  <Calendar className="w-3.5 h-3.5" />
-                  <span>メンズ予約</span>
-                </a>
+                {/* 即時WEB予約ボタン（ログイン・マイページ画面では非表示にして過度なアピールを防止） */}
+                {!pathname?.startsWith("/login") && !pathname?.startsWith("/mypage") && !pathname?.startsWith("/admin") && (
+                  <a
+                    href={MENS_SALON_INFO.links.hotpepper}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mens-button-white flex items-center gap-1.5 text-xs px-4 sm:px-5 py-2 sm:py-2.5 rounded-full tracking-wider whitespace-nowrap shadow-sm cursor-pointer hover:opacity-95"
+                  >
+                    <Calendar className="w-3.5 h-3.5" />
+                    <span>メンズ予約</span>
+                  </a>
+                )}
 
                 {/* ハンバーガーボタン */}
                 <button
