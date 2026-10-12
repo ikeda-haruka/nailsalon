@@ -14,7 +14,8 @@ import {
   User,
   ShieldCheck,
   ChevronRight,
-  ArrowLeftRight
+  ArrowLeftRight,
+  Info
 } from "lucide-react";
 import { MENS_SALON_INFO } from "@/data/mensSalonData";
 import { useAuth } from "@/context/AuthContext";
@@ -46,6 +47,19 @@ export default function MensHeader() {
     <>
       <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         
+        {/* サイト最上部固定：ポートフォリオ実績用・架空免責バー */}
+        <div className="w-full bg-[#18181b] text-zinc-200 border-b border-zinc-700/80 py-2 px-3 sm:px-4 text-center select-none shadow-md">
+          <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 text-xs font-normal tracking-wide">
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white text-zinc-950 font-mono font-bold text-[10px] uppercase tracking-wider shrink-0 shadow-2xs">
+              <Info className="w-3.5 h-3.5 shrink-0" />
+              <span>PORTFOLIO DEMO</span>
+            </span>
+            <span className="text-zinc-200 leading-relaxed truncate sm:overflow-visible sm:whitespace-normal font-sans">
+              当サイトは<strong className="text-white font-bold underline decoration-zinc-400 underline-offset-2 mx-1">ポートフォリオ実績用の架空サンプルサイト</strong>です。掲載されている店舗名（Salon de Fraise HOMME）・人物名・施術情報等はすべて架空のものであり、実在の人物・団体とは関係ありません。
+            </span>
+          </div>
+        </div>
+
         {/* レディースサロンとの切り替えアナウンスバナー */}
         <div className="bg-[#09090b] text-zinc-400 border-b border-zinc-800 py-1.5 px-3 sm:px-4 text-[11px] text-center select-none flex items-center justify-center gap-2">
           <span>✦ メンズ専用パラジェルネイルサロン 【全員男性ネイリスト / 完全個室】</span>
@@ -249,6 +263,12 @@ export default function MensHeader() {
                 >
                   HOT PEPPER でメンズ即時予約
                 </a>
+              </div>
+
+              {/* 架空サイト免責注記 */}
+              <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-800 text-[11px] text-zinc-400 leading-relaxed space-y-1">
+                <p className="font-semibold text-zinc-300">※ ポートフォリオ実績用サンプルサイト</p>
+                <p>当サイトはWeb制作ポートフォリオ実績用のサンプルサイトです。掲載されている店舗名・人物名等はすべて架空のものです。</p>
               </div>
             </div>
           </div>
