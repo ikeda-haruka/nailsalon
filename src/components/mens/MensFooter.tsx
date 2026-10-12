@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeftRight, Sparkles, MapPin, Clock, Phone, ShoppingBag } from "lucide-react";
 import { MENS_SALON_INFO } from "@/data/mensSalonData";
 
@@ -36,9 +37,17 @@ export default function MensFooter() {
         
         {/* ブランド情報（5カラム） */}
         <div className="md:col-span-5 space-y-3">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-zinc-900 border border-zinc-700 flex items-center justify-center text-white text-xs font-serif font-bold">
-              H
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-full p-0.5 bg-zinc-750 shrink-0">
+              <div className="w-full h-full rounded-full overflow-hidden bg-zinc-950">
+                <Image
+                  src="/images/brand_emblem_homme.svg"
+                  alt="Salon de Fraise HOMME 公式ブランドロゴ"
+                  width={32}
+                  height={32}
+                  className="w-full h-full object-contain p-0.5"
+                />
+              </div>
             </div>
             <h4 className="font-serif text-base text-white tracking-widest font-medium">
               Salon de Fraise <span className="text-zinc-500 font-light text-xs">HOMME</span>

@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Sparkles, MapPin, Clock, Calendar, Phone, CreditCard, Car, Coffee, Dog, Baby, ExternalLink, Heart, ShoppingBag } from "lucide-react";
 import { SALON_INFO } from "@/data/salonData";
 
@@ -11,9 +12,17 @@ export default function Footer() {
           
           {/* ブランド */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2.5">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-lavender-500 to-gold-400 flex items-center justify-center text-white shadow-md">
-                <Sparkles className="w-5 h-5 text-white" />
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 rounded-full p-0.5 bg-gradient-to-tr from-lavender-500 to-gold-400 shadow-md shrink-0">
+                <div className="w-full h-full rounded-full overflow-hidden bg-white">
+                  <Image
+                    src="/images/brand_emblem.svg"
+                    alt="Salon de Fraise 公式ブランドロゴエンブレム"
+                    width={44}
+                    height={44}
+                    className="w-full h-full object-contain p-0.5"
+                  />
+                </div>
               </div>
               <div>
                 <span className="text-xl font-serif font-normal text-plum-900 tracking-wide">

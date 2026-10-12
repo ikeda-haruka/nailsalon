@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Sparkles,
   Calendar,
@@ -69,8 +70,17 @@ export default function MensHeader() {
               
               {/* ブランドロゴ */}
               <Link href="/mens" className="flex items-center gap-3 group shrink-0">
-                <div className="w-9 h-9 rounded-xl bg-zinc-900 border border-zinc-700 flex items-center justify-center text-white shadow-md group-hover:border-zinc-400 transition-colors">
-                  <span className="font-serif text-sm tracking-wider font-semibold">H</span>
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full p-0.5 bg-gradient-to-tr from-zinc-700 via-zinc-500 to-zinc-300 shadow-md group-hover:scale-105 transition-transform shrink-0">
+                  <div className="w-full h-full rounded-full overflow-hidden bg-zinc-950">
+                    <Image
+                      src="/images/brand_emblem_homme.svg"
+                      alt="Salon de Fraise HOMME 公式ブランドロゴエンブレム"
+                      width={40}
+                      height={40}
+                      className="w-full h-full object-contain p-0.5"
+                      priority
+                    />
+                  </div>
                 </div>
                 <div>
                   <span className="block font-serif font-medium text-base sm:text-lg text-white tracking-widest leading-none">
@@ -168,9 +178,22 @@ export default function MensHeader() {
           <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
             <div className="w-screen max-w-md bg-[#0f0f12] border-l border-zinc-800 shadow-2xl flex flex-col justify-between overflow-y-auto p-6 sm:p-8 space-y-6 text-white">
               <div className="flex items-center justify-between border-b border-zinc-800 pb-4">
-                <div>
-                  <span className="font-serif text-lg tracking-wider block">Salon de Fraise HOMME</span>
-                  <span className="text-[10px] text-zinc-500 font-mono tracking-widest uppercase">MEN&apos;S NAVIGATION</span>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full p-0.5 bg-zinc-700 shrink-0">
+                    <div className="w-full h-full rounded-full overflow-hidden bg-zinc-950">
+                      <Image
+                        src="/images/brand_emblem_homme.svg"
+                        alt="Salon de Fraise HOMME ロゴ"
+                        width={32}
+                        height={32}
+                        className="w-full h-full object-contain p-0.5"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <span className="font-serif text-lg tracking-wider block">Salon de Fraise HOMME</span>
+                    <span className="text-[10px] text-zinc-500 font-mono tracking-widest uppercase">MEN&apos;S NAVIGATION</span>
+                  </div>
                 </div>
                 <button
                   onClick={() => setIsDrawerOpen(false)}

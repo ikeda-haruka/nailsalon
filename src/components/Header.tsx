@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Sparkles,
   Calendar,
@@ -109,9 +110,17 @@ export default function Header() {
               
               {/* ロゴ */}
               <Link href="/" className="flex items-center gap-3 group">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#9975cb] via-[#b895ea] to-[#d4af6e] flex items-center justify-center text-white shadow-md shadow-lavender-400/30 group-hover:scale-105 transition-transform relative overflow-hidden border border-white/60 shrink-0">
-                  <span className="text-white text-base font-serif font-light">✦</span>
-                  <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full p-0.5 bg-gradient-to-tr from-[#9975cb] via-[#b895ea] to-[#d4af6e] shadow-md shadow-lavender-400/30 group-hover:scale-105 transition-transform relative shrink-0">
+                  <div className="w-full h-full rounded-full overflow-hidden relative bg-white">
+                    <Image
+                      src="/images/brand_emblem.svg"
+                      alt="Salon de Fraise 公式ブランドロゴ"
+                      width={44}
+                      height={44}
+                      className="w-full h-full object-contain p-0.5"
+                      priority
+                    />
+                  </div>
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
@@ -234,8 +243,16 @@ export default function Header() {
               {/* ドロワーヘッダー */}
               <div className="p-6 sm:p-8 border-b border-lavender-100 flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-lavender-500 to-gold-400 flex items-center justify-center text-white shadow-xs">
-                    <span className="font-serif font-light text-xs">✦</span>
+                  <div className="w-9 h-9 rounded-full p-0.5 bg-gradient-to-tr from-lavender-500 to-gold-400 shadow-xs shrink-0">
+                    <div className="w-full h-full rounded-full overflow-hidden bg-white">
+                      <Image
+                        src="/images/brand_emblem.svg"
+                        alt="Salon de Fraise ブランドロゴ"
+                        width={36}
+                        height={36}
+                        className="w-full h-full object-contain p-0.5"
+                      />
+                    </div>
                   </div>
                   <div>
                     <span className="block font-serif font-normal text-base text-plum-900 tracking-wide leading-tight">
