@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { Sparkles, Calendar, MessageCircle, Clock, ShieldCheck, Ticket, CreditCard, ChevronRight } from "lucide-react";
+import Link from "next/link";
+import { Sparkles, Calendar, Clock, ShieldCheck, Ticket, CreditCard, ChevronRight, Award, Gift, ArrowRight } from "lucide-react";
 import { MENU_CATEGORIES, SALON_INFO, FEE_TABLE } from "@/data/salonData";
 
 export default function MenuSection() {
@@ -24,36 +25,41 @@ export default function MenuSection() {
           </p>
         </div>
 
-        {/* 公式LINE限定クーポン＆回数券バナー (チケット風リッチUI) */}
-        <div className="mb-14 p-6 sm:p-8 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-emerald-500/10 via-lavender-100/50 to-gold-400/10 border-2 border-[#06C755]/30 shadow-md relative overflow-hidden">
+        {/* Salon Members 会員限定特典 ＆ ポイントシステムバナー (チケット風リッチUI) */}
+        <div className="mb-14 p-6 sm:p-8 rounded-2xl sm:rounded-3xl bg-linear-to-r from-gold-100/60 via-white to-lavender-100/60 border-2 border-gold-300/80 shadow-md relative overflow-hidden">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-4 sm:gap-5">
-              <div className="w-12 sm:w-14 h-12 sm:h-14 rounded-2xl bg-[#06C755] text-white flex items-center justify-center shrink-0 shadow-md shadow-emerald-500/20">
-                <Ticket className="w-6 h-6" />
+              <div className="w-12 sm:w-14 h-12 sm:h-14 rounded-2xl bg-plum-900 text-gold-300 flex items-center justify-center shrink-0 shadow-md">
+                <Award className="w-6 h-6" />
               </div>
               <div className="space-y-1 text-center md:text-left">
-                <span className="text-[10px] font-normal text-[#06C755] uppercase tracking-widest bg-white px-2.5 py-0.5 rounded-full inline-block border border-[#06C755]/20 shadow-2xs font-serif">
-                  LINE FRIENDS ONLY
+                <span className="text-[10px] font-normal text-gold-800 uppercase tracking-widest bg-gold-100 px-2.5 py-0.5 rounded-full inline-block border border-gold-300 font-serif">
+                  SALON MEMBERS ONLY
                 </span>
                 <h3 className="text-base sm:text-lg font-serif font-normal text-plum-900 tracking-wide">
-                  お得な回数券 ＆ 毎月届く限定クーポン
+                  新規WEB会員登録で ¥1,000OFFクーポン ＆ 100pt進呈
                 </h3>
                 <p className="text-xs text-plum-700 font-light tracking-wide">
-                  3回・5回のお得な回数券や、初回来店¥1,000OFFクーポンは公式LINEより受け取れます。
+                  ご来店ごとに施術ポイントが貯まり、水光アート無料チケットやサロン限定オイルに交換いただけます。
                 </p>
               </div>
             </div>
 
-            <div className="shrink-0 w-full md:w-auto">
-              <a
-                href={SALON_INFO.links.line}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full md:w-auto px-6 py-3 rounded-full bg-[#06C755] hover:bg-[#05a847] text-white font-medium text-xs flex items-center justify-center gap-2 shadow-md shadow-emerald-600/20 transition-all hover:scale-102 tracking-wider"
+            <div className="shrink-0 w-full md:w-auto flex flex-col sm:flex-row gap-2.5">
+              <Link
+                href="/mypage"
+                className="w-full sm:w-auto px-6 py-3 rounded-full luxe-button font-medium text-xs flex items-center justify-center gap-2 shadow-md transition-all hover:scale-102 tracking-wider"
               >
-                <MessageCircle className="w-4 h-4" />
-                <span>公式LINEで¥1,000OFFクーポン取得</span>
-              </a>
+                <Award className="w-4 h-4 text-gold-300" />
+                <span>会員マイページ・特典交換</span>
+              </Link>
+              <Link
+                href="/login"
+                className="w-full sm:w-auto px-5 py-3 rounded-full bg-white border border-lavender-300 hover:border-lavender-500 text-plum-900 font-medium text-xs flex items-center justify-center gap-1.5 shadow-2xs transition-all"
+              >
+                <span>ログイン / 新規登録</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
             </div>
           </div>
         </div>

@@ -1,12 +1,15 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Calendar, MessageCircle, Phone, Sparkles, ChevronUp } from "lucide-react";
+import Link from "next/link";
+import { Calendar, Phone, Sparkles, ChevronUp, Ticket, Award } from "lucide-react";
 import { SALON_INFO } from "@/data/salonData";
+import { useAuth } from "@/context/AuthContext";
 
 export default function FloatingReservationBar() {
   const [isVisible, setIsVisible] = useState(false);
   const [showTopBtn, setShowTopBtn] = useState(false);
+  const { user } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,7 +44,7 @@ export default function FloatingReservationBar() {
         <button
           onClick={scrollToTop}
           aria-label="ページトップへ戻る"
-          className="fixed bottom-20 sm:bottom-24 right-4 z-40 w-10 sm:w-11 h-10 sm:h-11 rounded-full bg-white/95 backdrop-blur-md border border-lavender-200 text-lavender-700 shadow-xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all"
+          className="fixed bottom-20 sm:bottom-24 right-4 z-40 w-10 sm:w-11 h-10 sm:h-11 rounded-full bg-white/95 backdrop-blur-md border border-lavender-200 text-lavender-700 shadow-xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all cursor-pointer"
         >
           <ChevronUp className="w-5 h-5" />
         </button>
@@ -54,7 +57,7 @@ export default function FloatingReservationBar() {
           <div className="hidden md:flex flex-col">
             <span className="text-xs font-serif font-normal text-plum-900 flex items-center gap-1.5 tracking-wide">
               <Sparkles className="w-3.5 h-3.5 text-gold-500" />
-              HOT PEPPER Beauty & 公式LINE 24時間即時空席連動中
+              HOT PEPPER Beauty 24時間即時空席連動中 ＆ WEB会員ポイント制
             </span>
             <span className="text-[10px] text-lavender-700 font-light tracking-wide">
               10:00〜20:00 / 不定休（GW・お盆・SW休まず営業 / 専用駐車場3台）
@@ -62,17 +65,24 @@ export default function FloatingReservationBar() {
           </div>
 
           <div className="flex items-center gap-2 w-full md:w-auto">
-            {/* 公式LINE */}
-            <a
-              href={SALON_INFO.links.line}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => trackClick("line")}
-              className="flex-1 md:flex-initial flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-full bg-[#06C755] hover:bg-[#05a847] text-white text-xs font-medium shadow-md transition-all hover:scale-102 tracking-wide"
+            {/* WEB会員クーポン / マイページ */}
+            <Link
+              href={user ? "/mypage" : "/login"}
+              onClick={() => trackClick("member_portal")}
+              className="flex-1 md:flex-initial flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-full bg-white border border-gold-400 text-plum-900 text-xs font-medium shadow-sm transition-all hover:scale-102 tracking-wide"
             >
-              <MessageCircle className="w-3.5 h-3.5 shrink-0" />
-              <span className="truncate">LINE 初回¥1,000OFF</span>
-            </a>
+              {user ? (
+                <>
+                  <Award className="w-3.5 h-3.5 text-gold-500 shrink-0" />
+                  <span className="truncate">マイページ ({user.points}pt)</span>
+                </>
+              ) : (
+                <>
+                  <Ticket className="w-3.5 h-3.5 text-gold-600 shrink-0" />
+                  <span className="truncate">会員特典 ¥1,000OFF</span>
+                </>
+              )}
+            </Link>
 
             {/* HOT PEPPER Beauty 空席確認 */}
             <a

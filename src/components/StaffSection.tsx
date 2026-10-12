@@ -5,8 +5,6 @@ import Image from "next/image";
 import { Sparkles, Heart, Award, Calendar, CheckCircle2 } from "lucide-react";
 import { STAFFS, SALON_INFO } from "@/data/salonData";
 
-import { MessageCircle } from "lucide-react";
-
 export default function StaffSection() {
   return (
     <section id="staff" className="py-20 sm:py-24 bg-gradient-to-b from-white via-lavender-50/20 to-white relative">
@@ -104,30 +102,21 @@ export default function StaffSection() {
                 </p>
               </div>
 
-              {/* 指名予約 ＆ LINE相談ボタン */}
+              {/* 指名予約ボタン */}
               <div className="pt-3.5 border-t border-lavender-100 space-y-2">
                 <div className="flex justify-between items-center text-xs">
                   <span className="text-[11px] text-plum-500 font-light tracking-wide">指名料金</span>
                   <span className="font-serif font-medium text-gold-700 tracking-wider">{SALON_INFO.nominationFee}</span>
                 </div>
-                <div className="flex gap-2">
+                <div className="pt-1">
                   <a
                     href={SALON_INFO.links.hotpepper}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="luxe-button flex-1 text-center py-2.5 rounded-full text-xs font-medium flex items-center justify-center gap-1.5 shadow-md tracking-wider"
+                    className="luxe-button w-full text-center py-2.5 rounded-full text-xs font-medium flex items-center justify-center gap-1.5 shadow-md tracking-wider"
                   >
                     <Calendar className="w-3.5 h-3.5" />
-                    <span>{staff.name}を指名予約</span>
-                  </a>
-                  <a
-                    href={SALON_INFO.links.line}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`${staff.name}にLINEで相談`}
-                    className="px-3 py-2.5 rounded-full bg-[#06C755] hover:bg-[#05a847] text-white flex items-center justify-center shadow-xs transition-all hover:scale-105"
-                  >
-                    <MessageCircle className="w-3.5 h-3.5" />
+                    <span>{staff.name} を指名してWeb即時予約</span>
                   </a>
                 </div>
               </div>

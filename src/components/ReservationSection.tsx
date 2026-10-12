@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { Calendar, MessageCircle, Phone, Sparkles, Clock, CheckCircle } from "lucide-react";
+import Link from "next/link";
+import { Calendar, Phone, Sparkles, Clock, CheckCircle, Award, Ticket, ArrowRight } from "lucide-react";
 import { SALON_INFO } from "@/data/salonData";
 
 export default function ReservationSection() {
@@ -19,7 +20,7 @@ export default function ReservationSection() {
             ご予約・空席状況
           </h2>
           <p className="text-xs sm:text-sm text-plum-700 font-light tracking-wide leading-relaxed">
-            HOT PEPPER Beauty または 公式LINE より24時間いつでもリアルタイム空席をご確認いただけます。
+            HOT PEPPER Beauty または 公式WEB会員ポータル より24時間いつでもリアルタイム空席の確認・限定クーポンのご利用が可能です。
           </p>
         </div>
 
@@ -65,42 +66,40 @@ export default function ReservationSection() {
             </div>
           </div>
 
-          {/* 公式LINE */}
-          <div className="pearl-glass rounded-3xl p-6 sm:p-8 flex flex-col justify-between border border-[#06C755]/30 shadow-xl relative bg-white/95">
+          {/* 公式WEB会員ポータル */}
+          <div className="pearl-glass rounded-3xl p-6 sm:p-8 flex flex-col justify-between border-2 border-gold-300 shadow-xl relative bg-white/95">
             <div className="space-y-4">
-              <span className="text-[10px] font-normal px-2.5 py-0.5 rounded-full bg-[#06C755] text-white uppercase tracking-widest inline-block font-serif">
-                限定クーポン ＆ 回数券
+              <span className="text-[10px] font-normal px-2.5 py-0.5 rounded-full bg-gold-500 text-plum-950 uppercase tracking-widest inline-block font-serif">
+                WEB会員特典 / 100pt進呈
               </span>
               <div>
                 <h3 className="text-xl font-serif font-normal text-plum-900 tracking-wide">
-                  公式LINEアカウント
+                  Salon Members Portal
                 </h3>
                 <p className="text-xs text-plum-500 font-light mt-1 tracking-wide">
-                  友だち追加で限定クーポン・回数券をGET
+                  新規登録で¥1,000OFF ＆ 施術ポイント還元
                 </p>
               </div>
               <ul className="text-xs text-plum-700 space-y-2 pt-2 border-t border-lavender-100 font-light tracking-wide">
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-[#06C755] shrink-0" />
-                  <span>メニューからワンタップで空席閲覧</span>
+                  <CheckCircle className="w-4 h-4 text-gold-600 shrink-0" />
+                  <span>登録ですぐ使える¥1,000OFFクーポン</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-[#06C755] shrink-0" />
-                  <span>チャットでデザインの事前相談OK</span>
+                  <CheckCircle className="w-4 h-4 text-gold-600 shrink-0" />
+                  <span>施術ごとにポイントが貯まり特典交換が可能</span>
                 </li>
               </ul>
             </div>
 
-            <div className="pt-6">
-              <a
-                href={SALON_INFO.links.line}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full text-center py-3.5 rounded-full text-xs font-medium bg-[#06C755] hover:bg-[#05a847] text-white flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 transition-all hover:scale-102 tracking-wider"
+            <div className="pt-6 space-y-2">
+              <Link
+                href="/mypage"
+                className="gold-button w-full text-center py-3.5 rounded-full text-xs font-medium flex items-center justify-center gap-2 shadow-md transition-all hover:scale-102 tracking-wider"
               >
-                <MessageCircle className="w-4 h-4" />
-                <span>LINEでクーポン＆予約</span>
-              </a>
+                <Award className="w-4 h-4 text-plum-950" />
+                <span>会員マイページ / 特典確認</span>
+              </Link>
             </div>
           </div>
 

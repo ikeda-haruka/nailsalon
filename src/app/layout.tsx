@@ -70,6 +70,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { AuthProvider } from "@/context/AuthContext";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -125,12 +127,14 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased selection:bg-lavender-200 selection:text-plum-900 overflow-x-hidden">
-        <Header />
-        <main className="min-h-screen">
-          {children}
-        </main>
-        <Footer />
-        <FloatingReservationBar />
+        <AuthProvider>
+          <Header />
+          <main className="min-h-screen">
+            {children}
+          </main>
+          <Footer />
+          <FloatingReservationBar />
+        </AuthProvider>
       </body>
     </html>
   );

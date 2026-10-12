@@ -90,7 +90,7 @@ export const SALON_INFO = {
     hotpepper: "https://beauty.hotpepper.jp",
     hotpepperWork: "https://work.beauty.hotpepper.jp",
     indeed: "https://jp.indeed.com",
-    line: "https://line.me/R/ti/p/@fraise-nail",
+    memberPortal: "/mypage",
     phone: "tel:0368000000"
   },
   nominationFee: "550円（税込）"
@@ -358,9 +358,9 @@ export const MENU_CATEGORIES: MenuItem[] = [
         paragel: false
       },
       {
-        name: "公式LINE限定・お得な回数券＆クーポン",
-        description: "リピーター様に大好評！3回・5回のお得な回数券や、毎月届く限定割引クーポンは公式LINEにて配布中。",
-        price: "LINEにて配信中",
+        name: "WEB会員限定・お得な特典＆クーポン",
+        description: "リピーター様に大好評！新規登録¥1,000OFFクーポンや、施術ポイントで交換できる水光アート無料チケット・オリジナルオイルをマイページにて配信中。",
+        price: "マイページにて配信中",
         time: "-",
         paragel: false
       }
@@ -403,7 +403,7 @@ export const FAQS: FaqItem[] = [
   {
     category: "service",
     q: "持ち込みデザインのオーダーは可能ですか？",
-    a: "はい、可能です！インスタグラムやお写真などのご希望画像を施術前のカウンセリングでお見せください。パーツやカラーの在庫状況に応じて、当サロンの上品な世界観（白・ラベンダー・ゴールド等）を調和させながら最適なご提案をいたします。事前に公式LINEで画像をお送りいただきご相談いただくことも可能です。"
+    a: "はい、可能です！インスタグラムやお写真などのご希望画像を施術前のカウンセリングでお見せください。パーツやカラーの在庫状況に応じて、当サロンの上品な世界観（白・ラベンダー・ゴールド等）を調和させながら最適なご提案をいたします。"
   },
   {
     category: "service",
@@ -438,6 +438,6 @@ export const FAQS: FaqItem[] = [
   {
     category: "service",
     q: "予約の変更やキャンセルは可能ですか？",
-    a: "前日までのご連絡であれば、HOT PEPPER Beautyの予約画面、または公式LINE・お電話にてスムーズにご変更・キャンセルいただけます。体調不良等の急な場合も公式LINEよりお気軽にご連絡ください。"
+    a: "前日までのご連絡であれば、HOT PEPPER Beautyの予約画面、またはWEB会員マイページ・お電話にてスムーズにご変更・キャンセルいただけます。体調不良等の急な場合もお気軽にお電話にてご連絡ください。"
   }
 ];

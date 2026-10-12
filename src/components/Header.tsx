@@ -2,12 +2,33 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Sparkles, Calendar, Menu, X, Heart, MessageCircle, Phone, Info, ChevronRight, Clock, MapPin, Coffee, Car, Dog, Armchair } from "lucide-react";
+import {
+  Sparkles,
+  Calendar,
+  Menu,
+  X,
+  Heart,
+  Phone,
+  Info,
+  ChevronRight,
+  Clock,
+  MapPin,
+  Coffee,
+  Car,
+  Dog,
+  Armchair,
+  User,
+  Award,
+  UserCheck,
+  Ticket
+} from "lucide-react";
 import { SALON_INFO } from "@/data/salonData";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const { user } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,13 +62,13 @@ export default function Header() {
   }, []);
 
   const navLinks = [
-    { num: "01", name: "Concept", jp: "サロンのこだわり・自爪育成", href: "#concept", desc: "削らないパラジェル＆高持続フィルイン" },
-    { num: "02", name: "Catalog", jp: "最旬デザインカタログ", href: "#gallery", desc: "季節のアート・オフィスシンプル" },
-    { num: "03", name: "Magnet Lab", jp: "水光マグネット体験", href: "#magnet-lab", desc: "50種類以上の光彩シミュレーター" },
-    { num: "04", name: "Menu & Price", jp: "明朗会計・料金表", href: "#menu", desc: "全コース丁寧なウォーターケア込み" },
-    { num: "05", name: "Staff", jp: "在籍ネイリスト", href: "#staff", desc: "池田・高橋・水野（指名料+550円）" },
-    { num: "06", name: "Salon Info", jp: "サロン案内・設備", href: "#salon-info", desc: "ハンド2/フット2・駐車場3台・カフェ" },
-    { num: "07", name: "Recruit", jp: "ネイリスト採用情報", href: "#recruit", desc: "HPB WORK & Indeed にて掲載中" },
+    { num: "01", name: "Concept", jp: "サロンのこだわり・自爪育成", href: "/#concept", desc: "削らないパラジェル＆高持続フィルイン" },
+    { num: "02", name: "Catalog", jp: "最旬デザインカタログ", href: "/#gallery", desc: "季節のアート・オフィスシンプル" },
+    { num: "03", name: "Magnet Lab", jp: "水光マグネット体験", href: "/#magnet-lab", desc: "50種類以上の光彩シミュレーター" },
+    { num: "04", name: "Menu & Price", jp: "明朗会計・料金表", href: "/#menu", desc: "全コース丁寧なウォーターケア込み" },
+    { num: "05", name: "Staff", jp: "在籍ネイリスト", href: "/#staff", desc: "池田・高橋・水野（指名料+550円）" },
+    { num: "06", name: "Salon Info", jp: "サロン案内・設備", href: "/#salon-info", desc: "ハンド2/フット2・駐車場3台・カフェ" },
+    { num: "07", name: "Recruit", jp: "ネイリスト採用情報", href: "/#recruit", desc: "HPB WORK & Indeed にて掲載中" },
   ];
 
   return (
@@ -101,7 +122,7 @@ export default function Header() {
               {/* デスクトップ用インラインナビゲーション */}
               <nav className="hidden xl:flex items-center gap-7">
                 {navLinks.slice(0, 5).map((link) => (
-                  <a
+                  <Link
                     key={link.name}
                     href={link.href}
                     className="group flex flex-col items-center text-xs font-normal text-plum-body hover:text-lavender-600 transition-colors py-1"
@@ -112,22 +133,30 @@ export default function Header() {
                     <span className="text-[9px] text-plum-muted group-hover:text-gold-500 transition-colors font-light">
                       {link.jp}
                     </span>
-                  </a>
+                  </Link>
                 ))}
               </nav>
 
-              {/* 右側アクション群（予約ボタン ＆ ハンバーガーメニューボタン） */}
+              {/* 右側アクション群（会員マイページ/ログイン ＆ 予約ボタン ＆ ハンバーガーメニューボタン） */}
               <div className="flex items-center gap-2.5 sm:gap-3">
-                {/* LINEクーポン（PC表示） */}
-                <a
-                  href={SALON_INFO.links.line}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hidden sm:flex items-center gap-1.5 text-xs font-medium px-3.5 py-2 rounded-full bg-white text-[#06C755] border border-[#06C755]/30 hover:bg-[#06C755]/10 shadow-xs transition-all tracking-wide"
-                >
-                  <MessageCircle className="w-4 h-4 fill-[#06C755]/10 text-[#06C755]" />
-                  <span>LINEクーポン</span>
-                </a>
+                {/* 会員マイページ / ログインボタン（PC表示） */}
+                {user ? (
+                  <Link
+                    href="/mypage"
+                    className="hidden sm:flex items-center gap-1.5 text-xs font-medium px-3.5 py-2 rounded-full bg-white text-plum-900 border border-gold-300/80 hover:border-gold-500 shadow-2xs transition-all tracking-wide group"
+                  >
+                    <Award className="w-3.5 h-3.5 text-gold-500" />
+                    <span>マイページ ({user.points}pt)</span>
+                  </Link>
+                ) : (
+                  <Link
+                    href="/login"
+                    className="hidden sm:flex items-center gap-1.5 text-xs font-medium px-3.5 py-2 rounded-full bg-white text-lavender-700 border border-lavender-300 hover:border-lavender-400 shadow-2xs transition-all tracking-wide"
+                  >
+                    <User className="w-3.5 h-3.5 text-lavender-600" />
+                    <span>ログイン・会員登録</span>
+                  </Link>
+                )}
 
                 {/* 即時予約ボタン */}
                 <a
@@ -140,11 +169,11 @@ export default function Header() {
                   <span>予約・空席</span>
                 </a>
 
-                {/* ★ 常時ハンバーガーメニューボタン（PC・スマホ両対応） */}
+                {/* 常時ハンバーガーメニューボタン（PC・スマホ両対応） */}
                 <button
                   onClick={() => setIsDrawerOpen(true)}
                   aria-label="ナビゲーションメニューを開く"
-                  className="flex items-center gap-2 px-3 sm:px-3.5 py-2 rounded-full bg-white/90 hover:bg-lavender-50 border border-lavender-200 text-plum-900 shadow-xs transition-all active:scale-95 group focus:outline-none"
+                  className="flex items-center gap-2 px-3 sm:px-3.5 py-2 rounded-full bg-white/90 hover:bg-lavender-50 border border-lavender-200 text-plum-900 shadow-xs transition-all active:scale-95 group focus:outline-none cursor-pointer"
                 >
                   <span className="font-serif text-[11px] sm:text-xs font-normal tracking-widest text-plum-900 group-hover:text-lavender-700 select-none">
                     MENU
@@ -162,7 +191,7 @@ export default function Header() {
         </div>
       </header>
 
-      {/* ★ ハンバーガードロワーメニュー（右スライドイン＆フルオーバーレイ） */}
+      {/* ハンバーガードロワーメニュー（右スライドイン＆フルオーバーレイ） */}
       {isDrawerOpen && (
         <div className="fixed inset-0 z-[60] overflow-hidden animate-in fade-in duration-200">
           {/* 背景暗転オーバーレイ */}
@@ -195,26 +224,61 @@ export default function Header() {
                 {/* 閉じるボタン */}
                 <button
                   onClick={() => setIsDrawerOpen(false)}
-                  className="w-10 h-10 rounded-full bg-lavender-50 border border-lavender-200 text-plum-900 hover:text-lavender-700 hover:bg-lavender-100 flex items-center justify-center transition-all group"
+                  className="w-10 h-10 rounded-full bg-lavender-50 border border-lavender-200 text-plum-900 hover:text-lavender-700 hover:bg-lavender-100 flex items-center justify-center transition-all group cursor-pointer"
                   aria-label="メニューを閉じる"
                 >
                   <X className="w-5 h-5 group-hover:rotate-90 transition-transform duration-200" />
                 </button>
               </div>
 
+              {/* 会員ステータスカード（ドロワー内上部） */}
+              <div className="px-6 sm:px-8 pt-5">
+                <div className="pearl-glass p-4 rounded-2xl border border-gold-300/80 bg-linear-to-r from-gold-50/70 via-white to-lavender-50/70 space-y-2">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-serif font-medium text-plum-950 flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-gold-500" />
+                      <span>{user ? `${user.name} 様` : "会員ポータル"}</span>
+                    </span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-gold-400 text-plum-950 font-serif">
+                      {user ? `${user.rank} 会員` : "新規登録¥1,000OFF"}
+                    </span>
+                  </div>
+
+                  <div className="flex gap-2 pt-1">
+                    <Link
+                      href={user ? "/mypage" : "/login"}
+                      onClick={() => setIsDrawerOpen(false)}
+                      className="flex-1 py-2 px-3 rounded-xl bg-plum-900 hover:bg-plum-950 text-white text-xs font-medium text-center shadow-xs transition-all flex items-center justify-center gap-1.5"
+                    >
+                      <Award className="w-3.5 h-3.5 text-gold-300" />
+                      <span>{user ? `マイページ (${user.points}pt)` : "ログイン / 新規登録"}</span>
+                    </Link>
+                    <Link
+                      href="/admin"
+                      onClick={() => setIsDrawerOpen(false)}
+                      className="py-2 px-3 rounded-xl bg-white border border-lavender-200 hover:border-lavender-400 text-plum-800 text-xs text-center transition-all flex items-center justify-center gap-1"
+                      title="スタッフ管理画面（ポイント付与体験）"
+                    >
+                      <UserCheck className="w-3.5 h-3.5 text-lavender-600" />
+                      <span className="hidden sm:inline">スタッフ</span>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+
               {/* メインナビゲーションリスト */}
-              <div className="px-6 sm:px-8 py-6 space-y-2 flex-1">
-                <p className="text-[10px] text-plum-400 uppercase tracking-widest font-serif mb-3">
+              <div className="px-6 sm:px-8 py-5 space-y-2 flex-1">
+                <p className="text-[10px] text-plum-400 uppercase tracking-widest font-serif mb-2">
                   SECTIONS & SERVICES
                 </p>
 
                 <div className="divide-y divide-lavender-100/70">
                   {navLinks.map((link) => (
-                    <a
+                    <Link
                       key={link.name}
                       href={link.href}
                       onClick={() => setIsDrawerOpen(false)}
-                      className="py-3.5 flex items-center justify-between group hover:pl-2 transition-all duration-200"
+                      className="py-3 flex items-center justify-between group hover:pl-2 transition-all duration-200"
                     >
                       <div className="space-y-0.5">
                         <div className="flex items-baseline gap-2.5">
@@ -230,7 +294,7 @@ export default function Header() {
                         </p>
                       </div>
                       <ChevronRight className="w-4 h-4 text-lavender-300 group-hover:text-lavender-700 group-hover:translate-x-1 transition-all" />
-                    </a>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -238,7 +302,7 @@ export default function Header() {
               {/* クイックアクション & サロン情報フッター */}
               <div className="p-6 sm:p-8 bg-lavender-50/60 border-t border-lavender-200 space-y-4">
                 
-                {/* 予約・LINEボタン */}
+                {/* 予約・会員ボタン */}
                 <div className="space-y-2">
                   <a
                     href={SALON_INFO.links.hotpepper}
@@ -251,16 +315,14 @@ export default function Header() {
                     <span>HOT PEPPER Beauty 即時予約</span>
                   </a>
 
-                  <a
-                    href={SALON_INFO.links.line}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <Link
+                    href={user ? "/mypage" : "/login"}
                     onClick={() => setIsDrawerOpen(false)}
-                    className="w-full text-center py-2.5 rounded-full bg-[#06C755] hover:bg-[#05a847] text-white text-xs font-medium flex items-center justify-center gap-2 shadow-xs transition-all tracking-wide"
+                    className="w-full text-center py-2.5 rounded-full bg-white border border-gold-300 hover:border-gold-400 text-plum-900 text-xs font-medium flex items-center justify-center gap-2 shadow-2xs transition-all tracking-wide"
                   >
-                    <MessageCircle className="w-4 h-4" />
-                    <span>公式LINE限定クーポンGET</span>
-                  </a>
+                    <Ticket className="w-4 h-4 text-gold-600" />
+                    <span>{user ? "保有クーポン＆特典交換を見る" : "WEB会員登録で¥1,000OFFクーポン"}</span>
+                  </Link>
                 </div>
 
                 {/* 営業時間・設備スペックまとめ */}

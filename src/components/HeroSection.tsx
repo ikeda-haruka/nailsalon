@@ -2,7 +2,8 @@
 
 import React from "react";
 import Image from "next/image";
-import { Sparkles, Calendar, MessageCircle, Heart, Star, ShieldCheck, Clock, Award } from "lucide-react";
+import Link from "next/link";
+import { Sparkles, Calendar, Heart, Star, ShieldCheck, Clock, Award, Ticket } from "lucide-react";
 import { SALON_INFO } from "@/data/salonData";
 
 export default function HeroSection() {
@@ -79,18 +80,13 @@ export default function HeroSection() {
                 <span>空席確認・Web即時予約</span>
               </a>
 
-              <a
-                href={SALON_INFO.links.line}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => {
-                  try { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: 'cta_click_line_hero' }); } catch(e){}
-                }}
-                className="w-full sm:w-auto px-6 py-3 rounded-full text-xs sm:text-sm font-medium bg-[#06C755] hover:bg-[#05b34c] text-white shadow-md shadow-green-600/20 flex items-center justify-center gap-2 transition-all hover:scale-102 tracking-wide"
+              <Link
+                href="/login"
+                className="gold-button w-full sm:w-auto px-6 py-3 rounded-full text-xs sm:text-sm font-medium flex items-center justify-center gap-2 shadow-md transition-all hover:scale-102 tracking-wide"
               >
-                <MessageCircle className="w-4 h-4" />
-                <span>公式LINE 初回¥1,000OFF</span>
-              </a>
+                <Ticket className="w-4 h-4 text-plum-950" />
+                <span>WEB会員登録で¥1,000OFF</span>
+              </Link>
             </div>
 
             {/* 連休営業告知マイクロバナー */}

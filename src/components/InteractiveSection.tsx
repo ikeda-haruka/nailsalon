@@ -2,8 +2,9 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import confetti from "canvas-confetti";
-import { Sparkles, Calendar, Heart, ArrowRight, RotateCcw, Clock, MessageCircle, ShieldCheck } from "lucide-react";
+import { Sparkles, Calendar, Heart, ArrowRight, RotateCcw, Clock, ShieldCheck, Award, Ticket } from "lucide-react";
 import { SALON_INFO, DESIGNS } from "@/data/salonData";
 
 export default function InteractiveSection() {
@@ -217,17 +218,15 @@ export default function InteractiveSection() {
                     className="luxe-button flex-1 text-center py-3 rounded-full text-xs font-medium flex items-center justify-center gap-1.5 shadow-md tracking-wider"
                   >
                     <Calendar className="w-4 h-4" />
-                    <span>この診断結果で即時予約</span>
+                    <span>このデザインで即時予約</span>
                   </a>
-                  <a
-                    href={SALON_INFO.links.line}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 text-center py-3 rounded-full bg-[#06C755] hover:bg-[#05a847] text-white text-xs font-medium flex items-center justify-center gap-1.5 shadow-md transition-all hover:scale-102 tracking-wide"
+                  <Link
+                    href="/mypage"
+                    className="gold-button flex-1 text-center py-3 rounded-full text-xs font-medium flex items-center justify-center gap-1.5 shadow-md transition-all hover:scale-102 tracking-wide"
                   >
-                    <MessageCircle className="w-4 h-4" />
-                    <span>LINEで画像相談</span>
-                  </a>
+                    <Ticket className="w-4 h-4 text-plum-950" />
+                    <span>会員クーポンを利用</span>
+                  </Link>
                   <button
                     onClick={handleReset}
                     className="p-3 rounded-full bg-white border border-lavender-200 text-plum-700 hover:bg-lavender-50 transition-colors shrink-0 shadow-2xs self-center sm:self-auto cursor-pointer"
@@ -310,14 +309,13 @@ export default function InteractiveSection() {
                   <Calendar className="w-4 h-4" />
                   <span>最新の空席を確認してWeb予約</span>
                 </a>
-                <a
-                  href={SALON_INFO.links.line}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 text-center py-3 rounded-full bg-[#06C755] hover:bg-[#05a847] text-white text-xs font-medium flex items-center justify-center gap-1.5 shadow-md transition-all hover:scale-102 tracking-wide"
+                <Link
+                  href="/mypage"
+                  className="gold-button flex-1 text-center py-3 rounded-full text-xs font-medium flex items-center justify-center gap-1.5 shadow-md transition-all hover:scale-102 tracking-wide"
                 >
-                  <span>LINEで空席・クーポン相談</span>
-                </a>
+                  <Award className="w-4 h-4 text-plum-950" />
+                  <span>会員特典・限定クーポン確認</span>
+                </Link>
               </div>
             </div>
 

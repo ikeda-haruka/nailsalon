@@ -104,14 +104,12 @@ export default function Footer() {
                 <Calendar className="w-3.5 h-3.5" />
                 <span>HOT PEPPER Beauty 予約</span>
               </a>
-              <a
-                href={SALON_INFO.links.line}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full text-center py-2.5 rounded-full bg-[#06C755] hover:bg-[#05a847] text-white text-xs font-medium flex items-center justify-center gap-1.5 shadow-sm transition-all hover:scale-102 tracking-wide"
+              <Link
+                href="/mypage"
+                className="w-full text-center py-2.5 rounded-full gold-button text-xs font-medium flex items-center justify-center gap-1.5 shadow-xs transition-all hover:scale-102 tracking-wide"
               >
-                <span>公式LINE限定クーポン</span>
-              </a>
+                <span>WEB会員マイページ・特典</span>
+              </Link>
               <a
                 href={SALON_INFO.links.hotpepperWork}
                 target="_blank"
@@ -138,7 +136,9 @@ export default function Footer() {
         {/* 最下部コピーライト */}
         <div className="pt-8 border-t border-lavender-200/80 flex flex-col sm:flex-row items-center justify-between text-xs text-plum-500 gap-4 font-light">
           <p className="font-serif">© 2026 Salon de Fraise (サロン ド フレーズ). All Rights Reserved.</p>
-          <div className="flex gap-4 text-[11px] tracking-wide">
+          <div className="flex flex-wrap gap-4 text-[11px] tracking-wide">
+            <Link href="/mypage" className="hover:text-lavender-700 transition-colors font-medium">会員マイページ</Link>
+            <Link href="/admin" className="hover:text-lavender-700 transition-colors">スタッフ管理</Link>
             <a href="#concept" className="hover:text-lavender-700 transition-colors">サロンの強み</a>
             <a href="#gallery" className="hover:text-lavender-700 transition-colors">デザインカタログ</a>
             <a href="#magnet-lab" className="hover:text-lavender-700 transition-colors">水光マグネット体験</a>
