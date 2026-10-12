@@ -163,7 +163,7 @@ export const DESIGNS: NailDesign[] = [
     title: "オフィス向け 血色感ヌーディピンクベージュ",
     category: "office",
     categoryLabel: "オフィス向け",
-    image: "/images/hero.jpg",
+    image: "/images/office_nude_nail.jpg",
     description: "厳しめの職場でも好印象な肌馴染み抜群のシアーベージュ。丁寧なウォーターケアで甘皮周りを整え、美しいフォルムで仕上げます。",
     price: "¥7,150",
     priceValue: 7150,

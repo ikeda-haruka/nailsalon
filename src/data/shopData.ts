@@ -169,7 +169,7 @@ export const SHOP_PRODUCTS: ShopProduct[] = [
     priceFormatted: "¥6,200",
     rating: 4.8,
     reviewCount: 24,
-    image: "/images/spring.jpg",
+    image: "/images/office_nude_nail.jpg",
     isHeroProduct: true,
     tag: "オフィス・冠婚葬祭対応",
     volumeOrSpec: "10枚セット（サイズオーダー） / 粘着グミ2回分付属",
