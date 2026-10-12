@@ -29,7 +29,9 @@ import {
   AlertCircle,
   Mail,
   FileText,
-  Check
+  Check,
+  User,
+  Lock
 } from "lucide-react";
 import {
   SHOP_PRODUCTS,
@@ -72,13 +74,11 @@ export default function ShopPage() {
   const [hidePriceInInvoice, setHidePriceInInvoice] = useState<boolean>(true);
 
   // カートState
-  const [cart, setCart] = useState<CartItem[]>([
-    // デモ初期状態で主力ネイルチップを1点セット
-    { product: SHOP_PRODUCTS[0], quantity: 1 }
-  ]);
+  const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [usePoints, setUsePoints] = useState(false);
   const [orderCompleteModal, setOrderCompleteModal] = useState(false);
+  const [needLoginModal, setNeedLoginModal] = useState(false);
 
   // お気に入りState
   const [favorites, setFavorites] = useState<Record<string, boolean>>({});
@@ -249,6 +249,13 @@ export default function ShopPage() {
   // 注文完了処理（サロン会員情報・ポイント残高との完全同期）
   const handleCheckout = async () => {
     if (cart.length === 0) return;
+    
+    // 会員ログイン必須チェック
+    if (!user) {
+      setNeedLoginModal(true);
+      return;
+    }
+
     const baseSummary = cart.map((i) => `${i.product.name}×${i.quantity}`).join(", ");
     const giftSummary = selectedWrapping.id !== "none" ? ` [ギフト: ${selectedWrapping.name}]` : "";
     const cardSummary = includeMessageCard ? ` [カード: ${selectedTheme.name}]` : "";
@@ -1344,14 +1351,46 @@ export default function ShopPage() {
                     </div>
                   </div>
 
-                  {/* 注文確定ボタン */}
-                  <button
-                    onClick={handleCheckout}
-                    className="w-full py-3.5 rounded-full gold-button text-xs font-semibold flex items-center justify-center gap-2 shadow-lg cursor-pointer tracking-wider"
-                  >
-                    <span>デモ注文を確定する（ヤマト宅急便）</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
+                  {/* 注文確定ボタン / 会員ログイン誘導 */}
+                  {user ? (
+                    <button
+                      onClick={handleCheckout}
+                      className="w-full py-3.5 rounded-full gold-button text-xs font-semibold flex items-center justify-center gap-2 shadow-lg cursor-pointer tracking-wider"
+                    >
+                      <span>デモ注文を確定する（ヤマト宅急便）</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  ) : (
+                    <div className="space-y-2 pt-1">
+                      <div className="p-3 rounded-2xl bg-amber-50/90 border border-amber-300 text-amber-950 flex items-start gap-2.5 shadow-2xs">
+                        <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                        <div className="text-[11px] leading-relaxed">
+                          <p className="font-semibold text-amber-900">ショップのご注文には会員ログインが必要です</p>
+                          <p className="text-amber-800/90 text-[10px] mt-0.5">
+                            公式オンラインショップでのご注文には会員登録が必要です。新規会員登録で今すぐ使える<strong className="font-bold underline text-amber-950">1,000ポイント（¥1,000相当）</strong>を進呈中！
+                          </p>
+                        </div>
+                      </div>
+
+                      <Link
+                        href="/login"
+                        className="w-full py-3.5 rounded-full bg-plum-900 hover:bg-plum-950 text-white text-xs font-medium flex items-center justify-center gap-2 shadow-md transition-all tracking-wider group"
+                      >
+                        <User className="w-4 h-4 text-gold-300" />
+                        <span>ログイン・新規会員登録へ進む</span>
+                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      </Link>
+
+                      <button
+                        type="button"
+                        onClick={() => setNeedLoginModal(true)}
+                        className="w-full py-2 rounded-full border border-lavender-300 text-plum-600 hover:bg-lavender-50 text-[11px] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                      >
+                        <Lock className="w-3.5 h-3.5 text-lavender-500" />
+                        <span>未ログインのため注文ボタンはロックされています</span>
+                      </button>
+                    </div>
+                  )}
 
                   <p className="text-[10px] text-center text-plum-500 font-light">
                     ※当ショップはポートフォリオ実績用のサンプルECです。実際の課金は発生いたしません。
@@ -1538,6 +1577,71 @@ export default function ShopPage() {
               >
                 マイページで共通ポイントを確認する
               </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ======================================================== */}
+      {/* 注文時ログイン必須モーダル */}
+      {/* ======================================================== */}
+      {needLoginModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-plum-950/70 backdrop-blur-xs animate-in fade-in duration-200">
+          <div className="pearl-glass max-w-md w-full rounded-3xl border border-gold-300 shadow-2xl p-6 sm:p-7 text-center space-y-4 bg-white relative">
+            <button
+              onClick={() => setNeedLoginModal(false)}
+              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-lavender-50 border border-lavender-200 flex items-center justify-center text-plum-700 hover:text-plum-950 cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            <div className="w-14 h-14 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center mx-auto shadow-inner border border-amber-300">
+              <Lock className="w-7 h-7 text-amber-700" />
+            </div>
+
+            <div className="space-y-1.5">
+              <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300 font-serif font-bold">
+                MEMBER REQUIRED
+              </span>
+              <h3 className="font-serif text-lg font-medium text-plum-950">
+                ご注文には会員ログインが必要です
+              </h3>
+              <p className="text-xs text-plum-600 leading-relaxed font-light">
+                公式オンラインショップでのご注文・配送手続きには、<strong className="text-plum-900 font-medium">Salon de Fraise WEB会員</strong>へのログインまたは新規登録が必要です。
+              </p>
+            </div>
+
+            <div className="p-3.5 rounded-2xl bg-linear-to-r from-gold-50/70 via-white to-lavender-50/70 border border-gold-300/80 text-left space-y-2 text-xs">
+              <div className="flex items-start gap-2">
+                <Sparkles className="w-4 h-4 text-gold-600 shrink-0 mt-0.5" />
+                <p className="text-plum-900">
+                  <strong className="text-gold-900 font-bold">新規会員登録で1,000pt（¥1,000割引）</strong>を即時進呈！初回注文からご利用いただけます。
+                </p>
+              </div>
+              <div className="flex items-start gap-2 border-t border-lavender-100 pt-2">
+                <Award className="w-4 h-4 text-lavender-600 shrink-0 mt-0.5" />
+                <p className="text-plum-700 text-[11px]">
+                  サロン施術と共通でポイントが貯まり（2%還元）、次回のお買い物やお直しでお得に使えます。
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-2 pt-1">
+              <Link
+                href="/login"
+                className="w-full py-3.5 rounded-full luxe-button text-xs font-semibold flex items-center justify-center gap-2 shadow-md transition-all tracking-wider block"
+              >
+                <User className="w-4 h-4" />
+                <span>ログイン・新規会員登録へ進む</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <button
+                type="button"
+                onClick={() => setNeedLoginModal(false)}
+                className="w-full py-2.5 rounded-full bg-white border border-lavender-200 hover:bg-lavender-50 text-xs text-plum-700 transition-colors cursor-pointer"
+              >
+                ショッピングに戻る
+              </button>
             </div>
           </div>
         </div>

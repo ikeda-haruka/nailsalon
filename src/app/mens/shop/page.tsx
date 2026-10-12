@@ -27,7 +27,9 @@ import {
   Calendar,
   AlertCircle,
   Mail,
-  ArrowLeftRight
+  ArrowLeftRight,
+  User,
+  Lock
 } from "lucide-react";
 import {
   MENS_SHOP_PRODUCTS,
@@ -68,12 +70,11 @@ export default function MensShopPage() {
   const [hidePriceInInvoice, setHidePriceInInvoice] = useState<boolean>(true);
 
   // カートState
-  const [cart, setCart] = useState<MensCartItem[]>([
-    { product: MENS_SHOP_PRODUCTS[0], quantity: 1 }
-  ]);
+  const [cart, setCart] = useState<MensCartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [usePoints, setUsePoints] = useState(false);
   const [orderCompleteModal, setOrderCompleteModal] = useState(false);
+  const [needLoginModal, setNeedLoginModal] = useState(false);
 
   // お気に入りState
   const [favorites, setFavorites] = useState<Record<string, boolean>>({});
@@ -234,6 +235,13 @@ export default function MensShopPage() {
   // 注文処理
   const handleCheckout = async () => {
     if (cart.length === 0) return;
+    
+    // 会員ログイン必須チェック
+    if (!user) {
+      setNeedLoginModal(true);
+      return;
+    }
+
     const baseSummary = cart.map((i) => `${i.product.name}×${i.quantity}`).join(", ");
     const giftSummary = selectedWrapping.id !== "none" ? ` [メンズギフト: ${selectedWrapping.name}]` : "";
     const cardSummary = includeMessageCard ? ` [カード: ${selectedTheme.name}]` : "";
@@ -841,13 +849,45 @@ export default function MensShopPage() {
                     </div>
                   </div>
 
-                  {/* 注文確定ボタン */}
-                  <button
-                    onClick={handleCheckout}
-                    className="mens-button-white w-full py-3.5 rounded-full text-xs font-semibold shadow-xl cursor-pointer"
-                  >
-                    メンズデモ注文を確定する（ヤマト宅急便）
-                  </button>
+                  {/* 注文確定ボタン / 会員ログイン誘導 */}
+                  {user ? (
+                    <button
+                      onClick={handleCheckout}
+                      className="mens-button-white w-full py-3.5 rounded-full text-xs font-semibold shadow-xl cursor-pointer"
+                    >
+                      メンズデモ注文を確定する（ヤマト宅急便）
+                    </button>
+                  ) : (
+                    <div className="space-y-2 pt-1">
+                      <div className="p-3 rounded-2xl bg-zinc-900 border border-zinc-700 text-zinc-300 flex items-start gap-2.5">
+                        <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                        <div className="text-[11px] leading-relaxed">
+                          <p className="font-semibold text-white">ご注文には会員ログインが必要です</p>
+                          <p className="text-zinc-400 text-[10px] mt-0.5">
+                            公式オンラインショップでのご注文には会員登録が必要です。Salon de Fraise 共通会員登録で今すぐ使える<strong className="text-white font-bold underline">1,000ポイント（¥1,000相当）</strong>を進呈中！
+                          </p>
+                        </div>
+                      </div>
+
+                      <Link
+                        href="/login"
+                        className="mens-button-white w-full py-3.5 rounded-full text-xs font-semibold flex items-center justify-center gap-2 shadow-xl tracking-wider group text-center"
+                      >
+                        <User className="w-4 h-4 text-zinc-900" />
+                        <span>ログイン・新規会員登録へ進む</span>
+                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      </Link>
+
+                      <button
+                        type="button"
+                        onClick={() => setNeedLoginModal(true)}
+                        className="w-full py-2 rounded-full border border-zinc-800 text-zinc-400 hover:bg-zinc-900 text-[11px] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                      >
+                        <Lock className="w-3.5 h-3.5 text-zinc-500" />
+                        <span>未ログインのため注文ボタンはロックされています</span>
+                      </button>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -954,6 +994,69 @@ export default function MensShopPage() {
                   </button>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 注文時ログイン必須モーダル（モノトーン） */}
+      {needLoginModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="max-w-md w-full rounded-3xl border border-zinc-700 bg-zinc-950 p-6 sm:p-7 text-center space-y-4 relative shadow-2xl">
+            <button
+              onClick={() => setNeedLoginModal(false)}
+              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-400 hover:text-white cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            <div className="w-14 h-14 rounded-full bg-zinc-900 border border-zinc-700 flex items-center justify-center mx-auto shadow-inner">
+              <Lock className="w-7 h-7 text-zinc-300" />
+            </div>
+
+            <div className="space-y-1.5">
+              <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-zinc-800 text-zinc-300 border border-zinc-700 font-mono">
+                MEMBER REQUIRED
+              </span>
+              <h3 className="font-serif text-lg font-medium text-white">
+                ご注文には会員ログインが必要です
+              </h3>
+              <p className="text-xs text-zinc-400 leading-relaxed font-light">
+                公式オンラインショップでのご注文には、<strong className="text-white font-medium">Salon de Fraise 共通会員</strong>へのログインまたは新規登録が必要です。
+              </p>
+            </div>
+
+            <div className="p-3.5 rounded-2xl bg-zinc-900/90 border border-zinc-800 text-left space-y-2 text-xs">
+              <div className="flex items-start gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-white mt-1.5 shrink-0" />
+                <p className="text-zinc-200">
+                  <strong className="text-white font-bold">新規会員登録で1,000pt（¥1,000割引）</strong>を即時進呈！初回注文からご利用可能です。
+                </p>
+              </div>
+              <div className="flex items-start gap-2 border-t border-zinc-800/80 pt-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 mt-1.5 shrink-0" />
+                <p className="text-zinc-400 text-[11px]">
+                  レディース・メンズサロンおよび両ECショップでポイント（2%還元）が共通管理されます。
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-2 pt-1">
+              <Link
+                href="/login"
+                className="mens-button-white w-full py-3.5 rounded-full text-xs font-semibold flex items-center justify-center gap-2 shadow-xl tracking-wider block"
+              >
+                <User className="w-4 h-4 text-zinc-900" />
+                <span>ログイン・新規会員登録へ進む</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <button
+                type="button"
+                onClick={() => setNeedLoginModal(false)}
+                className="w-full py-2.5 rounded-full bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-xs text-zinc-400 transition-colors cursor-pointer"
+              >
+                ショッピングに戻る
+              </button>
             </div>
           </div>
         </div>

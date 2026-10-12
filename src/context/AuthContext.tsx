@@ -37,9 +37,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (savedUser) {
         setUser(JSON.parse(savedUser));
       } else {
-        // 初回訪問時もすぐに試せるようにデモユーザーを初期セット
-        setUser(INITIAL_DEMO_USER);
-        localStorage.setItem("fraise_member_user", JSON.stringify(INITIAL_DEMO_USER));
+        // 初期状態は未ログイン
+        setUser(null);
       }
 
       if (savedStaff) {
@@ -47,7 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setIsStaff(true);
       }
     } catch (e) {
-      setUser(INITIAL_DEMO_USER);
+      setUser(null);
     } finally {
       setIsLoading(false);
     }
