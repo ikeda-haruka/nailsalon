@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Sparkles, ShoppingBag, ArrowRight, ShieldCheck, CheckCircle2, Star, Truck, Award } from "lucide-react";
+import { Sparkles, ShoppingBag, ArrowRight, ShieldCheck, CheckCircle2, Star, Truck, Award, Gift } from "lucide-react";
 import { SHOP_PRODUCTS } from "@/data/shopData";
 
 export default function ShopFeatureSection() {
@@ -157,6 +157,10 @@ export default function ShopFeatureSection() {
                   <Award className="w-3.5 h-3.5 text-gold-400" />
                   サロン＆EC共通ポイント
                 </span>
+                <span className="text-xs text-rose-200 font-light flex items-center gap-1">
+                  <Gift className="w-3.5 h-3.5 text-gold-400" />
+                  ギフト包装 ＆ 無料メッセージカード対応
+                </span>
               </div>
 
               <h3 className="text-xl sm:text-3xl font-serif font-light text-white leading-tight">
@@ -167,7 +171,7 @@ export default function ShopFeatureSection() {
               </h3>
 
               <p className="text-xs sm:text-sm text-white/80 font-light leading-relaxed">
-                全12アイテムに商品コード（TIP-001等）を完備。キーワード検索や商品コード入力ですぐにご注文可能です。<br className="hidden sm:inline" />
+                全12アイテムに商品コード（TIP-001等）を完備。キーワード検索や商品コード入力ですぐにご注文可能です。大切な方へのプレゼントに最適な特製ギフトラッピング・無料メッセージカードも選択いただけます。<br className="hidden sm:inline" />
                 配送はヤマト運輸【宅急便】のみ対応。お支払いはクレジットカード・銀行振込・代金引換・コンビニ決済をご利用いただけます（※日曜・祝日は出荷休業）。
               </p>
             </div>

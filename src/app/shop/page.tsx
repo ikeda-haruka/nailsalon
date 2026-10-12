@@ -26,9 +26,22 @@ import {
   CreditCard,
   Package,
   Calendar,
-  AlertCircle
+  AlertCircle,
+  Mail,
+  FileText,
+  Check
 } from "lucide-react";
-import { SHOP_PRODUCTS, SHOP_CATEGORIES, SHOP_POLICY, ShopCategory, ShopProduct } from "@/data/shopData";
+import {
+  SHOP_PRODUCTS,
+  SHOP_CATEGORIES,
+  SHOP_POLICY,
+  GIFT_WRAPPING_OPTIONS,
+  MESSAGE_CARD_THEMES,
+  ShopCategory,
+  ShopProduct,
+  GiftWrappingOption,
+  MessageCardTheme
+} from "@/data/shopData";
 import { useAuth } from "@/context/AuthContext";
 
 interface CartItem {
@@ -48,6 +61,13 @@ export default function ShopPage() {
   const [codeOrderInput, setCodeOrderInput] = useState("");
   const [codeOrderQuantity, setCodeOrderQuantity] = useState(1);
   const [codeOrderNotification, setCodeOrderNotification] = useState<{ type: "success" | "error"; text: string } | null>(null);
+
+  // ギフトラッピング・メッセージカードState
+  const [giftWrappingId, setGiftWrappingId] = useState<"none" | "ribbon" | "box">("none");
+  const [includeMessageCard, setIncludeMessageCard] = useState<boolean>(false);
+  const [cardThemeId, setCardThemeId] = useState<"for_you" | "birthday" | "thank_you" | "blank">("for_you");
+  const [cardMessage, setCardMessage] = useState<string>("");
+  const [hidePriceInInvoice, setHidePriceInInvoice] = useState<boolean>(true);
 
   // カートState
   const [cart, setCart] = useState<CartItem[]>([
@@ -174,36 +194,78 @@ export default function ShopPage() {
     setIsCartOpen(true);
   };
 
+  // 選択されたギフトオプションとメッセージカード情報
+  const selectedWrapping = useMemo(() => {
+    return GIFT_WRAPPING_OPTIONS.find((opt) => opt.id === giftWrappingId) || GIFT_WRAPPING_OPTIONS[0];
+  }, [giftWrappingId]);
+
+  const selectedTheme = useMemo(() => {
+    return MESSAGE_CARD_THEMES.find((t) => t.id === cardThemeId) || MESSAGE_CARD_THEMES[0];
+  }, [cardThemeId]);
+
   // 金額計算（20,000円以上のご購入で送料無料）
   const FREE_SHIPPING_THRESHOLD = 20000;
   const subtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
   const totalItemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const shippingFee = subtotal >= FREE_SHIPPING_THRESHOLD || subtotal === 0 ? 0 : 550;
+  const wrappingFee = selectedWrapping.price;
   const userPointBalance = user?.points || 0;
-  const appliedPoints = usePoints ? Math.min(userPointBalance, subtotal) : 0;
-  const grandTotal = Math.max(0, subtotal + shippingFee - appliedPoints);
+  const appliedPoints = usePoints ? Math.min(userPointBalance, subtotal + wrappingFee) : 0;
+  const grandTotal = Math.max(0, subtotal + wrappingFee + shippingFee - appliedPoints);
   const earnedPoints = Math.floor(grandTotal * 0.02); // 購入金額の2%をサロン・ショップ共通ポイントとして付与
 
   const [checkoutDetail, setCheckoutDetail] = useState<{
     usedPoints: number;
     earnedPoints: number;
     grandTotal: number;
+    subtotal: number;
+    shippingFee: number;
     prevBalance: number;
-  }>({ usedPoints: 0, earnedPoints: 0, grandTotal: 0, prevBalance: 0 });
+    wrappingName: string;
+    wrappingPrice: number;
+    hasCard: boolean;
+    cardThemeName: string;
+    cardMessage: string;
+    hidePrice: boolean;
+  }>({
+    usedPoints: 0,
+    earnedPoints: 0,
+    grandTotal: 0,
+    subtotal: 0,
+    shippingFee: 0,
+    prevBalance: 0,
+    wrappingName: "なし",
+    wrappingPrice: 0,
+    hasCard: false,
+    cardThemeName: "",
+    cardMessage: "",
+    hidePrice: true
+  });
 
   const { checkoutShop } = useAuth();
 
   // 注文完了処理（サロン会員情報・ポイント残高との完全同期）
   const handleCheckout = async () => {
     if (cart.length === 0) return;
-    const orderSummary = cart.map((i) => `${i.product.name}×${i.quantity}`).join(", ");
+    const baseSummary = cart.map((i) => `${i.product.name}×${i.quantity}`).join(", ");
+    const giftSummary = selectedWrapping.id !== "none" ? ` [ギフト: ${selectedWrapping.name}]` : "";
+    const cardSummary = includeMessageCard ? ` [カード: ${selectedTheme.name}]` : "";
+    const orderSummary = `${baseSummary}${giftSummary}${cardSummary}`;
     const prevBalance = user?.points || 0;
 
     setCheckoutDetail({
       usedPoints: appliedPoints,
       earnedPoints,
       grandTotal,
-      prevBalance
+      subtotal,
+      shippingFee,
+      prevBalance,
+      wrappingName: selectedWrapping.name,
+      wrappingPrice: selectedWrapping.price,
+      hasCard: includeMessageCard,
+      cardThemeName: selectedTheme.name,
+      cardMessage: cardMessage.trim() || selectedTheme.sampleMessage,
+      hidePrice: hidePriceInInvoice
     });
 
     if (user) {
@@ -468,6 +530,31 @@ export default function ShopPage() {
               <strong className="text-plum-900 font-medium">日曜・祝日は商品出荷を行っておりません</strong>。サロン在籍スタッフ（12名／毎日2〜3名シフト勤務）が丁寧に出荷検品を行っております。
             </p>
           </div>
+        </div>
+
+        {/* ギフトラッピング ＆ メッセージカードの安心ご案内バナー */}
+        <div className="pearl-glass p-3.5 sm:p-4 rounded-2xl border border-gold-300/80 bg-linear-to-r from-lavender-50/70 via-white to-gold-50/70 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-2xs">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-gold-100 text-gold-800 flex items-center justify-center shrink-0 border border-gold-300">
+              <Gift className="w-4 h-4" />
+            </div>
+            <div>
+              <p className="text-xs font-serif font-medium text-plum-950 flex flex-wrap items-center gap-2">
+                <span>大切な方への贈り物に：特製ギフトラッピング ＆ メッセージカード対応</span>
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-sans font-medium">無料カード印字</span>
+              </p>
+              <p className="text-[11px] text-plum-600 font-light mt-0.5">
+                ご注文時（カート内）にて、ラベンダーリボン包装（+¥330）やプレミアムゴールドBOX（+¥550）、用途別メッセージカード（無料印字）をお選びいただけます。納品書の金額非表示（ギフト直送）も承ります。
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setIsCartOpen(true)}
+            className="px-3.5 py-1.5 rounded-full bg-white border border-gold-300 hover:bg-gold-50 text-[11px] font-medium text-plum-900 transition-colors shrink-0 shadow-2xs cursor-pointer"
+          >
+            カートでギフト指定を見る
+          </button>
         </div>
 
         {/* ======================================================== */}
@@ -973,10 +1060,205 @@ export default function ShopPage() {
                 )}
               </div>
 
-              {/* カートフッター（金額・ポイント割引・配送決済注記・注文確定） */}
+              {/* カートフッター（金額・ギフト選択・ポイント割引・配送決済注記・注文確定） */}
               {cart.length > 0 && (
                 <div className="p-5 sm:p-6 bg-lavender-50/70 border-t border-lavender-200 space-y-3.5">
                   
+                  {/* ======================================================== */}
+                  {/* ギフトラッピング ＆ メッセージカード設定（任意オプション） */}
+                  {/* ======================================================== */}
+                  <div className="p-3.5 sm:p-4 rounded-2xl bg-white border border-gold-300 shadow-2xs space-y-3.5 text-xs">
+                    <div className="flex items-center justify-between border-b border-lavender-100 pb-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 rounded-lg bg-gold-100 text-gold-800 flex items-center justify-center shrink-0">
+                          <Gift className="w-3.5 h-3.5" />
+                        </div>
+                        <h4 className="font-serif font-medium text-plum-950">
+                          ギフトラッピング ＆ メッセージカード
+                        </h4>
+                      </div>
+                      <span className="text-[10px] text-gold-800 bg-gold-50 border border-gold-200 px-2 py-0.5 rounded-full font-serif font-medium">
+                        プレゼント対応
+                      </span>
+                    </div>
+
+                    {/* 1. ギフトラッピング選択 */}
+                    <div className="space-y-2">
+                      <label className="block text-[11px] font-medium text-plum-900">
+                        ① ギフトラッピングをお選びください
+                      </label>
+                      <div className="space-y-1.5">
+                        {GIFT_WRAPPING_OPTIONS.map((opt) => (
+                          <label
+                            key={opt.id}
+                            className={`flex items-start gap-2.5 p-2.5 rounded-xl border transition-all cursor-pointer ${
+                              giftWrappingId === opt.id
+                                ? "bg-gold-50/50 border-gold-400 shadow-2xs"
+                                : "bg-white border-lavender-200/80 hover:bg-lavender-50/50"
+                            }`}
+                          >
+                            <input
+                              type="radio"
+                              name="giftWrapping"
+                              value={opt.id}
+                              checked={giftWrappingId === opt.id}
+                              onChange={() => setGiftWrappingId(opt.id)}
+                              className="mt-0.5 accent-gold-600 cursor-pointer"
+                            />
+                            <div className="flex-1 space-y-0.5">
+                              <div className="flex items-center justify-between">
+                                <span className="font-serif font-medium text-plum-950 text-xs">
+                                  {opt.name}
+                                </span>
+                                <span className={`font-mono text-xs font-semibold ${opt.price > 0 ? "text-gold-700" : "text-plum-500"}`}>
+                                  {opt.priceFormatted}
+                                </span>
+                              </div>
+                              <p className="text-[10px] text-plum-600 font-light leading-snug">
+                                {opt.desc}
+                              </p>
+                              <span className="inline-block text-[9px] text-lavender-700 font-sans">
+                                おすすめ: {opt.recommendedFor}
+                              </span>
+                            </div>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* 2. メッセージカード選択 */}
+                    <div className="space-y-2.5 pt-2 border-t border-lavender-100">
+                      <div className="flex items-center justify-between">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={includeMessageCard}
+                            onChange={(e) => {
+                              setIncludeMessageCard(e.target.checked);
+                              if (e.target.checked && !cardMessage) {
+                                setCardMessage(selectedTheme.sampleMessage);
+                              }
+                            }}
+                            className="w-4 h-4 accent-gold-600 cursor-pointer"
+                          />
+                          <span className="font-serif font-medium text-plum-950 text-xs flex items-center gap-1">
+                            <Mail className="w-3.5 h-3.5 text-lavender-600" />
+                            <span>② メッセージカードを添える</span>
+                          </span>
+                        </label>
+                        <span className="text-[10px] text-emerald-700 font-medium bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                          無料代筆印字サービス
+                        </span>
+                      </div>
+
+                      {includeMessageCard && (
+                        <div className="pl-6 space-y-2.5 animate-in fade-in duration-200">
+                          {/* カードテーマ選択 */}
+                          <div>
+                            <span className="block text-[10px] text-plum-500 mb-1">
+                              カードのデザイン用途をお選びください:
+                            </span>
+                            <div className="grid grid-cols-2 gap-1.5">
+                              {MESSAGE_CARD_THEMES.map((theme) => (
+                                <button
+                                  key={theme.id}
+                                  type="button"
+                                  onClick={() => {
+                                    setCardThemeId(theme.id);
+                                    if (!cardMessage || cardMessage === selectedTheme.sampleMessage) {
+                                      setCardMessage(theme.sampleMessage);
+                                    }
+                                  }}
+                                  className={`p-2 rounded-xl text-left border text-[11px] transition-all cursor-pointer ${
+                                    cardThemeId === theme.id
+                                      ? "bg-lavender-100/70 border-lavender-400 text-plum-950 font-medium shadow-2xs"
+                                      : "bg-white border-lavender-200 text-plum-700 hover:bg-lavender-50/50"
+                                  }`}
+                                >
+                                  <div className="font-serif leading-tight">{theme.name}</div>
+                                  <div className="text-[9px] text-plum-400 font-light mt-0.5">{theme.badge}</div>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* メッセージ本文入力 */}
+                          {cardThemeId !== "blank" ? (
+                            <div className="space-y-1.5">
+                              <div className="flex items-center justify-between text-[10px]">
+                                <span className="text-plum-600">印字メッセージ本文 (最大80文字):</span>
+                                <span className="font-mono text-plum-400">{cardMessage.length} / 80</span>
+                              </div>
+                              <textarea
+                                rows={2}
+                                maxLength={80}
+                                value={cardMessage}
+                                onChange={(e) => setCardMessage(e.target.value)}
+                                placeholder={selectedTheme.sampleMessage}
+                                className="w-full p-2.5 rounded-xl border border-lavender-200 text-xs text-plum-950 placeholder:text-plum-300 focus:outline-hidden focus:ring-1 focus:ring-gold-400 bg-white"
+                              />
+
+                              {/* 定型文ボタン */}
+                              <div className="flex flex-wrap items-center gap-1 text-[10px]">
+                                <span className="text-plum-400">定型文挿入:</span>
+                                <button
+                                  type="button"
+                                  onClick={() => setCardMessage("お誕生日おめでとうございます！素敵な1年になりますように。")}
+                                  className="px-2 py-0.5 rounded bg-lavender-50 hover:bg-lavender-100 border border-lavender-200 text-plum-700 cursor-pointer"
+                                >
+                                  お誕生日
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => setCardMessage("いつも本当にありがとうございます。日頃の感謝の気持ちを込めて。")}
+                                  className="px-2 py-0.5 rounded bg-lavender-50 hover:bg-lavender-100 border border-lavender-200 text-plum-700 cursor-pointer"
+                                >
+                                  感謝・お礼
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => setCardMessage("心ときめく指先の輝きをお届けします。気に入っていただけますように。")}
+                                  className="px-2 py-0.5 rounded bg-lavender-50 hover:bg-lavender-100 border border-lavender-200 text-plum-700 cursor-pointer"
+                                >
+                                  贈り物
+                                </button>
+                              </div>
+
+                              {/* プレビューカード */}
+                              <div className="p-2.5 rounded-xl bg-linear-to-br from-lavender-50/70 via-white to-gold-50/60 border border-gold-300 text-[10px] space-y-1">
+                                <div className="flex items-center justify-between text-[9px] text-gold-800 font-serif border-b border-gold-200/60 pb-1">
+                                  <span>✦ Salon de Fraise Message Card ✦</span>
+                                  <span className="font-mono">{selectedTheme.name}</span>
+                                </div>
+                                <p className="font-serif text-plum-900 italic leading-relaxed pt-0.5 whitespace-pre-wrap">
+                                  &ldquo;{cardMessage.trim() || selectedTheme.sampleMessage}&rdquo;
+                                </p>
+                              </div>
+                            </div>
+                          ) : (
+                            <p className="p-2.5 rounded-xl bg-lavender-50 border border-lavender-200 text-[10px] text-plum-600 font-light leading-relaxed">
+                              ※手書きメッセージ用のサロン専用オリジナルブランクカードを封筒付きで同封いたします。ご自身で手書きメッセージをご記入いただけます。
+                            </p>
+                          )}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* 3. 納品書金額非表示チェック */}
+                    <div className="pt-2 border-t border-lavender-100">
+                      <label className="flex items-center gap-2 cursor-pointer text-[10px] text-plum-700">
+                        <input
+                          type="checkbox"
+                          checked={hidePriceInInvoice}
+                          onChange={(e) => setHidePriceInInvoice(e.target.checked)}
+                          className="w-3.5 h-3.5 accent-gold-600 cursor-pointer"
+                        />
+                        <span>納品書に金額を表示しない（受取人様へ直接お届けするギフト配送仕様）</span>
+                      </label>
+                    </div>
+
+                  </div>
+
                   {/* 会員ポイント利用スイッチ */}
                   {user && user.points > 0 && (
                     <div className="p-3 rounded-xl bg-white border border-gold-300 shadow-2xs space-y-1.5 text-xs">
@@ -993,7 +1275,7 @@ export default function ShopPage() {
                         />
                       </div>
                       <p className="text-[11px] text-plum-600">
-                        サロン共通保有: <strong>{user.points} pt</strong> （最大 ¥{Math.min(user.points, subtotal).toLocaleString()} 割引）
+                        サロン共通保有: <strong>{user.points} pt</strong> （最大 ¥{Math.min(user.points, subtotal + wrappingFee).toLocaleString()} 割引）
                       </p>
                     </div>
                   )}
@@ -1019,6 +1301,20 @@ export default function ShopPage() {
                       <span>商品小計</span>
                       <span className="font-mono">¥{subtotal.toLocaleString()}</span>
                     </div>
+
+                    {wrappingFee > 0 && (
+                      <div className="flex justify-between text-gold-800 font-medium">
+                        <span>ギフトラッピング（{selectedWrapping.name}）</span>
+                        <span className="font-mono">+¥{wrappingFee.toLocaleString()}</span>
+                      </div>
+                    )}
+
+                    {includeMessageCard && (
+                      <div className="flex justify-between text-lavender-700">
+                        <span>メッセージカード（{selectedTheme.name}）</span>
+                        <span className="font-sans font-medium text-emerald-700">無料</span>
+                      </div>
+                    )}
 
                     <div className="flex justify-between">
                       <span>送料（¥20,000以上で無料）</span>
@@ -1162,8 +1458,37 @@ export default function ShopPage() {
               </p>
             </div>
 
-            {/* 配送・決済・出荷・サロン共通ポイント情報詳細 */}
-            <div className="p-3.5 rounded-xl bg-lavender-50 border border-lavender-200 text-xs text-plum-800 space-y-2.5 text-left">
+            {/* 配送・決済・出荷・ギフト・サロン共通ポイント情報詳細 */}
+            <div className="p-3.5 rounded-xl bg-lavender-50 border border-lavender-200 text-xs text-plum-800 space-y-2.5 text-left max-h-[42vh] overflow-y-auto">
+              {/* ギフトサービス適用内容 */}
+              {(checkoutDetail.wrappingPrice > 0 || checkoutDetail.hasCard) && (
+                <div className="p-2.5 rounded-lg bg-white border border-gold-300 space-y-1 text-[11px]">
+                  <p className="font-semibold text-gold-900 flex items-center gap-1.5">
+                    <Gift className="w-3.5 h-3.5 text-gold-600 shrink-0" />
+                    <span>ギフトサービス指定内容:</span>
+                  </p>
+                  <p className="text-plum-800 pl-5">
+                    ・ラッピング: <strong className="text-plum-950">{checkoutDetail.wrappingName}</strong>
+                    {checkoutDetail.wrappingPrice > 0 && ` (+¥${checkoutDetail.wrappingPrice.toLocaleString()})`}
+                  </p>
+                  {checkoutDetail.hasCard && (
+                    <div className="text-plum-800 pl-5 space-y-0.5">
+                      <p>
+                        ・カード: <strong className="text-plum-950">{checkoutDetail.cardThemeName}</strong>
+                      </p>
+                      <p className="p-1.5 rounded bg-lavender-50 text-[10px] text-plum-700 italic border border-lavender-100 whitespace-pre-wrap">
+                        &ldquo;{checkoutDetail.cardMessage}&rdquo;
+                      </p>
+                    </div>
+                  )}
+                  {checkoutDetail.hidePrice && (
+                    <p className="text-[10px] text-plum-600 pl-5">
+                      ※ 納品書の金額非表示（プレゼント受取人様へ直送対応）
+                    </p>
+                  )}
+                </div>
+              )}
+
               <div className="flex items-start gap-2">
                 <Truck className="w-4 h-4 text-lavender-700 shrink-0 mt-0.5" />
                 <div>
@@ -1179,7 +1504,7 @@ export default function ShopPage() {
                 <div>
                   <p className="font-semibold text-plum-950">決済: クレカ / 銀行振込 / 代引 / コンビニ</p>
                   <p className="text-[11px] text-plum-600 leading-snug">
-                    ご指定の決済方法にて安全にお手続きを完了いたしました（デモ）。
+                    ご指定の決済方法にて安全にお手続きを完了いたしました（お支払い合計: <strong>¥{checkoutDetail.grandTotal.toLocaleString()}</strong>）。
                   </p>
                 </div>
               </div>
@@ -1189,7 +1514,7 @@ export default function ShopPage() {
                 <div>
                   <p className="font-semibold text-gold-800">サロン ＆ EC共通ポイント同期完了:</p>
                   <p className="text-[11px] text-plum-700 leading-snug">
-                    今回の獲得ポイントがサロン共通残高に即時反映されました。店舗施術でもオンラインショップでも相互にご利用可能です。
+                    今回の獲得ポイント（+{checkoutDetail.earnedPoints} pt）がサロン共通残高に即時反映されました。店舗施術でもオンラインショップでも相互にご利用可能です。
                   </p>
                 </div>
               </div>

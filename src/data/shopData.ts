@@ -32,6 +32,77 @@ export interface ShopProduct {
   usage: string;
 }
 
+// ギフトラッピング＆メッセージカードのオプション定義
+export interface GiftWrappingOption {
+  id: "none" | "ribbon" | "box";
+  name: string;
+  price: number;
+  priceFormatted: string;
+  desc: string;
+  recommendedFor: string;
+}
+
+export interface MessageCardTheme {
+  id: "for_you" | "birthday" | "thank_you" | "blank";
+  name: string;
+  badge: string;
+  sampleMessage: string;
+}
+
+export const GIFT_WRAPPING_OPTIONS: GiftWrappingOption[] = [
+  {
+    id: "none",
+    name: "ラッピングなし（通常エコ包装）",
+    price: 0,
+    priceFormatted: "¥0",
+    desc: "緩衝材で保護した通常段ボール（ヤマト宅急便）にて丁寧にお届けします。",
+    recommendedFor: "ご自宅用"
+  },
+  {
+    id: "ribbon",
+    name: "サロン特製オーガンジーリボン包装",
+    price: 330,
+    priceFormatted: "+¥330",
+    desc: "サロンカラーの上品な透け感ラベンダーリボン＆サロンロゴタグでお包みします。",
+    recommendedFor: "プチギフト・お礼に"
+  },
+  {
+    id: "box",
+    name: "プレミアムゴールドギフトBOX ＆ ショッパー付",
+    price: 550,
+    priceFormatted: "+¥550",
+    desc: "シャンパンゴールド箔押しBOXにリボンを掛け、お渡し用のサロン専用ショッパー（手提げ紙袋）を同封します。",
+    recommendedFor: "誕生日・記念日・本命ギフトに"
+  }
+];
+
+export const MESSAGE_CARD_THEMES: MessageCardTheme[] = [
+  {
+    id: "for_you",
+    name: "Special For You",
+    badge: "記念日・贈り物",
+    sampleMessage: "いつも素敵なあなたへ。心ときめく指先の輝きをお届けします。"
+  },
+  {
+    id: "birthday",
+    name: "Happy Birthday",
+    badge: "お誕生日お祝い",
+    sampleMessage: "お誕生日おめでとうございます！笑顔あふれる素晴らしい1年になりますように。"
+  },
+  {
+    id: "thank_you",
+    name: "Thank You",
+    badge: "感謝・お礼",
+    sampleMessage: "いつも本当にありがとうございます。日頃の感謝の気持ちを込めて贈ります。"
+  },
+  {
+    id: "blank",
+    name: "手書き用ブランクカード",
+    badge: "自筆用（無地）",
+    sampleMessage: "（ご自身で手書きメッセージをご記入いただける専用カードを同封します）"
+  }
+];
+
 // 公式オンラインショップ利用規約・配送・決済ポリシー
 export const SHOP_POLICY = {
   freeShippingThreshold: 20000, // 20,000円以上のご購入で送料無料
@@ -43,7 +114,8 @@ export const SHOP_POLICY = {
     { id: "convenience", name: "コンビニ決済", desc: "セブン-イレブン / ローソン / ファミリーマート等" }
   ],
   shippingSchedule: "日曜・祝日は商品出荷を行っておりません（平日・土曜のみ出荷対応）",
-  staffOperationNotice: "サロン在籍スタッフ（12名／毎日2〜3名シフト勤務）が、サロンワークの合間にご注文商品の検品・梱包・出荷を一貫して担当しております。"
+  staffOperationNotice: "サロン在籍スタッフ（12名／毎日2〜3名シフト勤務）が、サロンワークの合間にご注文商品の検品・梱包・出荷を一貫して担当しております。",
+  giftOptionNotice: "ギフトラッピング（リボン包装・特製ゴールドBOX）およびメッセージカード（無料代筆印字）に対応。金額非表示のギフト配送も承ります。"
 };
 
 export const SHOP_CATEGORIES: { id: ShopCategory; label: string; desc: string }[] = [
