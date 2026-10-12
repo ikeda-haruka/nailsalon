@@ -126,7 +126,7 @@ export default function Header() {
               </Link>
 
               {/* デスクトップ用インラインナビゲーション */}
-              <nav className="hidden xl:flex items-center gap-7">
+              <nav className="hidden xl:flex items-center gap-4 2xl:gap-7">
                 {navLinks.slice(0, 5).map((link) => (
                   <Link
                     key={link.name}
@@ -144,49 +144,46 @@ export default function Header() {
               </nav>
 
               {/* 右側アクション群（会員マイページ/ログイン ＆ 予約ボタン ＆ ハンバーガーメニューボタン） */}
-              <div className="flex items-center gap-2.5 sm:gap-3">
+              <div className="flex items-center gap-2 sm:gap-3 shrink-0">
                 {/* 会員マイページ / ログインボタン（PC表示） */}
                 {user ? (
                   <Link
                     href="/mypage"
-                    className="hidden sm:flex items-center gap-1.5 text-xs font-medium px-3.5 py-2 rounded-full bg-white text-plum-900 border border-gold-300/80 hover:border-gold-500 shadow-2xs transition-all tracking-wide group"
+                    className="hidden sm:flex items-center gap-1.5 text-xs font-medium px-3.5 py-2 rounded-full bg-white text-plum-900 border border-gold-300/80 hover:border-gold-500 shadow-2xs transition-all tracking-wide group whitespace-nowrap shrink-0"
                   >
-                    <Award className="w-3.5 h-3.5 text-gold-500" />
-                    <span>マイページ ({user.points}pt)</span>
+                    <Award className="w-3.5 h-3.5 text-gold-500 shrink-0" />
+                    <span className="whitespace-nowrap">マイページ ({user.points}pt)</span>
                   </Link>
                 ) : (
                   <Link
                     href="/login"
-                    className="hidden sm:flex items-center gap-1.5 text-xs font-medium px-3.5 py-2 rounded-full bg-white text-lavender-700 border border-lavender-300 hover:border-lavender-400 shadow-2xs transition-all tracking-wide"
+                    className="hidden sm:flex items-center gap-1.5 text-xs font-medium px-3.5 py-2 rounded-full bg-white text-lavender-700 border border-lavender-300 hover:border-lavender-400 shadow-2xs transition-all tracking-wide whitespace-nowrap shrink-0"
                   >
-                    <User className="w-3.5 h-3.5 text-lavender-600" />
-                    <span>ログイン・会員登録</span>
+                    <User className="w-3.5 h-3.5 text-lavender-600 shrink-0" />
+                    <span className="whitespace-nowrap">ログイン・会員登録</span>
                   </Link>
                 )}
 
-                {/* 即時予約ボタン */}
+                {/* 即時予約ボタン（改行防止・1行表示を確実に固定） */}
                 <a
                   href={SALON_INFO.links.hotpepper}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="luxe-button flex items-center gap-1.5 text-xs font-medium px-4 sm:px-5 py-2 sm:py-2.5 rounded-full tracking-wider"
+                  className="luxe-button flex items-center gap-1.5 text-xs font-medium px-4 sm:px-5 py-2 sm:py-2.5 rounded-full tracking-wider whitespace-nowrap shrink-0 shadow-md"
                 >
-                  <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                  <span>予約・空席</span>
+                  <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+                  <span className="whitespace-nowrap">予約・空席</span>
                 </a>
 
-                {/* 常時ハンバーガーメニューボタン（PC・スマホ両対応） */}
+                {/* ハンバーガーメニューボタン（MENU文字を排除し、洗練された記号・図形アイコンに一新） */}
                 <button
                   onClick={() => setIsDrawerOpen(true)}
                   aria-label="ナビゲーションメニューを開く"
-                  className="flex items-center gap-2 px-3 sm:px-3.5 py-2 rounded-full bg-white/90 hover:bg-lavender-50 border border-lavender-200 text-plum-900 shadow-xs transition-all active:scale-95 group focus:outline-none cursor-pointer"
+                  className="w-9 sm:w-10 h-9 sm:h-10 rounded-full bg-white hover:bg-lavender-50 border border-lavender-200 hover:border-lavender-400 text-plum-900 shadow-xs flex items-center justify-center transition-all active:scale-95 group focus:outline-none cursor-pointer shrink-0"
                 >
-                  <span className="font-serif text-[11px] sm:text-xs font-normal tracking-widest text-plum-900 group-hover:text-lavender-700 select-none">
-                    MENU
-                  </span>
-                  <div className="w-4 h-3.5 flex flex-col justify-between py-0.5">
+                  <div className="w-4 h-3.5 flex flex-col justify-between py-0.5 pointer-events-none">
                     <span className="block h-[1.5px] w-4 bg-plum-900 group-hover:bg-lavender-700 transition-colors rounded-full" />
-                    <span className="block h-[1.5px] w-3 bg-gold-500 rounded-full ml-auto group-hover:w-4 transition-all" />
+                    <span className="block h-[1.5px] w-3 bg-gold-500 group-hover:w-4 transition-all rounded-full" />
                     <span className="block h-[1.5px] w-4 bg-plum-900 group-hover:bg-lavender-700 transition-colors rounded-full" />
                   </div>
                 </button>
