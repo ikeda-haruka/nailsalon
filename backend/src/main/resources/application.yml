@@ -1,0 +1,53 @@
+spring:
+  application:
+    name: nailsalon-backend-api
+
+  # -------------------------------------------------------------
+  # データベース接続設定 (H2 PostgreSQL互換・完全永久無料ファイル永続化)
+  # 30日失効なし・クレジットカード不要・Render永続ストレージ対応
+  # -------------------------------------------------------------
+  datasource:
+    driver-class-name: org.h2.Driver
+    # ./data/nailsalon.mv.db に保存（再起動後もデータ保持）
+    url: jdbc:h2:file:./data/nailsalon;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDER=HIGH;AUTO_SERVER=TRUE
+    username: sa
+    password: ""
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      idle-timeout: 30000
+      connection-timeout: 20000
+
+  # -------------------------------------------------------------
+  # SQL自動初期化設定 (schema.sql & data.sql を起動時に自動投入)
+  # -------------------------------------------------------------
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+      data-locations: classpath:data.sql
+      continue-on-error: true
+
+  # JPA / Hibernate 設定
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: none # schema.sql で初期化するため none に設定
+    defer-datasource-initialization: true
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  # -------------------------------------------------------------
+  # H2 Web管理コンソール (/h2-console)
+  # -------------------------------------------------------------
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
+
+server:
+  port: 8080
