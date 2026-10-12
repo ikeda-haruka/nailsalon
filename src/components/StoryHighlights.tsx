@@ -100,17 +100,17 @@ export default function StoryHighlights() {
 
               {/* NEWバッジ */}
               {story.isNew && (
-                <span className="absolute -top-1 -right-1 px-1.5 py-0.5 rounded-full bg-gold-500 text-plum-950 text-[9px] font-black tracking-wider uppercase shadow-md animate-pulse">
+                <span className="absolute -top-1 -right-1 px-1.5 py-0.5 rounded-full bg-gold-500 text-plum-950 text-[9px] font-normal tracking-widest uppercase shadow-md animate-pulse">
                   NEW
                 </span>
               )}
             </div>
 
             <div className="text-center">
-              <span className="block text-[11px] font-bold text-plum-900 group-hover:text-lavender-700 transition-colors leading-tight">
+              <span className="block text-[11px] font-normal text-plum-900 group-hover:text-lavender-700 transition-colors leading-tight tracking-wide">
                 {story.title}
               </span>
-              <span className="block text-[9px] text-plum-500 font-semibold tracking-wider uppercase">
+              <span className="block text-[9px] text-plum-500 font-serif font-light tracking-widest uppercase">
                 {story.en}
               </span>
             </div>

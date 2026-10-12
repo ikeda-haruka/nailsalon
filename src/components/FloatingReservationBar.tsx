@@ -41,11 +41,11 @@ export default function FloatingReservationBar() {
         <div className="max-w-4xl mx-auto flex items-center justify-between gap-3">
           
           <div className="hidden sm:flex flex-col">
-            <span className="text-xs font-black text-plum-900 flex items-center gap-1">
+            <span className="text-xs font-serif font-normal text-plum-900 flex items-center gap-1 tracking-wide">
               <Sparkles className="w-3.5 h-3.5 text-gold-500" />
               リアルタイム空席受付中（24h即時予約OK）
             </span>
-            <span className="text-[10px] text-lavender-700 font-bold">
+            <span className="text-[10px] text-lavender-700 font-light tracking-wide">
               10:00〜20:00 / 不定休（GW・お盆・SW休まず営業中）
             </span>
           </div>
@@ -56,7 +56,7 @@ export default function FloatingReservationBar() {
               href={SALON_INFO.links.line}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 sm:flex-initial flex items-center justify-center gap-1 px-3.5 sm:px-4 py-2.5 rounded-full bg-[#06C755] hover:bg-[#05a847] text-white text-xs font-bold shadow-md transition-all hover:scale-102"
+              className="flex-1 sm:flex-initial flex items-center justify-center gap-1 px-3.5 sm:px-4 py-2.5 rounded-full bg-[#06C755] hover:bg-[#05a847] text-white text-xs font-medium shadow-md transition-all hover:scale-102 tracking-wide"
             >
               <MessageCircle className="w-3.5 h-3.5 shrink-0" />
               <span className="truncate">LINEクーポン</span>
@@ -67,7 +67,7 @@ export default function FloatingReservationBar() {
               href={SALON_INFO.links.hotpepper}
               target="_blank"
               rel="noopener noreferrer"
-              className="luxe-button flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-5 sm:px-7 py-2.5 rounded-full text-xs font-bold shadow-xl"
+              className="luxe-button flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-5 sm:px-7 py-2.5 rounded-full text-xs font-medium shadow-xl tracking-wider"
             >
               <Calendar className="w-3.5 h-3.5 shrink-0" />
               <span className="truncate">空席確認・即時予約</span>

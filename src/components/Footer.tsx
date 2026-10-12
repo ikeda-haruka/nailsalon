@@ -16,25 +16,25 @@ export default function Footer() {
                 <Sparkles className="w-5 h-5 text-white" />
               </div>
               <div>
-                <span className="text-xl font-serif font-black text-plum-900">
+                <span className="text-xl font-serif font-normal text-plum-900 tracking-wide">
                   Salon de Fraise
                 </span>
-                <p className="text-[10px] text-lavender-700 font-bold tracking-widest uppercase">
+                <p className="text-[10px] text-lavender-700 font-light tracking-widest uppercase font-serif">
                   Paragel & Magnet Nails
                 </p>
               </div>
             </div>
-            <p className="text-xs text-plum-700 font-medium leading-relaxed">
+            <p className="text-xs text-plum-700 font-light leading-relaxed tracking-wide">
               自爪を削らないパラジェル専門店。丁寧なケアと高持続フィルイン技術で3〜4週間綺麗な状態をキープ。
             </p>
-            <div className="flex flex-wrap gap-1.5 text-[10px] font-bold">
-              <span className="px-2.5 py-1 rounded-full bg-white text-lavender-700 border border-lavender-200 shadow-xs">
+            <div className="flex flex-wrap gap-1.5 text-[10px]">
+              <span className="px-2.5 py-1 rounded-full bg-white text-lavender-700 border border-lavender-200 shadow-xs tracking-wide">
                 🐾 ペット同伴可
               </span>
-              <span className="px-2.5 py-1 rounded-full bg-white text-lavender-700 border border-lavender-200 shadow-xs">
+              <span className="px-2.5 py-1 rounded-full bg-white text-lavender-700 border border-lavender-200 shadow-xs tracking-wide">
                 👶 お子様同伴可
               </span>
-              <span className="px-2.5 py-1 rounded-full bg-white text-lavender-700 border border-lavender-200 shadow-xs">
+              <span className="px-2.5 py-1 rounded-full bg-white text-lavender-700 border border-lavender-200 shadow-xs tracking-wide">
                 🚗 駐車場3台
               </span>
             </div>
@@ -42,27 +42,27 @@ export default function Footer() {
 
           {/* 営業時間・設備 */}
           <div className="space-y-3">
-            <h3 className="text-xs font-black tracking-wider text-plum-900 uppercase border-b border-lavender-200 pb-2">
+            <h3 className="text-xs font-serif font-normal tracking-widest text-plum-900 uppercase border-b border-lavender-200 pb-2">
               SALON INFO & HOURS
             </h3>
-            <ul className="text-xs text-plum-700 space-y-2 font-medium">
+            <ul className="text-xs text-plum-700 space-y-2 font-light tracking-wide">
               <li className="flex justify-between">
-                <span>営業時間:</span>
-                <span className="font-bold text-plum-900">{SALON_INFO.hours}</span>
+                <span className="font-serif">営業時間:</span>
+                <span className="text-plum-900 font-serif font-normal">{SALON_INFO.hours}</span>
               </li>
               <li className="flex justify-between">
-                <span>定休日:</span>
+                <span className="font-serif">定休日:</span>
                 <span>不定休</span>
               </li>
-              <li className="text-[11px] text-plum-900 font-bold bg-white/90 p-2.5 rounded-xl border border-lavender-200">
+              <li className="text-[11px] text-plum-900 font-normal bg-white/90 p-2.5 rounded-xl border border-lavender-200 tracking-wide">
                 ✦ 年末年始を除き、GW・お盆・SWなどの連休中も休まず営業中！
               </li>
               <li className="flex justify-between">
-                <span>設備席数:</span>
+                <span className="font-serif">設備席数:</span>
                 <span>ハンド2席 / フット2席</span>
               </li>
               <li className="flex justify-between">
-                <span>駐車場:</span>
+                <span className="font-serif">駐車場:</span>
                 <span>お客様専用 3台完備</span>
               </li>
             </ul>
@@ -70,19 +70,19 @@ export default function Footer() {
 
           {/* 決済・おもてなし */}
           <div className="space-y-3">
-            <h3 className="text-xs font-black tracking-wider text-plum-900 uppercase border-b border-lavender-200 pb-2">
+            <h3 className="text-xs font-serif font-normal tracking-widest text-plum-900 uppercase border-b border-lavender-200 pb-2">
               PAYMENTS & AMENITIES
             </h3>
-            <div className="text-xs text-plum-700 space-y-2 font-medium">
+            <div className="text-xs text-plum-700 space-y-2 font-light tracking-wide">
               <div>
-                <p className="font-bold text-plum-900 mb-1">ご利用可能な決済方法:</p>
-                <p className="text-[11px] text-plum-600 leading-relaxed">
+                <p className="font-normal text-plum-900 mb-1">ご利用可能な決済方法:</p>
+                <p className="text-[11px] text-plum-600 leading-relaxed font-light">
                   クレジットカード（VISA, Master, JCB, Amex, Diners）、デビット、PayPay、交通系IC、現金
                 </p>
               </div>
               <div>
-                <p className="font-bold text-plum-900 mb-0.5">無料カフェドリンク（全6種）:</p>
-                <p className="text-[11px] text-plum-500">
+                <p className="font-normal text-plum-900 mb-0.5">無料カフェドリンク（全6種）:</p>
+                <p className="text-[11px] text-plum-500 font-light">
                   珈琲・紅茶・緑茶・烏龍茶・ほうじ茶・カフェラテ
                 </p>
               </div>
@@ -91,7 +91,7 @@ export default function Footer() {
 
           {/* 予約・採用リンク */}
           <div className="space-y-3">
-            <h3 className="text-xs font-black tracking-wider text-plum-900 uppercase border-b border-lavender-200 pb-2">
+            <h3 className="text-xs font-serif font-normal tracking-widest text-plum-900 uppercase border-b border-lavender-200 pb-2">
               RESERVATION & RECRUIT
             </h3>
             <div className="space-y-2">
@@ -99,7 +99,7 @@ export default function Footer() {
                 href={SALON_INFO.links.hotpepper}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="luxe-button w-full text-center py-2.5 rounded-full text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm"
+                className="luxe-button w-full text-center py-2.5 rounded-full text-xs font-medium flex items-center justify-center gap-1.5 shadow-sm tracking-wider"
               >
                 <Calendar className="w-3.5 h-3.5" />
                 <span>HOT PEPPER Beauty 予約</span>
@@ -108,7 +108,7 @@ export default function Footer() {
                 href={SALON_INFO.links.line}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full text-center py-2.5 rounded-full bg-[#06C755] hover:bg-[#05a847] text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all hover:scale-102"
+                className="w-full text-center py-2.5 rounded-full bg-[#06C755] hover:bg-[#05a847] text-white text-xs font-medium flex items-center justify-center gap-1.5 shadow-sm transition-all hover:scale-102 tracking-wide"
               >
                 <span>公式LINE限定クーポン</span>
               </a>
@@ -116,7 +116,7 @@ export default function Footer() {
                 href={SALON_INFO.links.hotpepperWork}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full text-center py-2 rounded-full bg-white text-plum-700 border border-lavender-200 hover:bg-lavender-50 text-[11px] font-bold flex items-center justify-center gap-1 transition-all"
+                className="w-full text-center py-2 rounded-full bg-white text-plum-700 border border-lavender-200 hover:bg-lavender-50 text-[11px] font-normal flex items-center justify-center gap-1 transition-all tracking-wide"
               >
                 <span>ネイリスト求人（HPB WORK）</span>
                 <ExternalLink className="w-3 h-3 text-lavender-500" />
@@ -125,7 +125,7 @@ export default function Footer() {
                 href={SALON_INFO.links.indeed}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full text-center py-2 rounded-full bg-white text-plum-700 border border-lavender-200 hover:bg-lavender-50 text-[11px] font-bold flex items-center justify-center gap-1 transition-all"
+                className="w-full text-center py-2 rounded-full bg-white text-plum-700 border border-lavender-200 hover:bg-lavender-50 text-[11px] font-normal flex items-center justify-center gap-1 transition-all tracking-wide"
               >
                 <span>ネイリスト求人（Indeed）</span>
                 <ExternalLink className="w-3 h-3 text-lavender-500" />
@@ -136,9 +136,9 @@ export default function Footer() {
         </div>
 
         {/* 最下部コピーライト */}
-        <div className="pt-8 border-t border-lavender-200/80 flex flex-col sm:flex-row items-center justify-between text-xs text-plum-500 gap-4">
-          <p>© 2026 Salon de Fraise (サロン ド フレーズ). All Rights Reserved.</p>
-          <div className="flex gap-4 text-[11px]">
+        <div className="pt-8 border-t border-lavender-200/80 flex flex-col sm:flex-row items-center justify-between text-xs text-plum-500 gap-4 font-light">
+          <p className="font-serif">© 2026 Salon de Fraise (サロン ド フレーズ). All Rights Reserved.</p>
+          <div className="flex gap-4 text-[11px] tracking-wide">
             <a href="#concept" className="hover:text-lavender-700 transition-colors">サロンの強み</a>
             <a href="#gallery" className="hover:text-lavender-700 transition-colors">デザインカタログ</a>
             <a href="#magnet-lab" className="hover:text-lavender-700 transition-colors">水光マグネット体験</a>

@@ -46,8 +46,35 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ["var(--font-jakarta)", "var(--font-sans-jp)", "sans-serif"],
-        serif: ["var(--font-playfair)", "serif"],
+        // 繊細で優美な明朝体・セリフ体を標準フォントに設定
+        sans: [
+          "var(--font-shippori)",
+          "var(--font-noto-serif)",
+          '"Hiragino Mincho ProN"',
+          '"Yu Mincho"',
+          '"BIZ UDPMincho"',
+          "serif",
+        ],
+        serif: [
+          "var(--font-cormorant)",
+          "var(--font-shippori)",
+          "var(--font-noto-serif)",
+          "serif",
+        ],
+        mincho: [
+          "var(--font-shippori)",
+          "var(--font-noto-serif)",
+          "serif",
+        ],
+      },
+      letterSpacing: {
+        tighter: "-0.04em",
+        tight: "-0.02em",
+        normal: "0em",
+        wide: "0.04em",
+        wider: "0.08em",
+        widest: "0.15em",
+        luxe: "0.2em",
       },
     },
   },

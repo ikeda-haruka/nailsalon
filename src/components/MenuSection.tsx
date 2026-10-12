@@ -10,15 +10,15 @@ export default function MenuSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* セクションヘッダー */}
-        <div className="text-center max-w-2xl mx-auto mb-14 space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-lavender-100 text-lavender-700 text-xs font-black tracking-wider uppercase border border-lavender-200">
+        <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-lavender-100 text-lavender-700 text-xs font-normal tracking-widest uppercase border border-lavender-200 font-serif">
             <Sparkles className="w-3.5 h-3.5 text-gold-500" />
             <span>Menu & Price</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-black text-plum-900">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-normal text-plum-900 leading-[1.3] tracking-wide">
             明朗会計・パラジェル料金表
           </h2>
-          <p className="text-xs sm:text-sm text-plum-700 font-medium">
+          <p className="text-xs sm:text-sm text-plum-700 font-light tracking-wide leading-relaxed">
             全ハンドコースに自爪を削らないパラジェル＆高持続フィルイン込み。<br className="hidden sm:inline" />
             追加料金のない安心の明朗プライスです。
           </p>
@@ -31,14 +31,14 @@ export default function MenuSection() {
               <div className="w-16 h-16 rounded-2xl bg-[#06C755] text-white flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/30 text-2xl">
                 🎟️
               </div>
-              <div className="space-y-1 text-center md:text-left">
-                <span className="text-[10px] font-black text-[#06C755] uppercase tracking-wider bg-white px-2.5 py-0.5 rounded-full inline-block border border-[#06C755]/20 shadow-xs">
+              <div className="space-y-1.5 text-center md:text-left">
+                <span className="text-[10px] font-normal text-[#06C755] uppercase tracking-widest bg-white px-2.5 py-0.5 rounded-full inline-block border border-[#06C755]/20 shadow-xs font-serif">
                   LINE FRIENDS ONLY
                 </span>
-                <h3 className="text-xl sm:text-2xl font-bold text-plum-900">
+                <h3 className="text-xl sm:text-2xl font-serif font-normal text-plum-900 tracking-wide">
                   お得な回数券 ＆ 毎月届く限定クーポン
                 </h3>
-                <p className="text-xs text-plum-700 font-medium">
+                <p className="text-xs text-plum-700 font-light tracking-wide">
                   3回・5回のお得な回数券は公式LINEよりご購入いただけます。初回来店クーポンも配信中！
                 </p>
               </div>
@@ -49,7 +49,7 @@ export default function MenuSection() {
                 href={SALON_INFO.links.line}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full md:w-auto px-7 py-3.5 rounded-full bg-[#06C755] hover:bg-[#05a847] text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30 transition-all hover:scale-105"
+                className="w-full md:w-auto px-7 py-3.5 rounded-full bg-[#06C755] hover:bg-[#05a847] text-white font-medium text-xs flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30 transition-all hover:scale-105 tracking-wider"
               >
                 <MessageCircle className="w-4 h-4" />
                 <span>公式LINEでクーポンを受け取る</span>
@@ -62,9 +62,9 @@ export default function MenuSection() {
         <div className="space-y-12">
           {MENU_CATEGORIES.map((cat, idx) => (
             <div key={idx} className="space-y-6">
-              <div className="flex items-center gap-3 border-b-2 border-lavender-100 pb-3">
-                <span className="w-3 h-3 rounded-full bg-lavender-500" />
-                <h3 className="text-xl sm:text-2xl font-serif font-black text-plum-900">
+              <div className="flex items-center gap-3 border-b border-lavender-100 pb-3">
+                <span className="w-2.5 h-2.5 rounded-full bg-lavender-500" />
+                <h3 className="text-xl sm:text-2xl font-serif font-normal text-plum-900 tracking-wide">
                   {cat.category}
                 </h3>
               </div>
@@ -81,25 +81,25 @@ export default function MenuSection() {
                   >
                     <div>
                       {item.recommended && (
-                        <span className="inline-block px-3 py-0.5 rounded-full bg-gold-500 text-plum-950 text-[10px] font-black uppercase tracking-wider mb-2.5 shadow-xs">
+                        <span className="inline-block px-3 py-0.5 rounded-full bg-gold-500 text-plum-950 text-[10px] font-normal uppercase tracking-widest mb-2.5 shadow-xs font-serif">
                           POPULAR ★ おすすめ
                         </span>
                       )}
                       <div className="flex items-start justify-between gap-4 mb-2">
-                        <h4 className="text-base font-bold text-plum-900 leading-snug">
+                        <h4 className="text-base font-serif font-normal text-plum-900 leading-snug tracking-wide">
                           {item.name}
                         </h4>
-                        <span className="text-xl font-serif font-black text-gold-600 shrink-0">
+                        <span className="text-xl font-serif font-light text-gold-600 shrink-0 tracking-wider">
                           {item.price}
                         </span>
                       </div>
-                      <p className="text-xs text-plum-700 leading-relaxed mb-4 font-medium">
+                      <p className="text-xs text-plum-700 leading-relaxed mb-4 font-light tracking-wide">
                         {item.description}
                       </p>
                     </div>
 
                     <div className="pt-3 border-t border-lavender-100 flex items-center justify-between text-xs">
-                      <span className="text-[10px] text-plum-500 flex items-center gap-1 font-medium">
+                      <span className="text-[10px] text-plum-500 flex items-center gap-1 font-light tracking-wide">
                         <Clock className="w-3.5 h-3.5 text-lavender-400" />
                         目安: {item.time}
                       </span>
@@ -107,7 +107,7 @@ export default function MenuSection() {
                         href={SALON_INFO.links.hotpepper}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-lavender-700 hover:text-lavender-900 font-bold flex items-center gap-1 group text-[11px]"
+                        className="text-lavender-700 hover:text-lavender-900 font-medium flex items-center gap-1 group text-[11px] tracking-wide"
                       >
                         <span>予約へ</span>
                         <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
@@ -127,8 +127,8 @@ export default function MenuSection() {
               <CreditCard className="w-6 h-6" />
             </div>
             <div>
-              <h4 className="text-sm font-bold text-plum-900">各種キャッシュレス決済に対応</h4>
-              <p className="text-xs text-plum-600 font-medium mt-0.5">
+              <h4 className="text-sm font-serif font-normal text-plum-900 tracking-wide">各種キャッシュレス決済に対応</h4>
+              <p className="text-xs text-plum-600 font-light mt-0.5 tracking-wide">
                 クレジットカード（VISA/Master/JCB/Amex/Diners）・デビット・PayPay・交通系IC・現金
               </p>
             </div>
@@ -138,7 +138,7 @@ export default function MenuSection() {
             href={SALON_INFO.links.hotpepper}
             target="_blank"
             rel="noopener noreferrer"
-            className="luxe-button w-full md:w-auto px-6 py-3 rounded-full text-xs font-bold text-center shrink-0 shadow-md"
+            className="luxe-button w-full md:w-auto px-6 py-3 rounded-full text-xs font-medium text-center shrink-0 shadow-md tracking-wider"
           >
             <span>クーポン一覧・ネット予約</span>
           </a>

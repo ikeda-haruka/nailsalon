@@ -41,19 +41,19 @@ export default function Header() {
           {/* ロゴ */}
           <Link href="/" className="flex items-center gap-3 group">
             <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#9975cb] via-[#b895ea] to-[#d4af6e] flex items-center justify-center text-white shadow-md shadow-lavender-400/30 group-hover:scale-105 transition-transform relative overflow-hidden border border-white/60">
-              <span className="text-white text-base font-serif font-bold">✦</span>
+              <span className="text-white text-base font-serif font-light">✦</span>
               <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xl sm:text-2xl font-serif font-bold tracking-tight text-plum-dark">
+                <span className="text-xl sm:text-2xl font-serif font-normal tracking-wide text-plum-dark">
                   Salon de Fraise
                 </span>
-                <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-lavender-100 text-lavender-700 border border-lavender-200 font-extrabold tracking-wider hidden sm:inline-block">
+                <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-lavender-100 text-lavender-700 border border-lavender-200 font-medium tracking-wider hidden sm:inline-block">
                   PARAGEL
                 </span>
               </div>
-              <p className="text-[10px] text-gold-500 font-semibold tracking-widest uppercase">
+              <p className="text-[10px] text-gold-500 font-normal tracking-widest uppercase">
                 Paragel & Water-Glow Magnet Salon
               </p>
             </div>
@@ -65,12 +65,12 @@ export default function Header() {
               <a
                 key={link.name}
                 href={link.href}
-                className="group flex flex-col items-center text-xs font-semibold text-plum-body hover:text-lavender-600 transition-colors py-1"
+                className="group flex flex-col items-center text-xs font-normal text-plum-body hover:text-lavender-600 transition-colors py-1"
               >
-                <span className="font-serif tracking-wider text-sm font-bold text-plum-dark group-hover:text-lavender-600 transition-colors">
+                <span className="font-serif tracking-widest text-sm font-normal text-plum-dark group-hover:text-lavender-600 transition-colors">
                   {link.name}
                 </span>
-                <span className="text-[9px] text-plum-muted group-hover:text-gold-500 transition-colors font-medium">
+                <span className="text-[9px] text-plum-muted group-hover:text-gold-500 transition-colors font-light">
                   {link.jp}
                 </span>
               </a>
@@ -83,7 +83,7 @@ export default function Header() {
               href={SALON_INFO.links.line}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs font-bold px-3.5 py-2 rounded-full bg-white text-[#06C755] border border-[#06C755]/30 hover:bg-[#06C755]/10 shadow-xs transition-all"
+              className="flex items-center gap-1.5 text-xs font-medium px-3.5 py-2 rounded-full bg-white text-[#06C755] border border-[#06C755]/30 hover:bg-[#06C755]/10 shadow-xs transition-all tracking-wide"
             >
               <MessageCircle className="w-4 h-4 fill-[#06C755]/10 text-[#06C755]" />
               <span>LINEクーポン</span>
@@ -93,7 +93,7 @@ export default function Header() {
               href={SALON_INFO.links.hotpepper}
               target="_blank"
               rel="noopener noreferrer"
-              className="luxe-button flex items-center gap-1.5 text-xs font-bold px-5 py-2.5 rounded-full"
+              className="luxe-button flex items-center gap-1.5 text-xs font-medium px-5 py-2.5 rounded-full tracking-wider"
             >
               <Calendar className="w-4 h-4" />
               <span>即時予約・空席</span>
@@ -104,7 +104,7 @@ export default function Header() {
           <div className="lg:hidden flex items-center gap-2">
             <a
               href={SALON_INFO.links.hotpepper}
-              className="luxe-button text-xs px-3.5 py-2 rounded-full font-bold sm:hidden flex items-center gap-1"
+              className="luxe-button text-xs px-3.5 py-2 rounded-full font-medium sm:hidden flex items-center gap-1"
             >
               <Calendar className="w-3.5 h-3.5" />
               <span>予約</span>
@@ -125,8 +125,8 @@ export default function Header() {
         <div className="lg:hidden bg-white/95 backdrop-blur-2xl border-b border-lavender-200 px-6 py-6 shadow-2xl animate-in slide-in-from-top-4 duration-300">
           <div className="flex flex-col gap-3">
             <div className="pb-3 border-b border-lavender-100 flex items-center justify-between text-xs">
-              <span className="font-semibold text-plum-body">10:00〜20:00（不定休・連休営業）</span>
-              <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-lavender-100 text-lavender-700 border border-lavender-200">駐車場3台完備</span>
+              <span className="font-light text-plum-body">10:00〜20:00（不定休・連休営業）</span>
+              <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-lavender-100 text-lavender-700 border border-lavender-200">駐車場3台完備</span>
             </div>
 
             <div className="grid grid-cols-2 gap-2 py-2">
@@ -137,8 +137,8 @@ export default function Header() {
                   onClick={() => setMobileMenuOpen(false)}
                   className="p-3 rounded-2xl bg-lavender-50/60 hover:bg-lavender-100/80 border border-lavender-100 text-left transition-all"
                 >
-                  <span className="block font-serif font-bold text-sm text-plum-dark">{link.name}</span>
-                  <span className="text-[10px] text-lavender-600 font-medium">{link.jp}</span>
+                  <span className="block font-serif font-normal text-sm text-plum-dark">{link.name}</span>
+                  <span className="block text-[10px] text-plum-muted">{link.jp}</span>
                 </a>
               ))}
             </div>
@@ -148,19 +148,19 @@ export default function Header() {
                 href={SALON_INFO.links.hotpepper}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="luxe-button w-full text-center py-3.5 rounded-full font-bold text-xs flex items-center justify-center gap-2"
+                className="luxe-button text-center py-3 rounded-full text-xs font-medium flex items-center justify-center gap-1.5 shadow-md"
               >
                 <Calendar className="w-4 h-4" />
-                <span>HOT PEPPER Beauty で空席確認・予約</span>
+                <span>HOT PEPPER Beauty 即時予約</span>
               </a>
               <a
                 href={SALON_INFO.links.line}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full text-center py-3 rounded-full font-bold text-xs bg-[#06C755] text-white flex items-center justify-center gap-2 shadow-sm"
+                className="text-center py-3 rounded-full bg-[#06C755] text-white text-xs font-medium flex items-center justify-center gap-1.5 shadow-sm"
               >
                 <MessageCircle className="w-4 h-4" />
-                <span>公式LINE限定クーポン・回数券</span>
+                <span>公式LINEで限定クーポン受け取り</span>
               </a>
             </div>
           </div>

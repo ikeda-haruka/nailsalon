@@ -1,35 +1,35 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Playfair_Display, Noto_Sans_JP } from "next/font/google";
+import { Shippori_Mincho, Cormorant_Garamond, Noto_Serif_JP } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FloatingReservationBar from "@/components/FloatingReservationBar";
 
-const jakarta = Plus_Jakarta_Sans({
+const shippori = Shippori_Mincho({
   subsets: ["latin"],
-  variable: "--font-jakarta",
+  variable: "--font-shippori",
   display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600"],
 });
 
-const playfair = Playfair_Display({
+const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
-  variable: "--font-playfair",
+  variable: "--font-cormorant",
   display: "swap",
-  weight: ["500", "600", "700", "800", "900"],
+  weight: ["300", "400", "500", "600"],
 });
 
-const notoSans = Noto_Sans_JP({
+const notoSerif = Noto_Serif_JP({
   subsets: ["latin"],
-  variable: "--font-sans-jp",
+  variable: "--font-noto-serif",
   display: "swap",
-  weight: ["400", "500", "600", "700"],
+  weight: ["200", "300", "400", "500"],
 });
 
 export const metadata: Metadata = {
   title: "Salon de Fraise | パラジェル＆水光マグネットネイル専門店",
-  description: "削らない自爪に優しいパラジェル専門店。丁寧なケアとフィルイン技術で3〜4週間綺麗な状態をキープ。50種類以上の水光マグネットカラーや季節のデザイン、大人可愛いイチゴミルク空間。ハンド2席・フット2席、お客様駐車場3台完備。ペット・お子様同伴OK。",
-  keywords: ["パラジェル", "フィルイン", "ネイルサロン", "水光マグネット", "マグネットネイル", "イチゴミルク", "オフィスネイル"],
+  description: "削らない自爪に優しいパラジェル専門店。丁寧なケアとフィルイン技術で3〜4週間綺麗な状態をキープ。50種類以上の水光マグネットカラーや季節のデザイン、白・ラベンダー・ゴールドが織りなす洗練された大人空間。ハンド2席・フット2席、お客様駐車場3台完備。ペット・お子様同伴OK。",
+  keywords: ["パラジェル", "フィルイン", "ネイルサロン", "水光マグネット", "マグネットネイル", "表参道ネイル", "オフィスネイル"],
 };
 
 export default function RootLayout({
@@ -38,8 +38,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja" className={`${jakarta.variable} ${playfair.variable} ${notoSans.variable}`}>
-      <body className="antialiased selection:bg-[#ff85a1] selection:text-white">
+    <html lang="ja" className={`${shippori.variable} ${cormorant.variable} ${notoSerif.variable}`}>
+      <body className="antialiased selection:bg-lavender-200 selection:text-plum-900">
         <Header />
         <main className="min-h-screen">
           {children}

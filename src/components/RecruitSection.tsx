@@ -25,16 +25,16 @@ export default function RecruitSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* セクションヘッダー */}
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-lavender-100 text-lavender-700 text-xs font-black tracking-wider uppercase border border-lavender-200">
+        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-lavender-100 text-lavender-700 text-xs font-normal tracking-widest uppercase border border-lavender-200 font-serif">
             <Briefcase className="w-3.5 h-3.5 text-gold-500" />
             <span>Join Our Team</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-black text-plum-900">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-normal text-plum-900 leading-[1.3] tracking-wide">
             ネイリスト採用情報
           </h2>
-          <p className="text-xs sm:text-sm text-plum-700 font-medium">
-            随時スタッフ募集中。<strong className="text-lavender-700">HOT PEPPER Beauty WORK</strong> および <strong className="text-plum-900">Indeed</strong> にて掲載中！
+          <p className="text-xs sm:text-sm text-plum-700 font-light tracking-wide leading-relaxed">
+            随時スタッフ募集中。<strong className="text-lavender-700 font-normal">HOT PEPPER Beauty WORK</strong> および <strong className="text-plum-900 font-normal">Indeed</strong> にて掲載中！
           </p>
         </div>
 
@@ -43,11 +43,11 @@ export default function RecruitSection() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             
             <div className="lg:col-span-7 space-y-5">
-              <span className="text-[10px] font-black text-plum-950 bg-gold-400 px-3 py-1 rounded-full uppercase tracking-wider inline-block shadow-xs">
+              <span className="text-[10px] font-normal text-plum-950 bg-gold-400 px-3 py-1 rounded-full uppercase tracking-widest inline-block shadow-xs font-serif">
                 正社員 / アルバイト・パート / 業務委託 募集中
               </span>
               
-              <h3 className="text-2xl sm:text-3xl font-serif font-black text-plum-900 leading-snug">
+              <h3 className="text-2xl sm:text-3xl font-serif font-normal text-plum-900 leading-relaxed tracking-wide">
                 削らないパラジェル＆50種水光マグネット。<br />
                 自信の持てる技術を、温かい仲間と一緒に。
               </h3>
@@ -59,8 +59,8 @@ export default function RecruitSection() {
                       <Check className="w-3.5 h-3.5" />
                     </div>
                     <div>
-                      <h4 className="text-xs font-bold text-plum-900">{p.title}</h4>
-                      <p className="text-[11px] text-plum-600 font-medium mt-0.5">{p.desc}</p>
+                      <h4 className="text-xs font-serif font-normal text-plum-900 tracking-wide">{p.title}</h4>
+                      <p className="text-[11px] text-plum-600 font-light mt-0.5 tracking-wide">{p.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -72,7 +72,7 @@ export default function RecruitSection() {
                   href={SALON_INFO.links.hotpepperWork}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="luxe-button flex-1 text-center py-3.5 px-5 rounded-full text-xs font-bold flex items-center justify-center gap-2 shadow-md"
+                  className="luxe-button flex-1 text-center py-3.5 px-5 rounded-full text-xs font-medium flex items-center justify-center gap-2 shadow-md tracking-wider"
                 >
                   <span>HOT PEPPER Beauty WORK で見る</span>
                   <ExternalLink className="w-3.5 h-3.5" />
@@ -82,42 +82,42 @@ export default function RecruitSection() {
                   href={SALON_INFO.links.indeed}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 text-center py-3.5 px-5 rounded-full text-xs font-bold bg-[#003A9B] hover:bg-[#002b75] text-white flex items-center justify-center gap-2 shadow-md transition-all hover:scale-102"
+                  className="flex-1 text-center py-3.5 px-5 rounded-full text-xs font-medium bg-[#003A9B] hover:bg-[#002b75] text-white flex items-center justify-center gap-2 shadow-md transition-all hover:scale-102 tracking-wider"
                 >
                   <span>Indeed で見る</span>
                   <ExternalLink className="w-3.5 h-3.5" />
                 </a>
               </div>
 
-              <p className="text-[10px] text-plum-500">
+              <p className="text-[10px] text-plum-500 font-light tracking-wide">
                 ※HOT PEPPER Beauty WORKはHOT PEPPER Beautyと連携している安心の美容系公式求人サービスです。
               </p>
             </div>
 
             {/* 右側要項 */}
             <div className="lg:col-span-5 bg-white/90 p-6 rounded-3xl border border-lavender-100 shadow-sm space-y-3 text-xs">
-              <h4 className="font-bold text-sm text-plum-900 border-b border-lavender-100 pb-2 flex items-center gap-2">
+              <h4 className="font-serif font-normal text-sm text-plum-900 border-b border-lavender-100 pb-2 flex items-center gap-2 tracking-wide">
                 <Users className="w-4 h-4 text-lavender-600" /> 募集要項
               </h4>
-              <ul className="space-y-2 text-plum-700 font-medium">
+              <ul className="space-y-2 text-plum-700 font-light">
                 <li className="flex justify-between border-b border-lavender-50 pb-1.5">
-                  <span className="text-plum-400">職種:</span>
-                  <span className="font-bold text-plum-900">ネイリスト（経験者優遇）</span>
+                  <span className="text-plum-400 font-serif">職種:</span>
+                  <span className="text-plum-900 font-normal">ネイリスト（経験者優遇）</span>
                 </li>
                 <li className="flex justify-between border-b border-lavender-50 pb-1.5">
-                  <span className="text-plum-400">給与:</span>
-                  <span className="font-bold text-plum-900">月給25万〜45万円 + 指名手当</span>
+                  <span className="text-plum-400 font-serif">給与:</span>
+                  <span className="text-plum-900 font-normal font-serif">月給25万〜45万円 + 指名手当</span>
                 </li>
                 <li className="flex justify-between border-b border-lavender-50 pb-1.5">
-                  <span className="text-plum-400">勤務時間:</span>
-                  <span>10:00〜20:00（シフト制）</span>
+                  <span className="text-plum-400 font-serif">勤務時間:</span>
+                  <span className="font-serif">10:00〜20:00（シフト制）</span>
                 </li>
                 <li className="flex justify-between border-b border-lavender-50 pb-1.5">
-                  <span className="text-plum-400">休日:</span>
+                  <span className="text-plum-400 font-serif">休日:</span>
                   <span>週休2日制・有給休暇あり</span>
                 </li>
                 <li className="flex justify-between">
-                  <span className="text-plum-400">福利厚生:</span>
+                  <span className="text-plum-400 font-serif">福利厚生:</span>
                   <span>社保完備 / 施術・物販社割 / 交通費</span>
                 </li>
               </ul>

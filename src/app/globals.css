@@ -14,14 +14,23 @@ html {
   scroll-behavior: smooth;
   color: var(--color-text-dark);
   background-color: #faf8fc;
+  font-feature-settings: "palt" 1;
 }
 
 body {
-  font-family: var(--font-jakarta), var(--font-sans-jp), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-shippori), var(--font-noto-serif), "Hiragino Mincho ProN", "Yu Mincho", "BIZ UDPMincho", serif;
   color: var(--color-text-dark);
   background: #faf8fc;
   overflow-x: hidden;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.04em;
+  line-height: 1.85;
+}
+
+/* 繊細で優美なタイポグラフィ設定 */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-cormorant), var(--font-shippori), var(--font-noto-serif), serif;
+  letter-spacing: 0.05em;
+  font-weight: 500;
 }
 
 /* 20〜30代向け: シルキーラベンダー & シャンパンゴールドのオーロラ背景 */
@@ -45,7 +54,7 @@ body {
 
 /* 上品なパールすりガラス（Pearl Glassmorphism） */
 .pearl-glass {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(228, 204, 162, 0.45);
@@ -60,7 +69,7 @@ body {
 
 .pearl-glass-hover:hover {
   transform: translateY(-4px);
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.96);
   border-color: rgba(197, 155, 75, 0.7);
   box-shadow: 0 20px 45px -10px rgba(134, 88, 203, 0.16),
               0 4px 14px rgba(197, 155, 75, 0.12),
@@ -73,6 +82,7 @@ body {
   color: white;
   position: relative;
   overflow: hidden;
+  letter-spacing: 0.06em;
   box-shadow: 0 8px 22px -4px rgba(118, 69, 190, 0.38),
               inset 0 1px 1.5px rgba(255, 255, 255, 0.4),
               inset 0 -1.5px 3px rgba(42, 30, 54, 0.2);
@@ -105,7 +115,8 @@ body {
 .gold-button {
   background: linear-gradient(135deg, #d4af6e 0%, #b88a38 100%);
   color: #241a2f;
-  font-weight: 700;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   position: relative;
   overflow: hidden;
   box-shadow: 0 8px 20px -4px rgba(197, 155, 75, 0.35),

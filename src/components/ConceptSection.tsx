@@ -38,16 +38,16 @@ export default function ConceptSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* セクションヘッダー */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-lavender-100 text-lavender-700 text-xs font-black tracking-wider uppercase border border-lavender-200">
+        <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-lavender-100 text-lavender-700 text-xs font-normal tracking-widest uppercase border border-lavender-200">
             <Sparkles className="w-3.5 h-3.5 text-gold-500" />
-            <span>Why Salon de Fraise?</span>
+            <span className="font-serif">Why Salon de Fraise?</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-black text-plum-900">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-normal text-plum-900 leading-[1.35] tracking-wide">
             ずっと美しい指先を保つ、<br />
             3つの理由
           </h2>
-          <p className="text-xs sm:text-sm text-plum-700 font-medium leading-relaxed">
+          <p className="text-xs sm:text-sm text-plum-700 font-light leading-relaxed tracking-wide">
             ジェルネイルを続けると爪が薄くなる…そんな不安をゼロに。<br className="hidden sm:inline" />
             丁寧なウォーターケアと最新技術で、大人の手元を品格ある輝きへ導きます。
           </p>
@@ -65,26 +65,26 @@ export default function ConceptSection() {
 
               <div>
                 <div className="flex items-center justify-between mb-6">
-                  <span className="text-[11px] font-black tracking-widest text-lavender-700 uppercase bg-lavender-50 px-2.5 py-1 rounded-full border border-lavender-200">
+                  <span className="text-[11px] font-normal tracking-widest text-lavender-700 uppercase bg-lavender-50 px-3 py-1 rounded-full border border-lavender-200 font-serif">
                     {p.step}
                   </span>
-                  <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-white text-plum-900 border border-gold-200 shadow-xs">
+                  <span className="text-xs font-light px-2.5 py-0.5 rounded-full bg-white text-plum-900 border border-gold-200 shadow-xs tracking-wide">
                     {p.badge}
                   </span>
                 </div>
 
-                <h3 className="text-lg font-bold text-plum-900 mb-3 leading-snug group-hover:text-lavender-700 transition-colors">
+                <h3 className="text-base sm:text-lg font-serif font-normal text-plum-900 mb-3 leading-snug group-hover:text-lavender-700 transition-colors tracking-wide">
                   {p.title}
                 </h3>
 
-                <p className="text-xs text-plum-700 leading-relaxed mb-6 font-medium">
+                <p className="text-xs text-plum-700 leading-relaxed mb-6 font-light tracking-wide">
                   {p.desc}
                 </p>
               </div>
 
               <div className="pt-4 border-t border-lavender-100 flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-gold-500 shrink-0" />
-                <span className="text-xs font-bold text-lavender-700">
+                <span className="text-xs font-normal text-lavender-700 tracking-wide">
                   {p.highlight}
                 </span>
               </div>
@@ -104,23 +104,23 @@ export default function ConceptSection() {
                 fill
                 className="object-cover hover:scale-105 transition-transform duration-700"
               />
-              <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-md px-3.5 py-1 rounded-full text-xs font-black text-lavender-700 shadow-sm border border-lavender-200">
+              <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-md px-3.5 py-1 rounded-full text-xs font-normal text-lavender-700 shadow-sm border border-lavender-200 tracking-wide font-serif">
                 ハンド2席・フット2席プライベート空間
               </div>
             </div>
 
             {/* 右側: 快適おもてなし案内 */}
             <div className="lg:col-span-6 space-y-5">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-lavender-100 text-lavender-700 text-xs font-black tracking-wider uppercase border border-lavender-200">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-lavender-100 text-lavender-700 text-xs font-normal tracking-widest uppercase border border-lavender-200 font-serif">
                 <span>Relaxing Luxury Atmosphere</span>
               </div>
 
-              <h3 className="text-2xl sm:text-3xl font-serif font-black text-plum-900 leading-snug">
+              <h3 className="text-2xl sm:text-3xl font-serif font-normal text-plum-900 leading-relaxed tracking-wide">
                 白・淡い紫・シャンパンゴールドの洗練された空間で、<br />
                 心までほどける贅沢なひとときを
               </h3>
 
-              <p className="text-xs sm:text-sm text-plum-700 leading-relaxed font-medium">
+              <p className="text-xs sm:text-sm text-plum-700 leading-relaxed font-light tracking-wide">
                 全席リクライニングチェア仕様。ハンド2席・フット2席の静かなプライベート空間で、ゆったりとした時間をお過ごしいただけます。
                 ペットやお子様連れ（ベビーカー入店OK）でのご来店も大歓迎です。
               </p>
@@ -129,41 +129,41 @@ export default function ConceptSection() {
               <div className="grid grid-cols-2 gap-3 pt-2">
                 <div className="p-3.5 rounded-2xl bg-white/90 border border-lavender-100 shadow-xs flex items-center gap-3">
                   <div className="w-9 h-9 rounded-xl bg-gold-50 border border-gold-200 flex items-center justify-center text-gold-600 shrink-0">
-                    <Coffee className="w-5 h-5" />
+                    <Coffee className="w-4 h-4" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-plum-900">カフェドリンク6種</p>
-                    <p className="text-[10px] text-plum-500">珈琲・紅茶・緑茶・ラテ等</p>
+                    <p className="text-xs font-normal text-plum-900 tracking-wide">カフェドリンク6種</p>
+                    <p className="text-[10px] text-plum-500 font-light">珈琲・紅茶・緑茶・ラテ等</p>
                   </div>
                 </div>
 
                 <div className="p-3.5 rounded-2xl bg-white/90 border border-lavender-100 shadow-xs flex items-center gap-3">
                   <div className="w-9 h-9 rounded-xl bg-lavender-50 border border-lavender-200 flex items-center justify-center text-lavender-600 shrink-0">
-                    <Car className="w-5 h-5" />
+                    <Car className="w-4 h-4" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-plum-900">お客様専用駐車場</p>
-                    <p className="text-[10px] text-plum-500">無料パーキング3台完備</p>
+                    <p className="text-xs font-normal text-plum-900 tracking-wide">お客様専用駐車場</p>
+                    <p className="text-[10px] text-plum-500 font-light">無料パーキング3台完備</p>
                   </div>
                 </div>
 
                 <div className="p-3.5 rounded-2xl bg-white/90 border border-lavender-100 shadow-xs flex items-center gap-3">
                   <div className="w-9 h-9 rounded-xl bg-lavender-50 border border-lavender-200 flex items-center justify-center text-lavender-600 shrink-0">
-                    <Dog className="w-5 h-5" />
+                    <Dog className="w-4 h-4" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-plum-900">ペット同伴歓迎</p>
-                    <p className="text-[10px] text-plum-500">愛犬・愛猫と一緒にご来店OK</p>
+                    <p className="text-xs font-normal text-plum-900 tracking-wide">ペット同伴歓迎</p>
+                    <p className="text-[10px] text-plum-500 font-light">愛犬・愛猫と一緒にご来店OK</p>
                   </div>
                 </div>
 
                 <div className="p-3.5 rounded-2xl bg-white/90 border border-lavender-100 shadow-xs flex items-center gap-3">
                   <div className="w-9 h-9 rounded-xl bg-gold-50 border border-gold-200 flex items-center justify-center text-gold-600 shrink-0">
-                    <Baby className="w-5 h-5" />
+                    <Baby className="w-4 h-4" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-plum-900">お子様連れOK</p>
-                    <p className="text-[10px] text-plum-500">ベビーカーの横付け対応</p>
+                    <p className="text-xs font-normal text-plum-900 tracking-wide">お子様連れOK</p>
+                    <p className="text-[10px] text-plum-500 font-light">ベビーカーの横付け対応</p>
                   </div>
                 </div>
               </div>
@@ -174,15 +174,15 @@ export default function ConceptSection() {
 
         {/* 3〜4週持続の秘訣・ケアアドバイスカード */}
         <div className="mt-12 p-6 sm:p-8 rounded-3xl bg-lavender-50/80 border border-lavender-200 flex flex-col sm:flex-row items-center gap-6">
-          <div className="w-14 h-14 rounded-2xl bg-white text-lavender-600 shadow-sm flex items-center justify-center shrink-0 border border-lavender-200">
-            <Droplets className="w-7 h-7 text-lavender-600" />
+          <div className="w-12 h-12 rounded-2xl bg-white text-lavender-600 shadow-sm flex items-center justify-center shrink-0 border border-lavender-200">
+            <Droplets className="w-6 h-6 text-lavender-600" />
           </div>
-          <div className="space-y-1 text-center sm:text-left flex-1">
-            <h4 className="text-sm sm:text-base font-bold text-plum-900 flex items-center justify-center sm:justify-start gap-2">
+          <div className="space-y-1.5 text-center sm:text-left flex-1">
+            <h4 className="text-sm sm:text-base font-serif font-normal text-plum-900 flex items-center justify-center sm:justify-start gap-2 tracking-wide">
               <span>3〜4週間綺麗な状態を保つ秘訣【ネイリスト直伝のホームケア】</span>
-              <span className="text-[10px] bg-gold-500 text-plum-950 px-2 py-0.5 rounded-full font-bold">Point</span>
+              <span className="text-[10px] bg-gold-500 text-plum-950 px-2 py-0.5 rounded-full font-serif font-normal">Point</span>
             </h4>
-            <p className="text-xs text-plum-700 leading-relaxed font-medium">
+            <p className="text-xs text-plum-700 leading-relaxed font-light tracking-wide">
               ネイルの持ちは爪の状態、水仕事や生活習慣、日々のオイルや保湿ケアによって変わります。
               1日数回のネイルオイル塗布でハイポニキウム（爪の裏側）を保湿することで、浮きのない美しい状態がずっと続きます。
             </p>

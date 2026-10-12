@@ -11,17 +11,17 @@ export default function StaffSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* セクションヘッダー */}
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-lavender-100 text-lavender-700 text-xs font-black tracking-wider uppercase border border-lavender-200">
+        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-lavender-100 text-lavender-700 text-xs font-normal tracking-widest uppercase border border-lavender-200 font-serif">
             <Sparkles className="w-3.5 h-3.5 text-gold-500" />
             <span>Top Nailists</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-black text-plum-900">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-normal text-plum-900 leading-[1.3] tracking-wide">
             在籍ネイリスト
           </h2>
-          <p className="text-xs sm:text-sm text-plum-700 font-medium">
+          <p className="text-xs sm:text-sm text-plum-700 font-light tracking-wide leading-relaxed">
             丁寧なカウンセリングと確かな自爪育成フィルイン技術で、理想の指先を叶えます。<br className="hidden sm:inline" />
-            スタッフ指名料: <strong className="text-gold-600 font-bold">{SALON_INFO.nominationFee}</strong>
+            スタッフ指名料: <strong className="text-gold-600 font-serif font-light tracking-wider">{SALON_INFO.nominationFee}</strong>
           </p>
         </div>
 
@@ -45,23 +45,23 @@ export default function StaffSection() {
                   <div className="absolute inset-0 bg-gradient-to-t from-plum-950/70 via-transparent to-transparent pointer-events-none" />
 
                   {/* ネイル作品バッジ */}
-                  <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-black text-lavender-700 shadow-md flex items-center gap-1 border border-lavender-100">
+                  <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-normal text-lavender-700 shadow-md flex items-center gap-1 border border-lavender-100 font-serif tracking-wide">
                     <span>💅 担当シグネチャー作品</span>
                   </div>
 
                   {/* 経験年数バッジ */}
-                  <div className="absolute top-3 right-3 bg-plum-950/70 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold text-white shadow-md">
+                  <div className="absolute top-3 right-3 bg-plum-950/70 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-light text-white shadow-md font-serif tracking-wider">
                     {staff.experience}
                   </div>
 
                   {/* 写真下部のネームオーバーレイ */}
                   <div className="absolute bottom-4 left-4 right-4 text-white">
-                    <span className="text-[10px] font-black uppercase tracking-wider text-gold-300">
+                    <span className="text-[10px] font-light uppercase tracking-widest text-gold-300 font-serif">
                       {staff.role}
                     </span>
-                    <h3 className="text-2xl font-serif font-bold text-white drop-shadow">
+                    <h3 className="text-2xl font-serif font-normal text-white drop-shadow tracking-wide">
                       {staff.name}
-                      <span className="text-xs font-sans font-normal ml-2 text-lavender-200">
+                      <span className="text-xs font-serif font-light ml-2 text-lavender-200 tracking-wider">
                         {staff.kana}
                       </span>
                     </h3>
@@ -70,14 +70,14 @@ export default function StaffSection() {
 
                 {/* 得意技術タグ */}
                 <div className="mb-4">
-                  <p className="text-[10px] font-bold text-plum-500 uppercase tracking-wider mb-1.5">
+                  <p className="text-[10px] font-light text-plum-500 uppercase tracking-widest mb-1.5 font-serif">
                     SPECIALTY
                   </p>
                   <div className="flex flex-wrap gap-1.5">
                     {staff.specialty.map((spec, i) => (
                       <span
                         key={i}
-                        className="text-[10px] px-2.5 py-1 rounded-full bg-white text-lavender-700 font-bold border border-lavender-200 shadow-xs"
+                        className="text-[10px] px-2.5 py-1 rounded-full bg-white text-lavender-700 font-light border border-lavender-200 shadow-xs tracking-wide"
                       >
                         {spec}
                       </span>
@@ -86,7 +86,7 @@ export default function StaffSection() {
                 </div>
 
                 {/* メッセージ */}
-                <p className="text-xs text-plum-700 leading-relaxed mb-6 font-medium bg-white/80 p-3.5 rounded-2xl border border-lavender-100">
+                <p className="text-xs text-plum-700 leading-relaxed mb-6 font-light tracking-wide bg-white/80 p-3.5 rounded-2xl border border-lavender-100">
                   &ldquo;{staff.message}&rdquo;
                 </p>
               </div>
@@ -94,14 +94,14 @@ export default function StaffSection() {
               {/* 指名予約ボタン */}
               <div className="pt-4 border-t border-lavender-100 space-y-2">
                 <div className="flex justify-between items-center text-xs">
-                  <span className="text-[11px] text-plum-500 font-medium">指名料金</span>
-                  <span className="font-extrabold text-gold-600">{SALON_INFO.nominationFee}</span>
+                  <span className="text-[11px] text-plum-500 font-light tracking-wide">指名料金</span>
+                  <span className="font-serif font-light text-gold-600 tracking-wider">{SALON_INFO.nominationFee}</span>
                 </div>
                 <a
                   href={SALON_INFO.links.hotpepper}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="luxe-button w-full text-center py-3 rounded-full text-xs font-bold flex items-center justify-center gap-1.5 shadow-md"
+                  className="luxe-button w-full text-center py-3 rounded-full text-xs font-medium flex items-center justify-center gap-1.5 shadow-md tracking-wider"
                 >
                   <Calendar className="w-4 h-4" />
                   <span>{staff.name}を指名して予約</span>
@@ -113,7 +113,7 @@ export default function StaffSection() {
 
         {/* 指名料金案内 */}
         <div className="text-center">
-          <p className="text-xs text-plum-500">
+          <p className="text-xs text-plum-500 font-light tracking-wide">
             ※スタッフをご指名いただく場合、メニュー料金に追加で指名料金（550円）を頂戴いたします。
           </p>
         </div>
