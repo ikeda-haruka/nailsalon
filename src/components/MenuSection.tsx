@@ -28,14 +28,14 @@ export default function MenuSection() {
         <div className="mb-16 p-6 sm:p-10 rounded-[2.5rem] bg-gradient-to-r from-emerald-500/10 via-lavender-100/50 to-gold-400/10 border-2 border-[#06C755]/30 shadow-xl relative overflow-hidden">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-5">
-              <div className="w-16 h-16 rounded-2xl bg-[#06C755] text-white flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/30 text-2xl">
-                🎟️
+              <div className="w-14 sm:w-16 h-14 sm:h-16 rounded-2xl bg-[#06C755] text-white flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/20">
+                <Ticket className="w-7 h-7" />
               </div>
-              <div className="space-y-1.5 text-center md:text-left">
+              <div className="space-y-1 text-center md:text-left">
                 <span className="text-[10px] font-normal text-[#06C755] uppercase tracking-widest bg-white px-2.5 py-0.5 rounded-full inline-block border border-[#06C755]/20 shadow-xs font-serif">
                   LINE FRIENDS ONLY
                 </span>
-                <h3 className="text-xl sm:text-2xl font-serif font-normal text-plum-900 tracking-wide">
+                <h3 className="text-lg sm:text-xl font-serif font-normal text-plum-900 tracking-wide">
                   お得な回数券 ＆ 毎月届く限定クーポン
                 </h3>
                 <p className="text-xs text-plum-700 font-light tracking-wide">

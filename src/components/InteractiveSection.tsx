@@ -84,39 +84,35 @@ export default function InteractiveSection() {
     setResult(null);
   };
 
-  const vacancyData = [
-    { day: "今日 (10/12)", status: "△ 残り1席", hot: true, time: "17:00〜" },
-    { day: "明日 (10/13)", status: "◎ 空席あり", hot: false, time: "11:00〜, 15:30〜" },
-    { day: "10/14 (水)", status: "◎ 空席あり", hot: false, time: "終日OK" },
-    { day: "10/15 (木)", status: "○ 残り2席", hot: false, time: "13:00〜, 18:00〜" },
-    { day: "10/16 (金)", status: "◎ 空席あり", hot: false, time: "10:30〜, 14:00〜" },
-    { day: "10/17 (土)", status: "△ 残り1席", hot: true, time: "16:00〜" },
-    { day: "10/18 (日)", status: "○ 残り2席", hot: false, time: "12:00〜, 17:30〜" },
+  const reservationSlots = [
+    { period: "平日 昼（10:00〜16:00）", status: "空き枠あり", badge: "◎ 比較的スムーズ", desc: "ゆったり施術・カフェドリンクを満喫できるおすすめ時間帯" },
+    { period: "平日 夕方・夜（16:30〜20:00）", status: "残りわずか", badge: "△ お早めに", desc: "お仕事帰りのご予約が集中しやすい人気枠" },
+    { period: "土日祝（終日）", status: "事前予約推奨", badge: "○ 週末枠", desc: "ハンド＆フット同時施術やブライダル前のお手入れに" },
   ];
 
   return (
-    <section className="py-24 bg-white relative overflow-hidden">
+    <section className="py-20 sm:py-24 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
           
           {/* 左側: 3秒パーソナル診断 */}
-          <div className="lg:col-span-6 pearl-glass rounded-[2.5rem] p-6 sm:p-10 border border-lavender-200 shadow-xl">
+          <div className="lg:col-span-6 pearl-glass rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-10 border border-lavender-200 shadow-xl">
             <div className="mb-6 space-y-2">
               <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-lavender-100 text-lavender-700 text-xs font-normal tracking-widest uppercase border border-lavender-200 font-serif">
                 <Sparkles className="w-3.5 h-3.5 text-gold-500" />
                 <span>Nail Styling Quiz</span>
               </div>
-              <h3 className="text-2xl font-serif font-normal text-plum-900 tracking-wide">
+              <h3 className="text-xl sm:text-2xl font-serif font-normal text-plum-900 tracking-wide">
                 3問でわかる！似合わせネイル診断
               </h3>
               <p className="text-xs text-plum-700 font-light tracking-wide">
-                あなたの好みやライフスタイルにぴったりのデザインをAIが提案します。
+                あなたのライフスタイルやお好みに合わせた最適なデザインをご提案します。
               </p>
             </div>
 
             {currentStep < 3 ? (
-              <div className="space-y-6">
+              <div className="space-y-5">
                 {/* プログレスバー */}
                 <div className="space-y-1.5">
                   <div className="flex justify-between text-[11px] font-light text-plum-500 font-serif tracking-wider">
@@ -132,22 +128,22 @@ export default function InteractiveSection() {
                 </div>
 
                 {/* 質問文 */}
-                <div className="p-4 rounded-2xl bg-white/90 border border-lavender-100 shadow-xs">
-                  <h4 className="text-sm sm:text-base font-serif font-normal text-plum-900 tracking-wide leading-relaxed">
+                <div className="p-4 rounded-2xl bg-white/90 border border-lavender-100 shadow-2xs">
+                  <h4 className="text-xs sm:text-sm font-serif font-normal text-plum-900 tracking-wide leading-relaxed">
                     {questions[currentStep].q}
                   </h4>
                 </div>
 
                 {/* 選択肢ボタン */}
-                <div className="space-y-2.5">
+                <div className="space-y-2">
                   {questions[currentStep].options.map((opt, idx) => (
                     <button
                       key={idx}
                       onClick={() => handleSelectOption(idx)}
-                      className="w-full p-4 rounded-2xl bg-white hover:bg-lavender-50 border border-lavender-200/80 text-left text-xs font-normal text-plum-900 transition-all hover:scale-101 hover:border-lavender-400 flex items-center justify-between group shadow-xs tracking-wide"
+                      className="w-full p-3.5 sm:p-4 rounded-2xl bg-white hover:bg-lavender-50/70 border border-lavender-200/80 text-left text-xs font-normal text-plum-900 transition-all hover:border-lavender-400 flex items-center justify-between group shadow-2xs tracking-wide"
                     >
-                      <span>{opt.text}</span>
-                      <ArrowRight className="w-4 h-4 text-lavender-400 group-hover:text-lavender-700 group-hover:translate-x-1 transition-all shrink-0" />
+                      <span className="leading-snug">{opt.text}</span>
+                      <ArrowRight className="w-4 h-4 text-lavender-400 group-hover:text-lavender-700 group-hover:translate-x-1 transition-all shrink-0 ml-2" />
                     </button>
                   ))}
                 </div>
@@ -155,18 +151,18 @@ export default function InteractiveSection() {
             ) : (
               /* 結果画面 */
               <div className="space-y-5 animate-in zoom-in-95 duration-300">
-                <div className="p-5 rounded-3xl bg-gradient-to-br from-lavender-50 to-gold-50 border border-lavender-200 space-y-3">
+                <div className="p-5 rounded-3xl bg-gradient-to-br from-lavender-50 to-gold-50 border border-lavender-200 space-y-2.5">
                   <span className="text-[10px] font-normal px-2.5 py-0.5 rounded-full bg-gold-500 text-plum-950 uppercase tracking-widest inline-block font-serif">
                     Your Best Match
                   </span>
-                  <h4 className="text-xl font-serif font-normal text-plum-900 tracking-wide">
+                  <h4 className="text-lg sm:text-xl font-serif font-normal text-plum-900 tracking-wide">
                     {result?.title}
                   </h4>
                   <p className="text-xs text-plum-700 leading-relaxed font-light tracking-wide">
                     {result?.description}
                   </p>
                   <div className="flex items-center justify-between pt-2 border-t border-lavender-200/60 text-xs">
-                    <span className="font-serif font-light text-lg text-gold-600 tracking-wider">
+                    <span className="font-serif font-light text-base sm:text-lg text-gold-600 tracking-wider">
                       {result?.price}
                     </span>
                     <span className="text-[10px] text-plum-500 flex items-center gap-1 font-light tracking-wide">
@@ -181,14 +177,14 @@ export default function InteractiveSection() {
                     href={SALON_INFO.links.hotpepper}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="luxe-button flex-1 text-center py-3.5 rounded-full text-xs font-medium flex items-center justify-center gap-1.5 shadow-lg tracking-wider"
+                    className="luxe-button flex-1 text-center py-3 rounded-full text-xs font-medium flex items-center justify-center gap-1.5 shadow-md tracking-wider"
                   >
                     <Calendar className="w-4 h-4" />
-                    <span>この診断結果で予約</span>
+                    <span>この診断結果で即時予約</span>
                   </a>
                   <button
                     onClick={handleReset}
-                    className="p-3.5 rounded-full bg-white border border-lavender-200 text-plum-700 hover:bg-lavender-50 transition-colors shrink-0 shadow-xs"
+                    className="p-3 rounded-full bg-white border border-lavender-200 text-plum-700 hover:bg-lavender-50 transition-colors shrink-0 shadow-2xs"
                     aria-label="もう一度診断する"
                   >
                     <RotateCcw className="w-4 h-4" />
@@ -198,53 +194,66 @@ export default function InteractiveSection() {
             )}
           </div>
 
-          {/* 右側: リアルタイム空席カレンダー */}
-          <div className="lg:col-span-6 pearl-glass rounded-[2.5rem] p-6 sm:p-10 border border-lavender-200 shadow-xl">
+          {/* 右側: リアルタイム予約連携・空き枠案内（固定ダミー日時は廃止し、本物の予約システム直結UXへ） */}
+          <div className="lg:col-span-6 pearl-glass rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-10 border border-lavender-200 shadow-xl">
             <div className="mb-6 space-y-2">
               <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-gold-100 text-gold-700 text-xs font-normal tracking-widest uppercase border border-gold-200 font-serif">
                 <Calendar className="w-3.5 h-3.5" />
-                <span>Real-time Vacancy</span>
+                <span>Live Reservation Status</span>
               </div>
-              <h3 className="text-2xl font-serif font-normal text-plum-900 tracking-wide">
-                直近の空席速報
+              <h3 className="text-xl sm:text-2xl font-serif font-normal text-plum-900 tracking-wide">
+                最新の空席・ご予約枠のご案内
               </h3>
               <p className="text-xs text-plum-700 font-light tracking-wide">
-                HOT PEPPER Beauty および 公式LINE と連動した最新の空き状況です。
+                空席はHOT PEPPER Beautyにて24時間リアルタイム自動更新・即時確定いただけます。
               </p>
             </div>
 
-            {/* 空席スケジュールリスト */}
-            <div className="space-y-2 mb-6">
-              {vacancyData.map((slot, idx) => (
+            {/* 時間帯別の空き傾向案内 */}
+            <div className="space-y-2.5 mb-6">
+              {reservationSlots.map((slot, idx) => (
                 <div
                   key={idx}
-                  className="p-3 rounded-2xl bg-white border border-lavender-100 flex items-center justify-between text-xs shadow-xs hover:border-lavender-300 transition-colors"
+                  className="p-3.5 rounded-2xl bg-white border border-lavender-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs shadow-2xs"
                 >
-                  <div className="flex items-center gap-3">
-                    <span className="font-normal text-plum-900 w-24 tracking-wide">{slot.day}</span>
-                    <span className="text-[11px] text-plum-500 font-light tracking-wider font-serif">{slot.time}</span>
-                  </div>
                   <div>
+                    <span className="font-serif font-normal text-plum-900 tracking-wide block sm:inline">
+                      {slot.period}
+                    </span>
+                    <p className="text-[10px] text-plum-500 font-light mt-0.5 tracking-wide">
+                      {slot.desc}
+                    </p>
+                  </div>
+                  <div className="shrink-0 self-start sm:self-auto">
                     <span
-                      className={`px-3 py-1 rounded-full text-[10px] font-normal tracking-wide ${
-                        slot.hot
+                      className={`px-3 py-1 rounded-full text-[10px] font-normal tracking-wide inline-block ${
+                        idx === 0
+                          ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                          : idx === 1
                           ? "bg-lavender-100 text-lavender-700 border border-lavender-200"
-                          : "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                          : "bg-gold-50 text-gold-800 border border-gold-200"
                       }`}
                     >
-                      {slot.status}
+                      {slot.badge}
                     </span>
                   </div>
                 </div>
               ))}
             </div>
 
-            {/* 予約誘導 */}
-            <div className="p-4 rounded-2xl bg-lavender-50/80 border border-lavender-200 space-y-3">
-              <p className="text-xs font-normal text-plum-900 tracking-wide">
-                空席はリアルタイムで変動します。24時間即時確定はこちら：
-              </p>
-              <div className="flex flex-col sm:flex-row gap-2">
+            {/* 予約カレンダー直結CTA（最短クリック数で予約確定へ） */}
+            <div className="p-4 sm:p-5 rounded-2xl bg-lavender-50/70 border border-lavender-200/80 space-y-3">
+              <div className="flex items-center gap-2">
+                <span className="flex h-2 w-2 relative">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <p className="text-xs font-normal text-plum-900 tracking-wide">
+                  最新の空席カレンダーは予約ページでリアルタイム表示中：
+                </p>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-2.5 pt-1">
                 <a
                   href={SALON_INFO.links.hotpepper}
                   target="_blank"
@@ -252,7 +261,7 @@ export default function InteractiveSection() {
                   className="luxe-button flex-1 text-center py-3 rounded-full text-xs font-medium flex items-center justify-center gap-1.5 shadow-md tracking-wider"
                 >
                   <Calendar className="w-4 h-4" />
-                  <span>HOT PEPPER で空席確認</span>
+                  <span>最新の空席を確認してWeb予約</span>
                 </a>
                 <a
                   href={SALON_INFO.links.line}
@@ -260,7 +269,7 @@ export default function InteractiveSection() {
                   rel="noopener noreferrer"
                   className="flex-1 text-center py-3 rounded-full bg-[#06C755] hover:bg-[#05a847] text-white text-xs font-medium flex items-center justify-center gap-1.5 shadow-md transition-all hover:scale-102 tracking-wide"
                 >
-                  <span>LINEで空席チェック</span>
+                  <span>LINEで空席・クーポン相談</span>
                 </a>
               </div>
             </div>

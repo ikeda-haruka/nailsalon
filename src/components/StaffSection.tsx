@@ -45,8 +45,9 @@ export default function StaffSection() {
                   <div className="absolute inset-0 bg-gradient-to-t from-plum-950/70 via-transparent to-transparent pointer-events-none" />
 
                   {/* ネイル作品バッジ */}
-                  <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-normal text-lavender-700 shadow-md flex items-center gap-1 border border-lavender-100 font-serif tracking-wide">
-                    <span>💅 担当シグネチャー作品</span>
+                  <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-normal text-lavender-700 shadow-md flex items-center gap-1.5 border border-lavender-100 font-serif tracking-wide">
+                    <Sparkles className="w-3 h-3 text-gold-500" />
+                    <span>担当シグネチャー作品</span>
                   </div>
 
                   {/* 経験年数バッジ */}

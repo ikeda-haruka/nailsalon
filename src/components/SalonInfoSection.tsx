@@ -124,9 +124,9 @@ export default function SalonInfoSection() {
 
         {/* 無料カフェドリンクバー詳細案内 */}
         <div className="p-8 sm:p-10 rounded-[2.5rem] bg-gradient-to-r from-gold-50 via-lavender-50 to-white border border-lavender-200 shadow-lg mb-14">
-          <div className="flex flex-col md:flex-row items-center gap-8">
-            <div className="w-16 h-16 rounded-2xl bg-gold-400 text-plum-950 flex items-center justify-center shrink-0 shadow-md text-3xl">
-              ☕️
+          <div className="flex flex-col md:flex-row items-center gap-6 sm:gap-8">
+            <div className="w-14 sm:w-16 h-14 sm:h-16 rounded-2xl bg-gold-400 text-plum-950 flex items-center justify-center shrink-0 shadow-md">
+              <Coffee className="w-7 h-7" />
             </div>
             <div className="space-y-2 text-center md:text-left flex-1">
               <span className="text-[10px] font-normal text-gold-700 uppercase tracking-widest bg-white px-3 py-1 rounded-full inline-block border border-gold-200 font-serif">
