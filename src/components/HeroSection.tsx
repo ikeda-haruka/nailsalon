@@ -8,7 +8,7 @@ import { SALON_INFO } from "@/data/salonData";
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-[92vh] flex items-center pt-28 sm:pt-32 pb-10 sm:pb-16 overflow-hidden aurora-bg">
+    <section className="relative min-h-[92vh] flex items-center pt-36 sm:pt-40 lg:pt-44 pb-10 sm:pb-16 overflow-hidden aurora-bg">
       {/* 繊細な光彩グロー */}
       <div className="absolute -top-32 -left-32 w-96 h-96 bg-lavender-300/25 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-1/3 -right-24 w-[32rem] h-[32rem] bg-gold-200/30 rounded-full blur-3xl pointer-events-none" />

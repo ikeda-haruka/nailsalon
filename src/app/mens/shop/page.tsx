@@ -277,7 +277,7 @@ export default function MensShopPage() {
     <div className="min-h-screen mens-bg selection:bg-zinc-800 selection:text-white flex flex-col justify-between">
       <MensHeader />
 
-      <main className="pt-32 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full space-y-10">
+      <main className="pt-36 sm:pt-40 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full space-y-10">
         
         {/* トップパンくず＆レディースEC切り替え */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-zinc-800 pb-4">

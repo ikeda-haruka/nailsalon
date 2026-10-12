@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
 import Link from "next/link";
@@ -173,7 +173,7 @@ export default function MyPage() {
   const currentRankInfo = rankColors[user.rank] || rankColors.Regular;
 
   return (
-    <div className="min-h-screen pt-28 pb-24 px-4 sm:px-6 lg:px-8 aurora-bg">
+    <div className="min-h-screen pt-36 sm:pt-40 lg:pt-44 pb-24 px-4 sm:px-6 lg:px-8 aurora-bg">
       <div className="max-w-4xl mx-auto space-y-8">
 
         {/* トースト通知 */}
