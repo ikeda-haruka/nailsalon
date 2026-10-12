@@ -112,6 +112,13 @@ export default function Footer() {
                 <span>パラジェル公式ショップ（チップ＆ジェル）</span>
               </Link>
               <Link
+                href="/mens"
+                className="w-full text-center py-2.5 rounded-full bg-[#111111] hover:bg-black text-white text-xs font-medium flex items-center justify-center gap-1.5 shadow-sm transition-all hover:scale-102 tracking-wide border border-neutral-700"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-neutral-400" />
+                <span className="font-serif">提携メンズサロン HOMME（男性専用）</span>
+              </Link>
+              <Link
                 href="/mypage"
                 className="w-full text-center py-2.5 rounded-full gold-button text-xs font-medium flex items-center justify-center gap-1.5 shadow-xs transition-all hover:scale-102 tracking-wide"
               >
@@ -144,7 +151,9 @@ export default function Footer() {
         <div className="pt-8 border-t border-lavender-200/80 flex flex-col sm:flex-row items-center justify-between text-xs text-plum-500 gap-4 font-light">
           <p className="font-serif">© 2026 Salon de Fraise (サロン ド フレーズ). All Rights Reserved.</p>
           <div className="flex flex-wrap gap-4 text-[11px] tracking-wide">
-            <Link href="/shop" className="text-gold-700 hover:text-lavender-700 transition-colors font-medium">公式ショップ（ネイルチップ）</Link>
+            <Link href="/mens" className="text-neutral-900 hover:text-plum-900 transition-colors font-medium">提携メンズサロン HOMME</Link>
+            <Link href="/mens/shop" className="text-neutral-700 hover:text-plum-900 transition-colors">メンズ公式ショップ</Link>
+            <Link href="/shop" className="text-gold-700 hover:text-lavender-700 transition-colors font-medium">公式ショップ（レディース）</Link>
             <Link href="/mypage" className="hover:text-lavender-700 transition-colors font-medium">会員マイページ</Link>
             <Link href="/admin" className="hover:text-lavender-700 transition-colors">スタッフ管理</Link>
             <a href="#concept" className="hover:text-lavender-700 transition-colors">サロンの強み</a>

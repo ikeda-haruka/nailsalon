@@ -283,4 +283,111 @@ select:focus-visible {
   outline-offset: 3px;
 }
 
+/* ======================================================== */
+/* メンズ専用サロン (Salon de Fraise HOMME) モノトーンスタイル */
+/* 黒・グレー・白を基調としたミニマルラグジュアリーデザイン */
+/* ======================================================== */
+
+.mens-bg {
+  background: radial-gradient(circle at 50% 0%, #1e1e24 0%, #111114 50%, #0a0a0c 100%);
+  color: #f4f4f5;
+}
+
+.mens-bg-subtle {
+  background: linear-gradient(180deg, #121215 0%, #0d0d0f 100%);
+}
+
+/* メンズダークガラスモーフィズム */
+.mens-glass {
+  background: rgba(22, 22, 26, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.7),
+              inset 0 1px 1px rgba(255, 255, 255, 0.08);
+}
+
+.mens-glass-card {
+  background: rgba(28, 28, 33, 0.92);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.5);
+}
+
+.mens-glass-card:hover {
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.75);
+}
+
+/* メタリックシルバーテキストグラデーション */
+.mens-silver-text {
+  background: linear-gradient(135deg, #ffffff 0%, #d4d4d8 40%, #a1a1aa 75%, #ffffff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ソリッドホワイトボタン（メンズ主アクション用） */
+.mens-button-white {
+  background: #ffffff;
+  color: #09090b;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  box-shadow: 0 8px 24px -4px rgba(255, 255, 255, 0.25),
+              inset 0 1px 1.5px rgba(255, 255, 255, 1);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mens-button-white:hover {
+  background: #f4f4f5;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px -4px rgba(255, 255, 255, 0.35);
+}
+
+/* クールシルバーチタンボタン */
+.mens-button-silver {
+  background: linear-gradient(135deg, #3f3f46 0%, #27272a 100%);
+  color: #fafafa;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  letter-spacing: 0.05em;
+  box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.5);
+  transition: all 0.25s ease;
+}
+
+.mens-button-silver:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  background: linear-gradient(135deg, #52525b 0%, #3f3f46 100%);
+  transform: translateY(-2px);
+}
+
+/* モノトーンスモークシマー */
+@keyframes mens-smoke-sweep {
+  0% {
+    transform: translateX(-150%) skewX(-20deg);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: translateX(250%) skewX(-20deg);
+    opacity: 0;
+  }
+}
+
+.mens-shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.03) 20%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.03) 80%,
+    transparent 100%
+  );
+  animation: mens-smoke-sweep 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  pointer-events: none;
+}
+
 

@@ -12,6 +12,7 @@ import FaqSection from "@/components/FaqSection";
 import RecruitSection from "@/components/RecruitSection";
 import ReservationSection from "@/components/ReservationSection";
 import ShopFeatureSection from "@/components/ShopFeatureSection";
+import MensBannerSection from "@/components/MensBannerSection";
 
 export default function Home() {
   return (
@@ -42,6 +43,9 @@ export default function Home() {
 
       {/* 公式オンラインショップ特集（自爪を削らないパラジェル ネイルチップ＆サロン専売品） */}
       <ShopFeatureSection />
+
+      {/* 提携メンズパラジェルサロン案内（Salon de Fraise HOMME） */}
+      <MensBannerSection />
 
       {/* スタッフ紹介（池田・高橋・水野 / 指名料+550円） */}
       <StaffSection />

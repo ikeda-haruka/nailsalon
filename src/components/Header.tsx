@@ -71,6 +71,7 @@ export default function Header() {
     { num: "06", name: "Salon Info", jp: "サロン案内・設備", href: "/#salon-info", desc: "ハンド2/フット2・駐車場3台・カフェ" },
     { num: "07", name: "Recruit", jp: "ネイリスト採用情報", href: "/#recruit", desc: "HPB WORK & Indeed にて掲載中" },
     { num: "08", name: "Online Shop", jp: "公式オンラインショップ", href: "/shop", desc: "自爪を削らないパラジェル＆サロン専売品" },
+    { num: "09", name: "HOMME", jp: "提携メンズパラジェルサロン", href: "/mens", desc: "全員男性ネイリスト・自爪風ケア・完全個室" },
   ];
 
   return (
@@ -174,6 +175,16 @@ export default function Header() {
                 >
                   <ShoppingBag className="w-3.5 h-3.5 text-gold-600 group-hover:scale-110 transition-transform shrink-0" />
                   <span className="whitespace-nowrap">ショップ</span>
+                </Link>
+
+                {/* 提携メンズパラジェルサロン HOMME 切り替えボタン */}
+                <Link
+                  href="/mens"
+                  className="hidden md:flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-full bg-[#151515] text-white hover:bg-[#252525] border border-neutral-700 shadow-2xs transition-all tracking-wide whitespace-nowrap shrink-0 group"
+                  title="提携メンズパラジェルサロン Salon de Fraise HOMME"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-neutral-400 group-hover:bg-white transition-colors shrink-0" />
+                  <span className="whitespace-nowrap font-serif tracking-wider">HOMME <span className="text-[10px] text-neutral-400 font-sans">メンズ</span></span>
                 </Link>
 
                 {/* 即時予約ボタン（改行防止・1行表示を確実に固定） */}
@@ -307,6 +318,37 @@ export default function Header() {
                     </div>
                     <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-gold-300 group-hover:scale-110 group-hover:bg-gold-400 group-hover:text-plum-950 transition-all shrink-0 ml-2">
                       <ShoppingBag className="w-4 h-4" />
+                    </div>
+                  </div>
+                </Link>
+              </div>
+
+              {/* 提携メンズパラジェルサロン HOMME バナー（ドロワー内） */}
+              <div className="px-6 sm:px-8 pt-2">
+                <Link
+                  href="/mens"
+                  onClick={() => setIsDrawerOpen(false)}
+                  className="block p-3.5 rounded-2xl bg-neutral-900 text-white shadow-md hover:shadow-lg transition-all border border-neutral-700 group relative overflow-hidden"
+                >
+                  <div className="flex items-center justify-between relative z-10">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-white text-neutral-900 font-serif font-bold">
+                          提携メンズサロン
+                        </span>
+                        <span className="text-[11px] text-neutral-300 font-serif">
+                          Salon de Fraise HOMME
+                        </span>
+                      </div>
+                      <p className="text-xs font-serif font-medium text-white">
+                        「ネイル＝女性」の固定概念を取り払う男性専用店
+                      </p>
+                      <p className="text-[10px] text-neutral-400">
+                        全員男性ネイリスト（在籍5名）・完全個室・ポイント共有
+                      </p>
+                    </div>
+                    <div className="w-8 h-8 rounded-full bg-neutral-800 flex items-center justify-center text-neutral-300 group-hover:bg-white group-hover:text-neutral-900 transition-all shrink-0 ml-2">
+                      <ChevronRight className="w-4 h-4" />
                     </div>
                   </div>
                 </Link>
