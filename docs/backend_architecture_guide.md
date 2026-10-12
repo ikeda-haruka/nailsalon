@@ -304,6 +304,29 @@ server:
 
 ---
 
+## 4.1 Render Web Service へのデプロイ手順 (Language: Docker)
+
+Render のネイティブ言語ランタイムには Java が含まれていないため、Render 公式の標準推奨構成である **「Language: Docker」** を使用してデプロイします。
+リポジトリ直下に配置された `Dockerfile`（マルチステージビルド）により、Java 21 / Spring Boot 3.3 が完全自動でコンパイル・起動されます。
+
+### Render Web Service 作成設定値
+1. **Name**: `nailsalon-backend-api`（任意のサービス名）
+2. **Language**: **`Docker`** を選択
+3. **Branch**: `main`
+4. **Region**: `Singapore`（日本から最も低遅延）
+5. **Root Directory**: （空欄のままでOK。`backend` と指定しても両対応しています）
+6. **Dockerfile Path**: `./Dockerfile`（デフォルト）
+7. **Instance Type**: **`Free`**（$0 / month, 0.1 CPU, 512 MB RAM）
+8. **Environment Variables**:
+   - `PORT`: `8080`
+   - `SPRING_PROFILES_ACTIVE`: `prod`
+
+> [!TIP]
+> **512MB RAM 最適化設定**
+> `Dockerfile` 内に `-XX:+UseSerialGC -XX:MaxRAMPercentage=75.0` を設定済みのため、Render の Free プラン（512MB RAM）でもメモリ枯渇（OOM Killer）を起こさず極めて安定して常時稼働します。
+
+---
+
 ## 5. Java / Spring Boot による二重予約防止・排他制御実装
 
 施術所要時間（例: 60分〜120分）に応じた空き枠の厳密な判定と、競合時の二重予約防止ロジックです。

@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: nailsalon-backend-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: singapore # 日本から最も近い無料リージョン
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
