@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Shippori_Mincho, Cormorant_Garamond, Noto_Serif_JP } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import FloatingReservationBar from "@/components/FloatingReservationBar";
+import AppShell from "@/components/AppShell";
 
 const shippori = Shippori_Mincho({
   subsets: ["latin"],
@@ -128,12 +126,9 @@ export default function RootLayout({
       </head>
       <body className="antialiased selection:bg-lavender-200 selection:text-plum-900 overflow-x-hidden">
         <AuthProvider>
-          <Header />
-          <main className="min-h-screen">
+          <AppShell>
             {children}
-          </main>
-          <Footer />
-          <FloatingReservationBar />
+          </AppShell>
         </AuthProvider>
       </body>
     </html>
