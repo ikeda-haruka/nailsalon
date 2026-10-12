@@ -40,7 +40,7 @@ export default function MensShopFeatureSection() {
               className="mens-glass-card rounded-3xl overflow-hidden flex flex-col justify-between group transition-all"
             >
               <div>
-                <div className="relative aspect-4/3 overflow-hidden bg-zinc-950">
+                <div className="relative aspect-[4/3] overflow-hidden bg-zinc-950">
                   {p.image && !failedImages[p.id] && !p.image.includes("gallery-") && !p.image.includes("spring.jpg") && !p.image.includes("hero.jpg") ? (
                     <Image
                       src={p.image}

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import Link from "next/link";
@@ -91,7 +91,7 @@ export default function ShopFeatureSection() {
               key={product.id}
               className="bg-white rounded-3xl border border-lavender-200 overflow-hidden shadow-xs hover:shadow-xl hover:border-gold-400 transition-all duration-300 flex flex-col group"
             >
-              <div className="relative aspect-4/3 w-full overflow-hidden bg-pearl-100">
+              <div className="relative aspect-[4/3] w-full overflow-hidden bg-pearl-100">
                 <ProductImage
                   product={product}
                   alt={product.name}

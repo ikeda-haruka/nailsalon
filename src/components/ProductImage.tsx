@@ -15,25 +15,21 @@ interface ProductImageProps {
   placeholderSize?: "sm" | "md" | "lg";
 }
 
-// 実際に public/images/ に存在する画像ファイル群（これ以外は未生成画像と判定）
-const EXISTING_IMAGE_FILES = new Set([
-  "/images/hero.jpg",
-  "/images/interior.jpg",
-  "/images/magnet_nail.jpg",
-  "/images/spring_nail.jpg",
-  "/images/office_nude_nail.jpg",
+// 商品写真として正式に生成・設定された画像のみを許可（店舗風景や内装、スタッフ写真は除外）
+const VALID_PRODUCT_IMAGE_FILES = new Set([
   "/images/mens_matte_black.jpg",
   "/images/mens_natural_matte.jpg",
-  "/images/mens_interior.jpg",
-  "/images/staff/ikeda.jpg",
-  "/images/staff/takahashi.jpg",
-  "/images/staff/mizuno.jpg",
-  "/images/staff/kamiya.jpg",
-  "/images/staff/kurosaki.jpg",
-  "/images/staff/saeki.jpg",
-  "/images/staff/sanada.jpg",
-  "/images/staff/tachibana.jpg"
 ]);
+
+// サロン共用写真や未生成プレースホルダーパス等の除外パターン
+const EXCLUDED_IMAGE_KEYWORDS = [
+  "hero.jpg",
+  "interior.jpg",
+  "gallery-",
+  "spring.jpg",
+  "brand_logo",
+  "staff/"
+];
 
 export default function ProductImage({
   product,
@@ -48,12 +44,15 @@ export default function ProductImage({
   // メンズ製品判定
   const isMens = product.itemCode?.startsWith("M-") || product.category?.includes("mens");
 
-  // 画像が未生成、または存在しないファイル、またはロードエラーの場合
+  // 画像パスの正規化判定
+  const imgPath = typeof product.image === "string" ? product.image.trim() : "";
+  const isExcluded = EXCLUDED_IMAGE_KEYWORDS.some((kw) => imgPath.includes(kw));
+
+  // 画像が未設定、除外対象（サロン写真等の仮置き）、未登録、またはロードエラー（404）の場合
   const isImageMissing =
-    !product.image ||
-    product.image === "" ||
-    product.image.includes("gallery-") ||
-    !EXISTING_IMAGE_FILES.has(product.image) ||
+    !imgPath ||
+    isExcluded ||
+    !VALID_PRODUCT_IMAGE_FILES.has(imgPath) ||
     hasError;
 
   if (isImageMissing) {
