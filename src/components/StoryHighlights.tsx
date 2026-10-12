@@ -2,10 +2,23 @@
 
 import React from "react";
 import Image from "next/image";
-import { Sparkles, Heart, Coffee, Car, Dog, ShieldCheck, Calendar, Users, Eye } from "lucide-react";
+import { Sparkles, Heart, Coffee, Car, Dog, ShieldCheck, Calendar, Users, Eye, ShoppingBag } from "lucide-react";
 
 export default function StoryHighlights() {
   const highlights = [
+    {
+      id: "shop-chips",
+      title: "パラジェル ネイルチップ",
+      en: "Online Shop",
+      desc: "自宅で自爪を削らない美爪",
+      tag: "SHOP",
+      href: "/shop",
+      icon: ShoppingBag,
+      iconType: "icon",
+      gradient: "from-purple-900 via-plum-900 to-[#180d26]",
+      accent: "text-gold-400",
+      badge: "EC OPEN",
+    },
     {
       id: "magnet",
       title: "水光マグネット50色",

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Calendar, Phone, Sparkles, ChevronUp, Ticket, Award } from "lucide-react";
+import { Calendar, Phone, Sparkles, ChevronUp, Ticket, Award, ShoppingBag } from "lucide-react";
 import { SALON_INFO } from "@/data/salonData";
 import { useAuth } from "@/context/AuthContext";
 
@@ -95,6 +95,17 @@ export default function FloatingReservationBar() {
               <Calendar className="w-3.5 h-3.5 shrink-0" />
               <span className="truncate">空席確認・Web即時予約</span>
             </a>
+
+            {/* 公式ショップ（ネイルチップ） */}
+            <Link
+              href="/shop"
+              aria-label="パラジェル公式オンラインショップ"
+              onClick={() => trackClick("shop")}
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-linear-to-tr from-plum-900 to-lavender-900 text-gold-300 border border-gold-400/50 flex items-center justify-center hover:scale-105 transition-all shrink-0 shadow-xs group"
+              title="公式ショップ（ネイルチップ）"
+            >
+              <ShoppingBag className="w-4 h-4 group-hover:scale-110 transition-transform" />
+            </Link>
 
             {/* 電話 */}
             <a

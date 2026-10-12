@@ -10,6 +10,7 @@ import SalonInfoSection from "@/components/SalonInfoSection";
 import FaqSection from "@/components/FaqSection";
 import RecruitSection from "@/components/RecruitSection";
 import ReservationSection from "@/components/ReservationSection";
+import ShopFeatureSection from "@/components/ShopFeatureSection";
 
 export default function Home() {
   return (
@@ -34,6 +35,9 @@ export default function Home() {
 
       {/* メニュー・料金（明朗会計・回数券・LINE限定クーポンチケット） */}
       <MenuSection />
+
+      {/* 公式オンラインショップ特集（自爪を削らないパラジェル ネイルチップ＆サロン専売品） */}
+      <ShopFeatureSection />
 
       {/* スタッフ紹介（池田・高橋・水野 / 指名料+550円） */}
       <StaffSection />

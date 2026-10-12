@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Sparkles, MapPin, Clock, Calendar, Phone, CreditCard, Car, Coffee, Dog, Baby, ExternalLink, Heart } from "lucide-react";
+import { Sparkles, MapPin, Clock, Calendar, Phone, CreditCard, Car, Coffee, Dog, Baby, ExternalLink, Heart, ShoppingBag } from "lucide-react";
 import { SALON_INFO } from "@/data/salonData";
 
 export default function Footer() {
@@ -105,6 +105,13 @@ export default function Footer() {
                 <span>HOT PEPPER Beauty 予約</span>
               </a>
               <Link
+                href="/shop"
+                className="w-full text-center py-2.5 rounded-full bg-linear-to-r from-plum-900 to-lavender-900 text-white text-xs font-medium flex items-center justify-center gap-1.5 shadow-sm transition-all hover:scale-102 tracking-wide border border-gold-400/40"
+              >
+                <ShoppingBag className="w-3.5 h-3.5 text-gold-300" />
+                <span>パラジェル公式ショップ（チップ＆ジェル）</span>
+              </Link>
+              <Link
                 href="/mypage"
                 className="w-full text-center py-2.5 rounded-full gold-button text-xs font-medium flex items-center justify-center gap-1.5 shadow-xs transition-all hover:scale-102 tracking-wide"
               >
@@ -137,6 +144,7 @@ export default function Footer() {
         <div className="pt-8 border-t border-lavender-200/80 flex flex-col sm:flex-row items-center justify-between text-xs text-plum-500 gap-4 font-light">
           <p className="font-serif">© 2026 Salon de Fraise (サロン ド フレーズ). All Rights Reserved.</p>
           <div className="flex flex-wrap gap-4 text-[11px] tracking-wide">
+            <Link href="/shop" className="text-gold-700 hover:text-lavender-700 transition-colors font-medium">公式ショップ（ネイルチップ）</Link>
             <Link href="/mypage" className="hover:text-lavender-700 transition-colors font-medium">会員マイページ</Link>
             <Link href="/admin" className="hover:text-lavender-700 transition-colors">スタッフ管理</Link>
             <a href="#concept" className="hover:text-lavender-700 transition-colors">サロンの強み</a>

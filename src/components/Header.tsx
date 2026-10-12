@@ -20,7 +20,8 @@ import {
   User,
   Award,
   UserCheck,
-  Ticket
+  Ticket,
+  ShoppingBag
 } from "lucide-react";
 import { SALON_INFO } from "@/data/salonData";
 import { useAuth } from "@/context/AuthContext";
@@ -69,6 +70,7 @@ export default function Header() {
     { num: "05", name: "Staff", jp: "在籍ネイリスト", href: "/#staff", desc: "池田・高橋・水野（指名料+550円）" },
     { num: "06", name: "Salon Info", jp: "サロン案内・設備", href: "/#salon-info", desc: "ハンド2/フット2・駐車場3台・カフェ" },
     { num: "07", name: "Recruit", jp: "ネイリスト採用情報", href: "/#recruit", desc: "HPB WORK & Indeed にて掲載中" },
+    { num: "08", name: "Online Shop", jp: "公式ショップ・ネイルチップ", href: "/shop", desc: "自爪を削らないパラジェルチップ＆サロン専売品" },
   ];
 
   return (
@@ -163,6 +165,19 @@ export default function Header() {
                     <span className="whitespace-nowrap">ログイン・会員登録</span>
                   </Link>
                 )}
+
+                {/* 公式オンラインショップボタン（パラジェル ネイルチップ主力） */}
+                <Link
+                  href="/shop"
+                  className="flex items-center gap-1.5 text-xs font-medium px-3 sm:px-3.5 py-2 rounded-full bg-linear-to-r from-lavender-50 via-white to-gold-50/60 text-plum-900 border border-lavender-200 hover:border-gold-400 hover:shadow-xs shadow-2xs transition-all tracking-wide whitespace-nowrap shrink-0 group"
+                  title="公式オンラインショップ・パラジェル ネイルチップ"
+                >
+                  <ShoppingBag className="w-3.5 h-3.5 text-gold-600 group-hover:scale-110 transition-transform shrink-0" />
+                  <span className="whitespace-nowrap">ショップ</span>
+                  <span className="hidden md:inline text-[9px] px-1.5 py-0.2 rounded-full bg-gold-400/25 text-gold-800 font-serif font-bold">
+                    チップ
+                  </span>
+                </Link>
 
                 {/* 即時予約ボタン（改行防止・1行表示を確実に固定） */}
                 <a
@@ -267,6 +282,37 @@ export default function Header() {
                     </Link>
                   </div>
                 </div>
+              </div>
+
+              {/* 公式オンラインショップ特集バナー（ドロワー内） */}
+              <div className="px-6 sm:px-8 pt-3">
+                <Link
+                  href="/shop"
+                  onClick={() => setIsDrawerOpen(false)}
+                  className="block p-3.5 rounded-2xl bg-linear-to-r from-purple-950 via-plum-900 to-[#180d26] text-white shadow-md hover:shadow-lg transition-all border border-gold-400/50 group relative overflow-hidden"
+                >
+                  <div className="flex items-center justify-between relative z-10">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-gold-400 text-plum-950 font-serif font-bold">
+                          NEW OPEN
+                        </span>
+                        <span className="text-[11px] text-gold-200 font-serif">
+                          パラジェル公式EC
+                        </span>
+                      </div>
+                      <p className="text-xs font-serif font-medium text-white flex items-center gap-1">
+                        自爪を削らないネイルチップ＆専売ジェル
+                      </p>
+                      <p className="text-[10px] text-white/70">
+                        LEDライト・キット・パラポリッシュも完備
+                      </p>
+                    </div>
+                    <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-gold-300 group-hover:scale-110 group-hover:bg-gold-400 group-hover:text-plum-950 transition-all shrink-0 ml-2">
+                      <ShoppingBag className="w-4 h-4" />
+                    </div>
+                  </div>
+                </Link>
               </div>
 
               {/* メインナビゲーションリスト */}
