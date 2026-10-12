@@ -48,7 +48,7 @@ export default function MensGallerySection() {
       categoryName: "自爪補強・割れ爪予防",
       price: "¥7,700",
       time: "50分",
-      image: "/images/mens_interior.jpg",
+      image: "/images/mens_clear_care.jpg",
       desc: "筋トレや楽器演奏、PC作業で割れやすい爪をパラジェルの弾力膜でガッチリ保護。深爪緩和にも最適。"
     }
   ];
