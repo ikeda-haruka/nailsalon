@@ -25,7 +25,7 @@ const notoSerif = Noto_Serif_JP({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://nailsalon-fraise.vercel.app"),
+  metadataBase: new URL("https://nailsalon-inky.vercel.app"),
   title: "表参道のパラジェル・マグネットネイル専門サロン｜Salon de Fraise（サロンドフレーズ）",
   description: "表参道駅徒歩4分。自爪を削らないパラジェル＆高持続フィルイン専門店。3〜4週間綺麗な状態をキープ。50色以上の水光マグネット、上品オフィスネイルから最旬トレンドまで。ハンド2席・フット2席のプライベート空間、無料駐車場3台、ペット・お子様同伴OK。",
   keywords: [
@@ -43,16 +43,16 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "ja_JP",
-    url: "https://nailsalon-fraise.vercel.app",
+    url: "https://nailsalon-inky.vercel.app",
     siteName: "Salon de Fraise 表参道",
     title: "表参道のパラジェル・マグネットネイル専門サロン｜Salon de Fraise",
     description: "自爪を削らないパラジェル＆高持続フィルイン専門店。50色以上の水光マグネットと洗練された大人空間。24時間Web即時予約受付中。",
     images: [
       {
-        url: "/images/hero.jpg",
+        url: "/images/ogp_brand_logo.png",
         width: 1200,
         height: 630,
-        alt: "Salon de Fraise パラジェル＆水光マグネットネイル",
+        alt: "Salon de Fraise 表参道 ブランドロゴ",
       },
     ],
   },
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "表参道のパラジェル・マグネットネイル専門サロン｜Salon de Fraise",
     description: "自爪を削らないパラジェル＆水光マグネットネイル専門店。表参道駅徒歩4分・駐車場3台完備。",
-    images: ["/images/hero.jpg"],
+    images: ["/images/ogp_brand_logo.png"],
   },
   robots: {
     index: true,
@@ -80,7 +80,7 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "NailSalon",
     "name": "Salon de Fraise（サロンドフレーズ）",
-    "image": "https://nailsalon-fraise.vercel.app/images/hero.jpg",
+    "image": "https://nailsalon-inky.vercel.app/images/ogp_brand_logo.png",
     "description": "表参道にある自爪を削らないパラジェル＆水光マグネット専門ネイルサロン。全席リクライニング・ハンド2席・フット2席、お客様専用駐車場3台完備。",
     "telephone": "03-6800-0000",
     "priceRange": "¥6,050 - ¥9,900",
@@ -113,7 +113,7 @@ export default function RootLayout({
       { "@type": "LocationFeatureSpecification", "name": "お子様連れ可・ベビーカーOK", "value": true },
       { "@type": "LocationFeatureSpecification", "name": "カフェドリンクサービス無料", "value": true }
     ],
-    "url": "https://nailsalon-fraise.vercel.app"
+    "url": "https://nailsalon-inky.vercel.app"
   };
 
   return (
