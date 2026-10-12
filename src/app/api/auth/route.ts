@@ -93,8 +93,51 @@ export async function POST(request: Request) {
       });
     }
 
+    // お誕生日設定・変更 ＆ 誕生月限定50%OFFクーポンの即時自動発行
+    if (action === "update_birthday") {
+      const { currentUser, birthday } = body;
+      if (!currentUser) {
+        return NextResponse.json({ success: false, message: "認証情報が見つかりません" }, { status: 401 });
+      }
+      if (!birthday) {
+        return NextResponse.json({ success: false, message: "お誕生日を入力してください" }, { status: 400 });
+      }
+
+      const updatedUser: MemberUser = { ...currentUser, birthday };
+
+      // 誕生月限定50%OFFクーポンをすでに持っているか確認
+      const hasBirthdayCoupon = updatedUser.coupons.some((c) => c.isBirthdayCoupon);
+      let couponAdded = false;
+
+      if (!hasBirthdayCoupon) {
+        const bdayCoupon = {
+          id: `cp-birthday-50-${Date.now()}`,
+          title: "【誕生月限定】サロン施術＆公式EC全品 50% OFFバースデークーポン",
+          discount: "50% OFF",
+          discountPercent: 50,
+          expiryDate: "2026-11-30",
+          isUsed: false,
+          isBirthdayCoupon: true,
+          usableAt: "both" as const,
+          description: "【お誕生月特典】サロン施術全コース、または公式オンラインショップ全品が50%OFFとなります（1回限り有効）"
+        };
+        updatedUser.coupons = [bdayCoupon, ...updatedUser.coupons];
+        couponAdded = true;
+      }
+
+      return NextResponse.json({
+        success: true,
+        user: updatedUser,
+        couponAdded,
+        message: couponAdded
+          ? "お誕生日を登録しました！【誕生月限定 50% OFFクーポン】をプレゼントいたしました！"
+          : "お誕生日を更新しました。"
+      });
+    }
+
     return NextResponse.json({ success: false, message: "無効なリクエストです" }, { status: 400 });
   } catch (error) {
     return NextResponse.json({ success: false, message: "サーバーエラーが発生しました" }, { status: 500 });
   }
 }
+

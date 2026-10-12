@@ -31,8 +31,10 @@ import {
   FileText,
   Check,
   User,
-  Lock
+  Lock,
+  Ticket
 } from "lucide-react";
+
 import {
   SHOP_PRODUCTS,
   SHOP_CATEGORIES,
@@ -45,6 +47,8 @@ import {
   MessageCardTheme
 } from "@/data/shopData";
 import { useAuth } from "@/context/AuthContext";
+
+import { getRankPointRate } from "@/data/memberData";
 import ProductImage from "@/components/ProductImage";
 import BrandLogoStorySection from "@/components/BrandLogoStorySection";
 
@@ -54,7 +58,7 @@ interface CartItem {
 }
 
 export default function ShopPage() {
-  const { user } = useAuth();
+  const { user, useCoupon, checkoutShop } = useAuth();
 
   const [activeCategory, setActiveCategory] = useState<ShopCategory>("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -77,8 +81,10 @@ export default function ShopPage() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [usePoints, setUsePoints] = useState(false);
+  const [selectedCouponId, setSelectedCouponId] = useState<string | null>(null);
   const [orderCompleteModal, setOrderCompleteModal] = useState(false);
   const [needLoginModal, setNeedLoginModal] = useState(false);
+
 
   // お気に入りState
   const [favorites, setFavorites] = useState<Record<string, boolean>>({});
@@ -205,22 +211,53 @@ export default function ShopPage() {
     return MESSAGE_CARD_THEMES.find((t) => t.id === cardThemeId) || MESSAGE_CARD_THEMES[0];
   }, [cardThemeId]);
 
+  // 金額計算
+  const subtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+
+  // 利用可能なクーポン一覧（サロン専用以外の未使用クーポン）
+  const availableCoupons = useMemo(() => {
+    if (!user) return [];
+    return user.coupons.filter((c) => !c.isUsed && c.usableAt !== "salon");
+  }, [user]);
+
+  const selectedCoupon = useMemo(() => {
+    if (!selectedCouponId) return null;
+    return availableCoupons.find((c) => c.id === selectedCouponId) || null;
+  }, [selectedCouponId, availableCoupons]);
+
+  // クーポン割引額計算
+  const couponDiscount = useMemo(() => {
+    if (!selectedCoupon) return 0;
+    if (selectedCoupon.discountPercent) {
+      return Math.floor(subtotal * (selectedCoupon.discountPercent / 100));
+    }
+    if (selectedCoupon.discountAmount) {
+      return Math.min(subtotal, selectedCoupon.discountAmount);
+    }
+    return 0;
+  }, [selectedCoupon, subtotal]);
+
   // 金額計算（20,000円以上のご購入で送料無料）
   const FREE_SHIPPING_THRESHOLD = 20000;
-  const subtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
   const totalItemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const shippingFee = subtotal >= FREE_SHIPPING_THRESHOLD || subtotal === 0 ? 0 : 550;
   const wrappingFee = selectedWrapping.price;
   const userPointBalance = user?.points || 0;
-  const appliedPoints = usePoints ? Math.min(userPointBalance, subtotal + wrappingFee) : 0;
-  const grandTotal = Math.max(0, subtotal + wrappingFee + shippingFee - appliedPoints);
-  const earnedPoints = Math.floor(grandTotal * 0.02); // 購入金額の2%をサロン・ショップ共通ポイントとして付与
+  const discountedSubtotal = Math.max(0, subtotal - couponDiscount);
+  const appliedPoints = usePoints ? Math.min(userPointBalance, discountedSubtotal + wrappingFee) : 0;
+  const grandTotal = Math.max(0, discountedSubtotal + wrappingFee + shippingFee - appliedPoints);
+
+  // 会員ランクに応じたポイント還元率（Regular: 1%, Silver: 2%, Gold: 3.5%, Platinum: 5%）
+  const rankRate = user ? getRankPointRate(user.rank) : 0.01;
+  const earnedPoints = Math.floor(grandTotal * rankRate);
 
   const [checkoutDetail, setCheckoutDetail] = useState<{
     usedPoints: number;
     earnedPoints: number;
     grandTotal: number;
     subtotal: number;
+    couponDiscount: number;
+    couponName: string;
     shippingFee: number;
     prevBalance: number;
     wrappingName: string;
@@ -234,6 +271,8 @@ export default function ShopPage() {
     earnedPoints: 0,
     grandTotal: 0,
     subtotal: 0,
+    couponDiscount: 0,
+    couponName: "",
     shippingFee: 0,
     prevBalance: 0,
     wrappingName: "なし",
@@ -244,9 +283,7 @@ export default function ShopPage() {
     hidePrice: true
   });
 
-  const { checkoutShop } = useAuth();
-
-  // 注文完了処理（サロン会員情報・ポイント残高との完全同期）
+  // 注文完了処理（サロン会員情報・ポイント残高・クーポン利用との完全同期）
   const handleCheckout = async () => {
     if (cart.length === 0) return;
     
@@ -259,7 +296,8 @@ export default function ShopPage() {
     const baseSummary = cart.map((i) => `${i.product.name}×${i.quantity}`).join(", ");
     const giftSummary = selectedWrapping.id !== "none" ? ` [ギフト: ${selectedWrapping.name}]` : "";
     const cardSummary = includeMessageCard ? ` [カード: ${selectedTheme.name}]` : "";
-    const orderSummary = `${baseSummary}${giftSummary}${cardSummary}`;
+    const couponSummary = selectedCoupon ? ` [クーポン: ${selectedCoupon.title}]` : "";
+    const orderSummary = `${baseSummary}${giftSummary}${cardSummary}${couponSummary}`;
     const prevBalance = user?.points || 0;
 
     setCheckoutDetail({
@@ -267,6 +305,8 @@ export default function ShopPage() {
       earnedPoints,
       grandTotal,
       subtotal,
+      couponDiscount,
+      couponName: selectedCoupon?.title || "",
       shippingFee,
       prevBalance,
       wrappingName: selectedWrapping.name,
@@ -278,14 +318,21 @@ export default function ShopPage() {
     });
 
     if (user) {
+      // クーポン利用消込
+      if (selectedCouponId) {
+        await useCoupon(selectedCouponId);
+      }
+      // ポイント・注文決済実行
       await checkoutShop(appliedPoints, earnedPoints, orderSummary);
     }
 
     setOrderCompleteModal(true);
     setCart([]);
     setUsePoints(false);
+    setSelectedCouponId(null);
     setIsCartOpen(false);
   };
+
 
   return (
     <div className="min-h-screen pt-36 sm:pt-40 lg:pt-44 pb-24 aurora-bg">
@@ -1272,6 +1319,42 @@ export default function ShopPage() {
 
                   </div>
 
+                  {/* 会員限定割引クーポン選択 */}
+                  {user && availableCoupons.length > 0 && (
+                    <div className="p-3.5 rounded-xl bg-white border border-rose-300 shadow-2xs space-y-2 text-xs">
+                      <div className="flex items-center justify-between">
+                        <span className="font-medium text-plum-950 flex items-center gap-1.5">
+                          <Ticket className="w-4 h-4 text-rose-500" />
+                          <span>保有割引クーポンを利用する</span>
+                        </span>
+                        <span className="text-[10px] text-rose-700 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200">
+                          {availableCoupons.length}枚利用可能
+                        </span>
+                      </div>
+                      <select
+                        value={selectedCouponId || ""}
+                        onChange={(e) => setSelectedCouponId(e.target.value || null)}
+                        className="w-full p-2.5 rounded-xl border border-lavender-200 bg-white text-plum-950 text-xs focus:ring-1 focus:ring-rose-400 cursor-pointer"
+                      >
+                        <option value="">クーポンを利用しない</option>
+                        {availableCoupons.map((c) => (
+                          <option key={c.id} value={c.id}>
+                            {c.isBirthdayCoupon ? "🎂 " : c.rankRequired ? "★ " : ""}
+                            {c.title} ({c.discount})
+                          </option>
+                        ))}
+                      </select>
+                      {selectedCoupon && (
+                        <div className="p-2 rounded-lg bg-rose-50/80 border border-rose-200 text-[11px] text-rose-900 flex justify-between items-center">
+                          <span className="font-medium">{selectedCoupon.title}</span>
+                          <span className="font-bold font-mono text-rose-700">
+                            -¥{couponDiscount.toLocaleString()} 割引適用
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
                   {/* 会員ポイント利用スイッチ */}
                   {user && user.points > 0 && (
                     <div className="p-3 rounded-xl bg-white border border-gold-300 shadow-2xs space-y-1.5 text-xs">
@@ -1288,7 +1371,7 @@ export default function ShopPage() {
                         />
                       </div>
                       <p className="text-[11px] text-plum-600">
-                        サロン共通保有: <strong>{user.points} pt</strong> （最大 ¥{Math.min(user.points, subtotal + wrappingFee).toLocaleString()} 割引）
+                        サロン共通保有: <strong>{user.points} pt</strong> （最大 ¥{Math.min(user.points, discountedSubtotal + wrappingFee).toLocaleString()} 割引）
                       </p>
                     </div>
                   )}
@@ -1314,6 +1397,13 @@ export default function ShopPage() {
                       <span>商品小計</span>
                       <span className="font-mono">¥{subtotal.toLocaleString()}</span>
                     </div>
+
+                    {couponDiscount > 0 && (
+                      <div className="flex justify-between text-rose-600 font-semibold">
+                        <span>クーポン割引（{selectedCoupon?.title.slice(0, 16)}…）</span>
+                        <span className="font-mono">-¥{couponDiscount.toLocaleString()}</span>
+                      </div>
+                    )}
 
                     {wrappingFee > 0 && (
                       <div className="flex justify-between text-gold-800 font-medium">
@@ -1349,7 +1439,22 @@ export default function ShopPage() {
                         ¥{grandTotal.toLocaleString()}
                       </span>
                     </div>
+
+                    {/* 会員ランク連動 ポイント還元案内 */}
+                    {user && (
+                      <div className="pt-1 text-[11px] text-right text-plum-600 flex justify-end items-center gap-1">
+                        <Sparkles className="w-3.5 h-3.5 text-gold-600" />
+                        <span>
+                          ★ {user.rank}会員特典（{(rankRate * 100).toFixed(1)}%還元）:{" "}
+                          <strong className="text-gold-800 font-mono font-bold">
+                            +{earnedPoints.toLocaleString()} pt
+                          </strong>{" "}
+                          獲得予定
+                        </span>
+                      </div>
+                    )}
                   </div>
+
 
                   {/* 注文確定ボタン / 会員ログイン誘導 */}
                   {user ? (
@@ -1504,6 +1609,19 @@ export default function ShopPage() {
 
             {/* 配送・決済・出荷・ギフト・サロン共通ポイント情報詳細 */}
             <div className="p-3.5 rounded-xl bg-lavender-50 border border-lavender-200 text-xs text-plum-800 space-y-2.5 text-left max-h-[42vh] overflow-y-auto">
+              {/* クーポン割引適用内容 */}
+              {checkoutDetail.couponDiscount > 0 && (
+                <div className="p-2.5 rounded-lg bg-rose-50 border border-rose-200 space-y-1 text-[11px] text-rose-950">
+                  <p className="font-semibold flex items-center gap-1.5 text-rose-800">
+                    <Ticket className="w-3.5 h-3.5 text-rose-600 shrink-0" />
+                    <span>クーポン割引適用:</span>
+                  </p>
+                  <p className="pl-5">
+                    {checkoutDetail.couponName} : <strong className="text-rose-700 font-mono">-¥{checkoutDetail.couponDiscount.toLocaleString()} OFF</strong>
+                  </p>
+                </div>
+              )}
+
               {/* ギフトサービス適用内容 */}
               {(checkoutDetail.wrappingPrice > 0 || checkoutDetail.hasCard) && (
                 <div className="p-2.5 rounded-lg bg-white border border-gold-300 space-y-1 text-[11px]">
@@ -1532,6 +1650,7 @@ export default function ShopPage() {
                   )}
                 </div>
               )}
+
 
               <div className="flex items-start gap-2">
                 <Truck className="w-4 h-4 text-lavender-700 shrink-0 mt-0.5" />

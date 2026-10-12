@@ -10,6 +10,7 @@ import MensRecruitSection from "@/components/mens/MensRecruitSection";
 import MensShopFeatureSection from "@/components/mens/MensShopFeatureSection";
 import MensReservationSection from "@/components/mens/MensReservationSection";
 import MensFooter from "@/components/mens/MensFooter";
+import MemberRankSection from "@/components/MemberRankSection";
 
 export const metadata: Metadata = {
   title: "表参道メンズパラジェルネイルサロン | Salon de Fraise HOMME【全員男性ネイリスト / 完全個室】",
@@ -34,6 +35,9 @@ export default function MensHomePage() {
 
       {/* メニュー・料金表（身だしなみケア・パラジェルマット・水光マグネット） */}
       <MensMenuSection />
+
+      {/* メンズ会員ランク＆特別優待プログラム（共通ポイント・誕生月50%OFF） */}
+      <MemberRankSection isMens={true} />
 
       {/* 在籍男性ネイリスト（5名） */}
       <MensStaffSection />

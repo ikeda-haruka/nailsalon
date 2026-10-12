@@ -13,6 +13,7 @@ import RecruitSection from "@/components/RecruitSection";
 import ReservationSection from "@/components/ReservationSection";
 import ShopFeatureSection from "@/components/ShopFeatureSection";
 import MensBannerSection from "@/components/MensBannerSection";
+import MemberRankSection from "@/components/MemberRankSection";
 
 export default function Home() {
   return (
@@ -40,6 +41,9 @@ export default function Home() {
 
       {/* メニュー・料金（明朗会計・回数券・LINE限定クーポンチケット） */}
       <MenuSection />
+
+      {/* サロン＆公式EC共通 会員ランク・ポイント還元プログラム ＆ 誕生月50%OFF特典 */}
+      <MemberRankSection />
 
       {/* 公式オンラインショップ特集（自爪を削らないパラジェル ネイルチップ＆サロン専売品） */}
       <ShopFeatureSection />

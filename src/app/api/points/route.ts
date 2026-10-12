@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { MemberUser, PointTransaction } from "@/types/member";
-import { REWARD_ITEMS } from "@/data/memberData";
+import { REWARD_ITEMS, calculateMemberRank } from "@/data/memberData";
 
 export async function POST(request: Request) {
   try {
@@ -36,10 +36,8 @@ export async function POST(request: Request) {
       user.points = balanceAfter;
       user.transactions = [newTx, ...user.transactions];
 
-      // ランクアップ判定（例: 500pt以上でSilver, 1000pt以上でGold, 2000pt以上でPlatinum）
-      if (balanceAfter >= 2000) user.rank = "Platinum";
-      else if (balanceAfter >= 1000) user.rank = "Gold";
-      else if (balanceAfter >= 500) user.rank = "Silver";
+      // ランク判定（500pt〜: Silver, 1500pt〜: Gold, 3000pt〜: Platinum）
+      user.rank = calculateMemberRank(balanceAfter);
 
       return NextResponse.json({
         success: true,
@@ -146,6 +144,7 @@ export async function POST(request: Request) {
 
       user.points = currentBalance;
       user.transactions = [...newTransactions, ...user.transactions];
+      user.rank = calculateMemberRank(currentBalance);
 
       return NextResponse.json({
         success: true,

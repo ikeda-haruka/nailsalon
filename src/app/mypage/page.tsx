@@ -21,19 +21,35 @@ import {
   Calendar,
   Layers,
   ArrowRight,
-  ShoppingBag
+  ShoppingBag,
+  Cake,
+  Edit3,
+  Percent,
+  BadgePercent,
+  Crown
 } from "lucide-react";
+
 import { useAuth } from "@/context/AuthContext";
-import { REWARD_ITEMS } from "@/data/memberData";
+import { REWARD_ITEMS, MEMBER_RANKS_CONFIG, getRankPointRate } from "@/data/memberData";
 
 export default function MyPage() {
   const router = useRouter();
-  const { user, isLoading, logout, redeemReward, useCoupon, loginDemoUser } = useAuth();
+  const { user, isLoading, logout, redeemReward, useCoupon, loginDemoUser, updateBirthday } = useAuth();
 
   const [activeTab, setActiveTab] = useState<"coupons" | "rewards" | "history">("coupons");
   const [redeemingId, setRedeemingId] = useState<string | null>(null);
   const [usingCouponId, setUsingCouponId] = useState<string | null>(null);
   const [notification, setNotification] = useState<{ type: "success" | "error"; message: string } | null>(null);
+
+  // 誕生日設定・変更State
+  const [isEditingBirthday, setIsEditingBirthday] = useState<boolean>(false);
+  const [birthdayInput, setBirthdayInput] = useState<string>("");
+  const [isSavingBirthday, setIsSavingBirthday] = useState<boolean>(false);
+
+  // ユーザーの誕生月判定（現在月と同じか）
+  const currentMonth = new Date().getMonth() + 1; // 1-12
+  const userBirthdayMonth = user?.birthday ? parseInt(user.birthday.split("-")[1], 10) : null;
+  const isBirthdayMonth = userBirthdayMonth === currentMonth;
 
   // 通知の自動消去
   const showNotification = (type: "success" | "error", message: string) => {
@@ -42,6 +58,25 @@ export default function MyPage() {
       setNotification(null);
     }, 4500);
   };
+
+  // 誕生日保存処理
+  const handleSaveBirthday = async () => {
+    if (!birthdayInput) {
+      showNotification("error", "お誕生日を入力してください");
+      return;
+    }
+    setIsSavingBirthday(true);
+    const res = await updateBirthday(birthdayInput);
+    setIsSavingBirthday(false);
+
+    if (res.success) {
+      showNotification("success", res.message);
+      setIsEditingBirthday(false);
+    } else {
+      showNotification("error", res.message);
+    }
+  };
+
 
   // 特典交換処理
   const handleRedeem = async (rewardId: string, title: string, cost: number) => {
@@ -143,30 +178,34 @@ export default function MyPage() {
   const usedCoupons = user.coupons.filter((c) => c.isUsed);
 
   // ランク別情報
-  const rankColors: Record<string, { badge: string; border: string; bg: string; perks: string }> = {
+  const rankColors: Record<string, { badge: string; border: string; bg: string; perks: string; rate: string }> = {
     Regular: {
-      badge: "bg-stone-200 text-stone-800",
+      badge: "bg-stone-200 text-stone-800 border-stone-300",
       border: "border-stone-300",
       bg: "from-stone-50 via-white to-stone-100",
-      perks: "還元率1% / 次回予約特典"
+      rate: "1.0%",
+      perks: "還元率1.0% / 新規1,000pt / 誕生月50%OFF"
     },
     Silver: {
-      badge: "bg-slate-300 text-slate-800",
+      badge: "bg-slate-200 text-slate-800 border-slate-300",
       border: "border-slate-400",
       bg: "from-slate-100 via-white to-purple-50",
-      perks: "還元率1.5% / オフ代いつでも半額"
+      rate: "2.0%（2倍）",
+      perks: "還元率2.0% / フィルイン毎回半額 / EC全品5%OFFクーポン"
     },
     Gold: {
-      badge: "bg-gold-500 text-plum-950 font-semibold shadow-xs",
-      border: "border-gold-300",
-      bg: "from-gold-100/60 via-white to-lavender-100/60",
-      perks: "還元率2% / パラジェルフィルイン無料 / 誕生月特別チケット"
+      badge: "bg-amber-100 text-amber-900 border-amber-300 font-semibold shadow-xs",
+      border: "border-amber-300",
+      bg: "from-amber-50 via-white to-lavender-50",
+      rate: "3.5%（3.5倍）",
+      perks: "還元率3.5% / フィルイン永年無料 / 施術¥2,000OFF / EC全品10%OFF"
     },
     Platinum: {
-      badge: "bg-gradient-to-r from-lavender-600 to-plum-900 text-white font-semibold shadow-xs",
+      badge: "bg-gradient-to-r from-purple-900 to-plum-950 text-amber-200 border-amber-400/80 font-bold shadow-xs",
       border: "border-lavender-400",
       bg: "from-purple-100 via-white to-gold-100/70",
-      perks: "還元率3% / 水光アート常時1本無料 / 専任ネイリスト指名料無料"
+      rate: "5.0%（5倍）",
+      perks: "還元率5.0% / 水光アート毎回1本無料 / 指名料永年無料 / 施術¥3,500OFF"
     }
   };
 
@@ -194,6 +233,53 @@ export default function MyPage() {
           </div>
         )}
 
+        {/* 誕生月お祝い特設バナー（誕生月会員のみ華やかに表示） */}
+        {isBirthdayMonth && (
+          <div className="pearl-glass p-6 sm:p-7 rounded-[2rem] border-2 border-rose-300 bg-gradient-to-r from-rose-50/90 via-white to-amber-50/90 shadow-xl space-y-3 relative overflow-hidden animate-fade-in">
+            <div className="absolute top-0 right-0 -mr-10 -mt-10 w-44 h-44 bg-rose-300/20 rounded-full blur-2xl pointer-events-none" />
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-start gap-3.5">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-rose-500 to-amber-500 text-white flex items-center justify-center shadow-md shrink-0">
+                  <Cake className="w-6 h-6" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-300 flex items-center gap-1">
+                      <Sparkles className="w-3 h-3 text-rose-600" />
+                      <span>HAPPY BIRTHDAY MONTH 🎉</span>
+                    </span>
+                    <span className="text-[11px] text-rose-700 font-medium">
+                      {userBirthdayMonth}月のお誕生日特別ご優待
+                    </span>
+                  </div>
+                  <h2 className="text-lg sm:text-2xl font-serif text-plum-950 mt-1">
+                    {user.name} 様、お誕生日おめでとうございます！
+                  </h2>
+                  <p className="text-xs text-plum-700 font-light mt-0.5 leading-relaxed">
+                    サロン全施術メニュー ＆ 公式オンラインショップ全品が<strong>50% OFF</strong>になる特別バースデークーポンを進呈中！
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 w-full sm:w-auto">
+                <Link
+                  href="/shop"
+                  className="flex-1 sm:flex-none py-2.5 px-4 rounded-xl gold-button text-xs font-semibold flex items-center justify-center gap-1.5 shadow-md shrink-0"
+                >
+                  <ShoppingBag className="w-4 h-4 text-plum-950" />
+                  <span>公式ECで50%OFFで買い物</span>
+                </Link>
+                <button
+                  onClick={() => setActiveTab("coupons")}
+                  className="flex-1 sm:flex-none py-2.5 px-3.5 rounded-xl bg-white border border-rose-200 hover:border-rose-400 text-rose-900 text-xs font-medium transition-all shadow-2xs text-center"
+                >
+                  クーポンを見る
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* トップバー：ユーザー概要とログアウト */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pearl-glass p-5 rounded-2xl border border-lavender-200">
           <div>
@@ -210,6 +296,7 @@ export default function MyPage() {
               最終ご来店日: {user.lastVisit || "初回ご利用前"} / 入会日: {user.joinedDate}
             </p>
           </div>
+
 
           <div className="flex items-center gap-2.5 w-full sm:w-auto">
             <Link
@@ -264,7 +351,7 @@ export default function MyPage() {
                 </div>
                 <div className="text-right">
                   <span className={`inline-block text-xs px-3 py-1 rounded-full ${currentRankInfo.badge}`}>
-                    ★ {user.rank} 会員
+                    ★ {user.rank} 会員（{currentRankInfo.rate}還元）
                   </span>
                 </div>
               </div>
@@ -288,6 +375,78 @@ export default function MyPage() {
                 <p className="text-[9px] text-center text-plum-500 font-light">
                   ※ ご来店時にスタッフへご提示ください。即時ポイント付与・クーポン消込が行われます。
                 </p>
+              </div>
+
+              {/* お誕生日設定・変更エリア */}
+              <div className="pt-1">
+                {isEditingBirthday ? (
+                  <div className="p-3.5 rounded-xl bg-rose-50/80 border border-rose-200 space-y-2 text-xs animate-in fade-in">
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold text-rose-950 flex items-center gap-1.5">
+                        <Cake className="w-4 h-4 text-rose-500" />
+                        <span>お誕生日を設定・変更する</span>
+                      </span>
+                      <span className="text-[10px] text-rose-700 bg-rose-100 px-2 py-0.5 rounded-full font-medium">
+                        誕生月50%OFF自動付与
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-rose-800 font-light">
+                      お誕生日をご登録いただくと、誕生月限定のサロン施術＆公式EC全品50%OFFクーポンが即座に進呈されます。
+                    </p>
+                    <div className="flex items-center gap-2 pt-1">
+                      <input
+                        type="date"
+                        value={birthdayInput}
+                        onChange={(e) => setBirthdayInput(e.target.value)}
+                        className="flex-1 p-2 rounded-lg border border-rose-300 bg-white text-plum-950 text-xs focus:ring-1 focus:ring-rose-400"
+                      />
+                      <button
+                        onClick={handleSaveBirthday}
+                        disabled={isSavingBirthday}
+                        className="px-3.5 py-2 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-medium text-xs shadow-xs cursor-pointer disabled:opacity-50"
+                      >
+                        {isSavingBirthday ? "保存中..." : "保存"}
+                      </button>
+                      <button
+                        onClick={() => setIsEditingBirthday(false)}
+                        className="px-3 py-2 rounded-lg bg-white border border-stone-300 text-stone-700 text-xs cursor-pointer"
+                      >
+                        キャンセル
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-between p-2.5 rounded-xl bg-white/80 border border-lavender-200 text-xs">
+                    <div className="flex items-center gap-2">
+                      <Cake className="w-4 h-4 text-rose-500 shrink-0" />
+                      <span className="text-plum-900 font-medium">
+                        お誕生日:{" "}
+                        {user.birthday ? (
+                          <strong className="font-semibold text-plum-950">
+                            {user.birthday}（{userBirthdayMonth}月生まれ）
+                          </strong>
+                        ) : (
+                          <span className="text-rose-600 font-medium">未登録（設定で50%OFFクーポン進呈）</span>
+                        )}
+                      </span>
+                      {isBirthdayMonth && (
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 border border-rose-300">
+                          誕生月特典適用中 🎉
+                        </span>
+                      )}
+                    </div>
+                    <button
+                      onClick={() => {
+                        setBirthdayInput(user.birthday || "1996-10-24");
+                        setIsEditingBirthday(true);
+                      }}
+                      className="text-[11px] text-plum-700 hover:text-plum-950 underline font-medium flex items-center gap-1 cursor-pointer ml-2 shrink-0"
+                    >
+                      <Edit3 className="w-3 h-3 text-lavender-600" />
+                      <span>{user.birthday ? "変更" : "誕生日を登録"}</span>
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -318,26 +477,57 @@ export default function MyPage() {
               {/* サロン施術＆公式オンラインショップ共通ポイントの案内バッジ */}
               <div className="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gold-50/90 border border-gold-300 text-[10px] text-gold-950 font-medium shadow-2xs">
                 <Sparkles className="w-3 h-3 text-gold-600 shrink-0" />
-                <span>サロン施術 ＆ 公式EC共通ポイント（1pt=¥1）</span>
+                <span>サロン施術 ＆ 公式EC共通（還元率: {currentRankInfo.rate}）</span>
               </div>
 
               {/* ランクアップ案内 */}
-              <div className="mt-4 p-3 rounded-xl bg-lavender-50/70 border border-lavender-100 space-y-1.5">
-                <div className="flex justify-between text-[11px] text-plum-700">
-                  <span>次ランク (Platinum: 2000pt)</span>
-                  <span className="font-medium">あと {Math.max(0, 2000 - user.points)} pt</span>
-                </div>
-                <div className="w-full bg-lavender-200/60 h-2 rounded-full overflow-hidden">
-                  <div
-                    className="bg-gradient-to-r from-lavender-500 to-gold-500 h-full transition-all duration-500"
-                    style={{ width: `${Math.min(100, (user.points / 2000) * 100)}%` }}
-                  />
-                </div>
-                <p className="text-[10px] text-plum-500 font-light">
-                  Platinumになると水光アートが毎回来店時1本無料になります。
-                </p>
-              </div>
+              {(() => {
+                const nextTier =
+                  user.rank === "Regular"
+                    ? { name: "Silver", target: 500, benefit: "還元率2.0% ＆ フィルイン半額" }
+                    : user.rank === "Silver"
+                    ? { name: "Gold", target: 1500, benefit: "還元率3.5% ＆ フィルイン永年無料" }
+                    : user.rank === "Gold"
+                    ? { name: "Platinum", target: 3000, benefit: "還元率5.0% ＆ 水光アート毎回1本無料" }
+                    : null;
+
+                if (!nextTier) {
+                  return (
+                    <div className="mt-4 p-3 rounded-xl bg-purple-50/80 border border-purple-200 space-y-1">
+                      <div className="flex items-center gap-1.5 text-xs font-semibold text-purple-950">
+                        <Crown className="w-4 h-4 text-amber-500" />
+                        <span>最高峰 Platinum 会員ステータス適用中</span>
+                      </div>
+                      <p className="text-[10px] text-purple-800 font-light">
+                        全サロン施術・公式EC全品で最高還元率5.0% ＆ 水光アート常時無料特典をお楽しみいただけます。
+                      </p>
+                    </div>
+                  );
+                }
+
+                const needed = Math.max(0, nextTier.target - user.points);
+                const progressPct = Math.min(100, (user.points / nextTier.target) * 100);
+
+                return (
+                  <div className="mt-4 p-3 rounded-xl bg-lavender-50/70 border border-lavender-100 space-y-1.5">
+                    <div className="flex justify-between text-[11px] text-plum-700">
+                      <span>次ランク ({nextTier.name}: {nextTier.target.toLocaleString()}pt)</span>
+                      <span className="font-medium">あと {needed.toLocaleString()} pt</span>
+                    </div>
+                    <div className="w-full bg-lavender-200/60 h-2 rounded-full overflow-hidden">
+                      <div
+                        className="bg-gradient-to-r from-lavender-500 to-gold-500 h-full transition-all duration-500"
+                        style={{ width: `${progressPct}%` }}
+                      />
+                    </div>
+                    <p className="text-[10px] text-plum-500 font-light">
+                      {nextTier.name}になると{nextTier.benefit}になります。
+                    </p>
+                  </div>
+                );
+              })()}
             </div>
+
 
             {/* クイックアクションボタン */}
             <div className="space-y-2 pt-2">
@@ -434,44 +624,94 @@ export default function MyPage() {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {unUsedCoupons.map((coupon) => (
-                  <div
-                    key={coupon.id}
-                    className="pearl-glass p-5 rounded-2xl border-2 border-gold-300/70 shadow-sm relative overflow-hidden flex flex-col justify-between bg-white/95 hover:border-gold-400 transition-all"
-                  >
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-gold-100 text-gold-900 border border-gold-300">
-                          {coupon.discount}
-                        </span>
-                        <span className="text-[11px] text-plum-500 font-mono">
-                          有効期限: {coupon.expiryDate}
-                        </span>
-                      </div>
-                      <h3 className="text-sm font-serif font-medium text-plum-950 pt-1">
-                        {coupon.title}
-                      </h3>
-                      <p className="text-xs text-plum-700 font-light leading-relaxed">
-                        {coupon.description}
-                      </p>
-                    </div>
+                {unUsedCoupons.map((coupon) => {
+                  const isBirthday = coupon.isBirthdayCoupon;
+                  const isRankExclusive = !!coupon.rankRequired;
 
-                    <div className="pt-4 mt-3 border-t border-lavender-100 flex items-center justify-between">
-                      <span className="text-[10px] text-emerald-700 font-medium flex items-center gap-1">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                        利用可能
-                      </span>
-                      <button
-                        onClick={() => handleUseCoupon(coupon.id, coupon.title)}
-                        disabled={usingCouponId === coupon.id}
-                        className="py-1.5 px-3.5 rounded-full luxe-button text-xs font-medium cursor-pointer shadow-xs disabled:opacity-50"
-                      >
-                        {usingCouponId === coupon.id ? "消込処理中..." : "店頭で利用する"}
-                      </button>
+                  return (
+                    <div
+                      key={coupon.id}
+                      className={`pearl-glass p-5 rounded-2xl border-2 shadow-sm relative overflow-hidden flex flex-col justify-between transition-all ${
+                        isBirthday
+                          ? "border-rose-400 bg-gradient-to-br from-rose-50/90 via-white to-amber-50/70 shadow-rose-500/10"
+                          : isRankExclusive
+                          ? "border-amber-300 bg-gradient-to-br from-amber-50/80 via-white to-lavender-50/70 shadow-amber-500/10"
+                          : "border-gold-300/70 bg-white/95 hover:border-gold-400"
+                      }`}
+                    >
+                      {/* 背景装飾 */}
+                      {isBirthday && (
+                        <div className="absolute top-0 right-0 -mr-6 -mt-6 w-20 h-20 bg-rose-400/15 rounded-full blur-xl pointer-events-none" />
+                      )}
+
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span
+                              className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${
+                                isBirthday
+                                  ? "bg-rose-500 text-white border-rose-600 shadow-2xs"
+                                  : "bg-gold-100 text-gold-900 border-gold-300"
+                              }`}
+                            >
+                              {coupon.discount}
+                            </span>
+                            {isBirthday && (
+                              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 border border-rose-300 flex items-center gap-1">
+                                <Cake className="w-3 h-3 text-rose-500" />
+                                <span>誕生月限定</span>
+                              </span>
+                            )}
+                            {coupon.rankRequired && (
+                              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1">
+                                <Crown className="w-3 h-3 text-amber-600" />
+                                <span>★ {coupon.rankRequired}限定</span>
+                              </span>
+                            )}
+                          </div>
+                          <span className="text-[11px] text-plum-500 font-mono">
+                            有効期限: {coupon.expiryDate}
+                          </span>
+                        </div>
+
+                        <h3 className="text-sm font-serif font-medium text-plum-950 pt-1 leading-snug">
+                          {coupon.title}
+                        </h3>
+                        <p className="text-xs text-plum-700 font-light leading-relaxed">
+                          {coupon.description}
+                        </p>
+                      </div>
+
+                      <div className="pt-4 mt-3 border-t border-lavender-100 flex flex-wrap items-center justify-between gap-2">
+                        <span className="text-[10px] text-emerald-700 font-medium flex items-center gap-1">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                          利用可能（{coupon.usableAt === "both" ? "サロン＆EC" : coupon.usableAt === "shop" ? "公式EC限定" : "サロン限定"}）
+                        </span>
+
+                        <div className="flex items-center gap-1.5">
+                          {coupon.usableAt !== "salon" && (
+                            <Link
+                              href="/shop"
+                              className="py-1.5 px-3 rounded-full gold-button text-[11px] font-semibold cursor-pointer shadow-2xs flex items-center gap-1"
+                            >
+                              <ShoppingBag className="w-3 h-3 text-plum-950" />
+                              <span>ECで使う</span>
+                            </Link>
+                          )}
+                          <button
+                            onClick={() => handleUseCoupon(coupon.id, coupon.title)}
+                            disabled={usingCouponId === coupon.id}
+                            className="py-1.5 px-3 rounded-full luxe-button text-[11px] font-medium cursor-pointer shadow-xs disabled:opacity-50"
+                          >
+                            {usingCouponId === coupon.id ? "消込中..." : "店頭で利用する"}
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
+
             )}
 
             {/* 利用済みクーポン */}
@@ -637,7 +877,81 @@ export default function MyPage() {
           </div>
         )}
 
+        {/* 会員ランクプログラム＆特別優待早見表 */}
+        <div className="pearl-glass p-6 sm:p-7 rounded-[2rem] border border-lavender-200/90 shadow-md space-y-5 bg-white/95">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-lavender-200/70 pb-3">
+            <div>
+              <div className="flex items-center gap-2">
+                <Crown className="w-4 h-4 text-gold-600" />
+                <h3 className="text-base sm:text-lg font-serif font-medium text-plum-950">
+                  会員ランク制度 ＆ 特典早見表
+                </h3>
+              </div>
+              <p className="text-xs text-plum-600 font-light mt-0.5">
+                サロン施術・公式EC共通でポイントが貯まり、ランクに応じて還元率（1.0%〜5.0%）と限定特典がアップします。
+              </p>
+            </div>
+            <span className="text-xs font-serif font-semibold text-plum-900 bg-lavender-50 px-3 py-1 rounded-full border border-lavender-200 shrink-0">
+              現在のランク: ★ {user.rank}
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-1">
+            {MEMBER_RANKS_CONFIG.map((tier) => {
+              const isCurrent = user.rank === tier.rank;
+              return (
+                <div
+                  key={tier.rank}
+                  className={`p-4 rounded-2xl border transition-all text-xs flex flex-col justify-between ${
+                    isCurrent
+                      ? "border-2 border-gold-400 bg-gradient-to-b from-gold-50/60 to-white shadow-md ring-1 ring-gold-400/40"
+                      : "border-lavender-200/80 bg-lavender-50/30"
+                  }`}
+                >
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${tier.badgeBg}`}>
+                        ★ {tier.rank}
+                      </span>
+                      {isCurrent && (
+                        <span className="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500 text-white font-medium">
+                          現在
+                        </span>
+                      )}
+                    </div>
+                    <div>
+                      <h4 className="font-serif font-semibold text-plum-950 text-sm">{tier.name}</h4>
+                      <p className="text-[10px] text-plum-500 font-mono">
+                        {tier.minPoints === 0 ? "無料会員登録" : `累計 ${tier.minPoints.toLocaleString()}pt 〜`}
+                      </p>
+                    </div>
+
+                    <div className="p-2 rounded-xl bg-white border border-lavender-200 text-center">
+                      <span className="text-[9px] text-plum-500 block font-mono">POINT RATE</span>
+                      <span className="text-lg font-serif font-bold text-plum-950">{tier.rateLabel}</span>
+                    </div>
+
+                    <ul className="space-y-1.5 text-[11px] font-light text-plum-700 pt-1 leading-snug">
+                      {tier.perks.slice(0, 3).map((p, idx) => (
+                        <li key={idx} className="flex items-start gap-1">
+                          <CheckCircle2 className="w-3 h-3 text-gold-600 mt-0.5 shrink-0" />
+                          <span>{p}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="mt-3 pt-2 border-t border-dashed border-lavender-200/80 text-[10px] text-rose-600 font-medium">
+                    {tier.exclusiveCoupons[0]?.title}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
         {/* 審査・デモ体験用フッターバナー */}
+
         <div className="pearl-glass p-5 rounded-2xl border border-gold-300/80 bg-gradient-to-r from-gold-50/70 via-white to-lavender-50/70 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="space-y-1 text-center sm:text-left">
             <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-gold-400 text-plum-950 font-serif font-semibold">

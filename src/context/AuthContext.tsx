@@ -18,7 +18,9 @@ interface AuthContextType {
   redeemReward: (rewardId: string) => Promise<{ success: boolean; message: string }>;
   useCoupon: (couponId: string) => Promise<{ success: boolean; message: string }>;
   checkoutShop: (usedPoints: number, earnedPoints: number, orderSummary: string) => Promise<{ success: boolean; message: string }>;
+  updateBirthday: (birthday: string) => Promise<{ success: boolean; message: string; couponAdded?: boolean }>;
 }
+
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -232,6 +234,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  // お誕生日設定・変更
+  const updateBirthday = async (birthday: string) => {
+    if (!user) return { success: false, message: "ログインが必要です" };
+
+    try {
+      const res = await fetch("/api/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "update_birthday",
+          currentUser: user,
+          birthday,
+        }),
+      });
+
+      const data = await res.json();
+      if (data.success && data.user) {
+        persistUser(data.user);
+        return {
+          success: true,
+          message: data.message,
+          couponAdded: data.couponAdded,
+        };
+      }
+      return { success: false, message: data.message || "お誕生日の更新に失敗しました" };
+    } catch (e) {
+      return { success: false, message: "通信エラーが発生しました" };
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -248,11 +280,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         redeemReward,
         useCoupon,
         checkoutShop,
+        updateBirthday,
       }}
     >
       {children}
     </AuthContext.Provider>
   );
+
 }
 
 export function useAuth() {
