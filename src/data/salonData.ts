@@ -8,7 +8,10 @@ export interface NailDesign {
   image: string;
   description: string;
   price: string;
+  priceValue: number; // 数値価格（絞り込み用）
   duration: string;
+  durationMinutes: number; // 所要時間（分）
+  colorTone: "lavender" | "pink" | "beige" | "gold" | "white" | "multi"; // カラー系統
   colorChangeable: boolean; // 色変更の可否
   paragelIncluded: boolean; // パラジェルベース込み
   tags: string[];
@@ -25,6 +28,8 @@ export interface Staff {
   specialty: string[];
   message: string;
   favoriteStyle?: string;
+  signatureDesignId: string;
+  signatureDesignTitle: string;
 }
 
 export interface MenuItem {
@@ -102,6 +107,8 @@ export const STAFFS: Staff[] = [
     specialty: ["パラジェルフィルイン", "大人ニュアンス", "ラベンダー×ゴールド", "美爪育成ケア"],
     message: "自爪を傷めずに3〜4週間持続させるフィルイン技術と、奥行き感のある大人可愛いニュアンスアートが得意です。",
     favoriteStyle: "大人ニュアンス＆水光マグネット",
+    signatureDesignId: "glam-gold-mirror",
+    signatureDesignTitle: "ホワイトパール＆ゴールドミラーライン"
   },
   {
     id: "takahashi",
@@ -113,6 +120,8 @@ export const STAFFS: Staff[] = [
     specialty: ["水光マグネット50色調合", "オフィス微粒子パール", "ワンカラー美フォルム"],
     message: "光の当たり方で表情を変える水光マグネットが得意です。爪の形を最も美しく見せるフォルム作りにこだわっています。",
     favoriteStyle: "ちゅるん水光マグネット",
+    signatureDesignId: "magnet-water-glow",
+    signatureDesignTitle: "水光ペールラベンダー × シャンパンマグネット"
   },
   {
     id: "mizuno",
@@ -124,6 +133,8 @@ export const STAFFS: Staff[] = [
     specialty: ["季節のフラワーアート", "トレンドパーツ配置", "フット角質＆スパケア"],
     message: "春の桜やタンポポ、夏の海、秋のボルドーなど、季節の移ろいを感じられる繊細な手描きアートをご提案します。",
     favoriteStyle: "季節のフラワー＆フットアート",
+    signatureDesignId: "glam-spring-sakura",
+    signatureDesignTitle: "春風の桜＆タンポポ パステルニュアンス"
   }
 ];
 
@@ -136,7 +147,10 @@ export const DESIGNS: NailDesign[] = [
     image: "/images/magnet_nail.jpg",
     description: "透き通るペールラベンダーをベースに、微粒子シャンパンゴールドマグネットの光彩を重ねた当店不動の人気No.1デザイン。",
     price: "¥8,800",
+    priceValue: 8800,
     duration: "75分",
+    durationMinutes: 75,
+    colorTone: "lavender",
     colorChangeable: true,
     paragelIncluded: true,
     tags: ["水光マグネット", "ラベンダー", "シャンパンゴールド", "うるツヤ", "50色選択可"],
@@ -150,7 +164,10 @@ export const DESIGNS: NailDesign[] = [
     image: "/images/hero.jpg",
     description: "厳しめの職場でも好印象な肌馴染み抜群のシアーベージュ。丁寧なウォーターケアで甘皮周りを整え、美しいフォルムで仕上げます。",
     price: "¥7,150",
+    priceValue: 7150,
     duration: "60分",
+    durationMinutes: 60,
+    colorTone: "beige",
     colorChangeable: true,
     paragelIncluded: true,
     tags: ["オフィスネイル", "美フォルム", "シンプル", "肌馴染み抜群"],
@@ -164,7 +181,10 @@ export const DESIGNS: NailDesign[] = [
     image: "/images/hero.jpg",
     description: "透け感のあるミルキーラベンダーのちゅるんワンカラー。自爪を健康に保ちながら指先をスラリと長く魅せます。",
     price: "¥7,150",
+    priceValue: 7150,
     duration: "60分",
+    durationMinutes: 60,
+    colorTone: "lavender",
     colorChangeable: true,
     paragelIncluded: true,
     tags: ["シンプル派", "透明感", "自爪育成", "ワンカラー"],
@@ -178,7 +198,10 @@ export const DESIGNS: NailDesign[] = [
     image: "/images/spring_nail.jpg",
     description: "桜を思わせる柔らかなピンクとタンポポイエローを織り交ぜた、華やかで大人可愛い手描きフラワーニュアンスアート。",
     price: "¥9,350",
+    priceValue: 9350,
     duration: "90分",
+    durationMinutes: 90,
+    colorTone: "pink",
     colorChangeable: true,
     paragelIncluded: true,
     tags: ["春ネイル", "手描きフラワー", "大人可愛い", "ニュアンスアート"],
@@ -192,7 +215,10 @@ export const DESIGNS: NailDesign[] = [
     image: "/images/hero.jpg",
     description: "上品なパールホワイトにシャンパンゴールドの立体ミラーラインをあしらった、華やかで洗練された大人ジュエリーネイル。",
     price: "¥9,900",
+    priceValue: 9900,
     duration: "85分",
+    durationMinutes: 85,
+    colorTone: "gold",
     colorChangeable: true,
     paragelIncluded: true,
     tags: ["ミラーアート", "パールホワイト", "ゴールド", "ブライダル/お呼ばれ"],
@@ -206,7 +232,10 @@ export const DESIGNS: NailDesign[] = [
     image: "/images/magnet_nail.jpg",
     description: "光の筋がシャープに走る強光マグネット。指先を細く長く魅せる指長効果抜群の特殊パウダーを使用。",
     price: "¥9,350",
+    priceValue: 9350,
     duration: "80分",
+    durationMinutes: 80,
+    colorTone: "gold",
     colorChangeable: true,
     paragelIncluded: true,
     tags: ["強光マグネット", "指長効果", "モーブ", "特殊パウダー"],
@@ -220,7 +249,10 @@ export const DESIGNS: NailDesign[] = [
     image: "/images/spring_nail.jpg",
     description: "親指に上質な天然シェルと金箔を埋め込んだフットネイル。全席リクライニングチェアでフットバス＆甘皮ケア付き。",
     price: "¥8,800",
+    priceValue: 8800,
     duration: "75分",
+    durationMinutes: 75,
+    colorTone: "white",
     colorChangeable: true,
     paragelIncluded: true,
     tags: ["フットネイル", "シェル", "フットバス付", "リクライニング席"],
@@ -234,7 +266,10 @@ export const DESIGNS: NailDesign[] = [
     image: "/images/hero.jpg",
     description: "シアーなベースに爪先だけ繊細なゴールドラインを引いた大人のスキニーフレンチ。オフィスやお出かけにも万能。",
     price: "¥7,700",
+    priceValue: 7700,
     duration: "70分",
+    durationMinutes: 70,
+    colorTone: "gold",
     colorChangeable: true,
     paragelIncluded: true,
     tags: ["スキニーフレンチ", "美爪", "シンプル", "オフィスOK"],
@@ -333,6 +368,17 @@ export const MENU_CATEGORIES: MenuItem[] = [
   }
 ];
 
+export const FEE_TABLE = [
+  { item: "初回 他店ジェルオフ（付け替え時）", price: "無料（¥0）", note: "ご新規様限定クーポン適用で0円" },
+  { item: "再来 自店ジェルオフ（フィルイン付け替え）", price: "無料（¥0）", note: "アセトン不使用の一層残しフィルイン込" },
+  { item: "再来 他店ジェルオフ（付け替え時）", price: "¥1,100", note: "自爪を傷めず丁寧にオフ" },
+  { item: "オフのみ（自店ジェル・ネイルケア込）", price: "¥3,300", note: "整爪＋甘皮ケア＋シャイナー仕上げ" },
+  { item: "オフのみ（他店ジェル・ネイルケア込）", price: "¥3,850", note: "整爪＋甘皮ケア＋保湿トリートメント" },
+  { item: "自爪亀裂補強（シルクラップ補修）", price: "¥550 / 1本", note: "割れた爪を保護・補強してそのまま施術OK" },
+  { item: "長さ出し（ジェルスカルプ）", price: "¥880 / 1本", note: "折れて短くなった爪の長さを揃えます" },
+  { item: "スタッフ指名料金", price: "¥550", note: "池田・高橋・水野のご指名（税込）" },
+];
+
 export const FAQS: FaqItem[] = [
   {
     category: "paragel",
@@ -353,6 +399,26 @@ export const FAQS: FaqItem[] = [
     category: "paragel",
     q: "自爪が薄くて割れやすいのですが、施術を受けられますか？",
     a: "はい、大歓迎です。当サロンには「他店で爪が薄くなって痛む」「自爪が弱くて伸ばせない」とお悩みのお客様が多くご来店されます。削らないパラジェルと丁寧なケアにより、薄くなった爪を保護しながら健康な自爪へと育てていくことができます。"
+  },
+  {
+    category: "service",
+    q: "持ち込みデザインのオーダーは可能ですか？",
+    a: "はい、可能です！インスタグラムやお写真などのご希望画像を施術前のカウンセリングでお見せください。パーツやカラーの在庫状況に応じて、当サロンの上品な世界観（白・ラベンダー・ゴールド等）を調和させながら最適なご提案をいたします。事前に公式LINEで画像をお送りいただきご相談いただくことも可能です。"
+  },
+  {
+    category: "service",
+    q: "他店ジェルのオフのみでも予約できますか？",
+    a: "はい、オフのみのメニュー（他店オフ＋美爪ケア付き ¥3,850）をご用意しております。自爪を削らず丁寧にオフし、爪の長さを整え、甘皮ケアと保湿オイルで清潔で健康的な素爪に仕上げます。"
+  },
+  {
+    category: "service",
+    q: "爪に亀裂が入っていたり折れていたりしても施術できますか？",
+    a: "はい、対応可能です。亀裂補強（シルクラップ補修 1本¥550）や、折れてしまった爪の長さ出し（ジェルスカルプ 1本¥880）を行っております。自爪を短く切り揃えずに他の指と長さを均一にして施術できますので、安心してご来店ください。"
+  },
+  {
+    category: "service",
+    q: "施術時間はどのくらいかかりますか？",
+    a: "ワンカラー・グラデーションはオフ込みで約60〜70分、水光マグネットコースは約75〜85分、アート・ニュアンスコースは約90分が目安です。初回ご来店時は丁寧なカウンセリングのため＋10分ほどお時間をいただいております。"
   },
   {
     category: "service",

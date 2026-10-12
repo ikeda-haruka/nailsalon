@@ -34,16 +34,16 @@ export default function ConceptSection() {
   ];
 
   return (
-    <section id="concept" className="py-24 bg-gradient-to-b from-white via-lavender-50/30 to-white relative">
+    <section id="concept" className="py-20 sm:py-24 bg-gradient-to-b from-white via-lavender-50/30 to-white relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* セクションヘッダー */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-14 space-y-3">
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-lavender-100 text-lavender-700 text-xs font-normal tracking-widest uppercase border border-lavender-200">
             <Sparkles className="w-3.5 h-3.5 text-gold-500" />
             <span className="font-serif">Why Salon de Fraise?</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-normal text-plum-900 leading-[1.35] tracking-wide">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-normal text-plum-900 leading-[1.35] tracking-wide">
             ずっと美しい指先を保つ、<br />
             3つの理由
           </h2>

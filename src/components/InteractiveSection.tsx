@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import confetti from "canvas-confetti";
-import { Sparkles, Calendar, Heart, ArrowRight, RotateCcw, Clock } from "lucide-react";
+import { Sparkles, Calendar, Heart, ArrowRight, RotateCcw, Clock, MessageCircle, ShieldCheck } from "lucide-react";
 import { SALON_INFO, DESIGNS } from "@/data/salonData";
 
 export default function InteractiveSection() {
@@ -149,30 +150,66 @@ export default function InteractiveSection() {
                 </div>
               </div>
             ) : (
-              /* 結果画面 */
-              <div className="space-y-5 animate-in zoom-in-95 duration-300">
-                <div className="p-5 rounded-3xl bg-gradient-to-br from-lavender-50 to-gold-50 border border-lavender-200 space-y-2.5">
-                  <span className="text-[10px] font-normal px-2.5 py-0.5 rounded-full bg-gold-500 text-plum-950 uppercase tracking-widest inline-block font-serif">
-                    Your Best Match
-                  </span>
-                  <h4 className="text-lg sm:text-xl font-serif font-normal text-plum-900 tracking-wide">
-                    {result?.title}
-                  </h4>
-                  <p className="text-xs text-plum-700 leading-relaxed font-light tracking-wide">
+              /* 結果画面: 画像・料金・安心バッジ・直結予約ボタンを表示 */
+              <div className="space-y-4 animate-in zoom-in-95 duration-300">
+                <div className="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-lavender-50/80 to-gold-50/80 border border-lavender-200 space-y-3 shadow-sm">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-normal px-2.5 py-0.5 rounded-full bg-gold-500 text-plum-950 uppercase tracking-widest inline-block font-serif shadow-2xs">
+                      Best Match For You
+                    </span>
+                    <span className="text-[11px] font-serif text-lavender-700">
+                      {result?.categoryLabel}
+                    </span>
+                  </div>
+
+                  {/* 提案デザイン画像＆タイトル */}
+                  <div className="flex gap-3.5 items-center">
+                    {result?.image && (
+                      <div className="relative w-20 h-20 rounded-2xl overflow-hidden shrink-0 border border-lavender-200 bg-lavender-100 shadow-2xs">
+                        <Image
+                          src={result.image}
+                          alt={result.title}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    )}
+                    <div className="space-y-1">
+                      <h4 className="text-base sm:text-lg font-serif font-normal text-plum-900 tracking-wide leading-snug">
+                        {result?.title}
+                      </h4>
+                      <div className="flex items-center gap-3 text-xs">
+                        <span className="font-serif font-light text-base text-gold-600 tracking-wider">
+                          {result?.price}
+                        </span>
+                        <span className="text-[11px] text-plum-500 flex items-center gap-1 font-light tracking-wide">
+                          <Clock className="w-3 h-3 text-lavender-400" />
+                          目安: {result?.duration}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p className="text-xs text-plum-700 leading-relaxed font-light tracking-wide bg-white/80 p-3 rounded-2xl border border-lavender-100">
                     {result?.description}
                   </p>
-                  <div className="flex items-center justify-between pt-2 border-t border-lavender-200/60 text-xs">
-                    <span className="font-serif font-light text-base sm:text-lg text-gold-600 tracking-wider">
-                      {result?.price}
+
+                  {/* 安心スペックバッジ */}
+                  <div className="flex flex-wrap gap-1.5 pt-0.5">
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-white text-lavender-800 border border-lavender-200">
+                      自爪を削らないパラジェル込
                     </span>
-                    <span className="text-[10px] text-plum-500 flex items-center gap-1 font-light tracking-wide">
-                      <Clock className="w-3.5 h-3.5 text-lavender-400" />
-                      {result?.duration}
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-white text-gold-800 border border-gold-200">
+                      カラー変更無料
+                    </span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-white text-lavender-800 border border-lavender-200">
+                      3〜4週持続フィルイン
                     </span>
                   </div>
                 </div>
 
-                <div className="flex gap-2.5">
+                {/* アクションボタン群 */}
+                <div className="flex flex-col sm:flex-row gap-2 pt-1">
                   <a
                     href={SALON_INFO.links.hotpepper}
                     target="_blank"
@@ -182,10 +219,20 @@ export default function InteractiveSection() {
                     <Calendar className="w-4 h-4" />
                     <span>この診断結果で即時予約</span>
                   </a>
+                  <a
+                    href={SALON_INFO.links.line}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 text-center py-3 rounded-full bg-[#06C755] hover:bg-[#05a847] text-white text-xs font-medium flex items-center justify-center gap-1.5 shadow-md transition-all hover:scale-102 tracking-wide"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    <span>LINEで画像相談</span>
+                  </a>
                   <button
                     onClick={handleReset}
-                    className="p-3 rounded-full bg-white border border-lavender-200 text-plum-700 hover:bg-lavender-50 transition-colors shrink-0 shadow-2xs"
+                    className="p-3 rounded-full bg-white border border-lavender-200 text-plum-700 hover:bg-lavender-50 transition-colors shrink-0 shadow-2xs self-center sm:self-auto cursor-pointer"
                     aria-label="もう一度診断する"
+                    title="最初からやり直す"
                   >
                     <RotateCcw className="w-4 h-4" />
                   </button>
