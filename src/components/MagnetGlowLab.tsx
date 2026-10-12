@@ -1,13 +1,18 @@
 "use client";
 
-import React, { useState, useRef } from "react";
-import { Sparkles, Compass, Eye, Heart, Calendar } from "lucide-react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import { Sparkles, Eye, Calendar, Play, Pause, Smartphone, Sliders, RefreshCw } from "lucide-react";
 import { SALON_INFO } from "@/data/salonData";
 
 export default function MagnetGlowLab() {
   const [activeColor, setActiveColor] = useState(0);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
+  const [isAutoPlay, setIsAutoPlay] = useState(true);
+  const [isUserInteracting, setIsUserInteracting] = useState(false);
   const nailRef = useRef<HTMLDivElement>(null);
+  const animFrameRef = useRef<number | null>(null);
+  const autoPlayAngleRef = useRef(0);
+  const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const magnetTones = [
     {
@@ -48,21 +53,65 @@ export default function MagnetGlowLab() {
     },
   ];
 
+  // 自動揺らめきアニメーション（スマホ・PC共通で、触っていない時に光が自然に優しく動く）
+  useEffect(() => {
+    if (!isAutoPlay || isUserInteracting) return;
+
+    const animate = () => {
+      autoPlayAngleRef.current += 0.025;
+      const angle = autoPlayAngleRef.current;
+      // 8の字のような滑らかなリサージュ曲線で光彩が揺らめく
+      const x = 50 + Math.sin(angle) * 32;
+      const y = 48 + Math.sin(angle * 2) * 28;
+      setMousePos({ x, y });
+      animFrameRef.current = requestAnimationFrame(animate);
+    };
+
+    animFrameRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+    };
+  }, [isAutoPlay, isUserInteracting]);
+
+  // 操作があったら自動アニメーションを停止し、離れて2秒後に再開
+  const startUserInteraction = useCallback(() => {
+    setIsUserInteracting(true);
+    if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    idleTimerRef.current = setTimeout(() => {
+      setIsUserInteracting(false);
+    }, 2500);
+  }, []);
+
+  // マウス移動
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!nailRef.current) return;
+    startUserInteraction();
     const rect = nailRef.current.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    const x = Math.max(10, Math.min(90, ((e.clientX - rect.left) / rect.width) * 100));
+    const y = Math.max(10, Math.min(90, ((e.clientY - rect.top) / rect.height) * 100));
     setMousePos({ x, y });
   };
 
-  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+  // スマホ タッチ開始＆タッチ移動（touch-none でスクロール干渉を完全防止）
+  const handleTouch = (e: React.TouchEvent<HTMLDivElement>) => {
     if (!nailRef.current || e.touches.length === 0) return;
+    startUserInteraction();
     const rect = nailRef.current.getBoundingClientRect();
     const touch = e.touches[0];
-    const x = ((touch.clientX - rect.left) / rect.width) * 100;
-    const y = ((touch.clientY - rect.top) / rect.height) * 100;
+    const x = Math.max(10, Math.min(90, ((touch.clientX - rect.left) / rect.width) * 100));
+    const y = Math.max(10, Math.min(90, ((touch.clientY - rect.top) / rect.height) * 100));
     setMousePos({ x, y });
+  };
+
+  // スライダーによる光の角度調整（スマホで指で爪を隠さず見たい人向け）
+  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    startUserInteraction();
+    const val = Number(e.target.value);
+    setMousePos({
+      x: val,
+      y: 35 + Math.sin((val / 100) * Math.PI) * 25
+    });
   };
 
   const current = magnetTones[activeColor];
@@ -72,62 +121,120 @@ export default function MagnetGlowLab() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* セクション見出し */}
-        <div className="text-center max-w-2xl mx-auto mb-12 space-y-3">
+        <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-12 space-y-3">
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-lavender-100 text-lavender-700 text-xs font-normal tracking-widest uppercase border border-lavender-200 font-serif">
             <Sparkles className="w-3.5 h-3.5 text-gold-500" />
             <span>Interactive Magnet Lab</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-serif font-normal text-plum-900 leading-[1.3] tracking-wide">
+          <h2 className="text-2xl sm:text-4xl font-serif font-normal text-plum-900 leading-[1.3] tracking-wide">
             水光マグネット体験シミュレーター
           </h2>
           <p className="text-xs sm:text-sm text-plum-700 font-light tracking-wide leading-relaxed">
-            画面の爪にマウスを乗せたり指でなぞると、光の筋がちゅるんと動きます。<br className="hidden sm:inline" />
-            50種類以上ある特殊マグネットパウダーの繊細な光沢を体感してください。
+            スマホでは爪を<strong className="font-medium text-plum-950">指で直接なぞる</strong>か、下の<strong className="font-medium text-plum-950">光彩スライダー</strong>を動かすと、水光ビームがちゅるんと輝きます。<br className="hidden sm:inline" />
+            指先を傾けた時の50色以上の立体的な奥行き光沢をご体感ください。
           </p>
         </div>
 
         {/* インタラクティブカード */}
-        <div className="max-w-4xl mx-auto pearl-glass rounded-[2.5rem] p-6 sm:p-10 border border-lavender-200 shadow-2xl">
+        <div className="max-w-4xl mx-auto pearl-glass rounded-[2.5rem] p-5 sm:p-10 border border-lavender-200 shadow-2xl">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
             
             {/* 左側: リアルタイム追従する水光ネイルのビジュアル */}
-            <div className="md:col-span-6 flex flex-col items-center">
+            <div className="md:col-span-6 flex flex-col items-center space-y-4">
+              
+              {/* ネイルチップ表示エリア（touch-none でスマホのスクロール暴発を防止） */}
               <div
                 ref={nailRef}
                 onMouseMove={handleMouseMove}
-                onTouchMove={handleTouchMove}
-                className="relative w-64 h-84 sm:w-72 sm:h-96 rounded-[5rem] overflow-hidden cursor-crosshair shadow-2xl border-4 border-white select-none transition-all duration-300"
+                onTouchStart={handleTouch}
+                onTouchMove={handleTouch}
+                className="relative w-56 h-80 sm:w-72 sm:h-96 rounded-[4.5rem] sm:rounded-[5rem] overflow-hidden cursor-crosshair shadow-2xl border-4 border-white select-none transition-colors duration-500 touch-none"
                 style={{
                   background: current.bgGradient,
                 }}
               >
-                {/* ぷっくり爪のトップハイライト（ジェル特有のツヤ） */}
-                <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-black/20 pointer-events-none" />
+                {/* ぷっくり爪のトップハイライト（ジェル特有の濡れツヤ） */}
+                <div className="absolute inset-0 bg-gradient-to-b from-white/45 via-transparent to-black/25 pointer-events-none" />
 
-                {/* マウス追従するマグネットの光筋（水光ビーム） */}
+                {/* 追従する水光マグネットの光彩ビーム */}
                 <div
-                  className="absolute pointer-events-none transition-all duration-75 ease-out rounded-full blur-xl"
+                  className="absolute pointer-events-none transition-all duration-100 ease-out rounded-full blur-xl"
                   style={{
-                    width: "160px",
-                    height: "160px",
+                    width: "170px",
+                    height: "170px",
                     left: `${mousePos.x}%`,
                     top: `${mousePos.y}%`,
                     transform: "translate(-50%, -50%) rotate(25deg)",
-                    background: `radial-gradient(ellipse at center, ${current.shimmerColor} 0%, rgba(255,255,255,0.4) 40%, transparent 70%)`,
-                    boxShadow: `0 0 40px ${current.shimmerColor}`,
+                    background: `radial-gradient(ellipse at center, ${current.shimmerColor} 0%, rgba(255,255,255,0.45) 40%, transparent 70%)`,
+                    boxShadow: `0 0 45px ${current.shimmerColor}`,
                   }}
                 />
 
                 {/* 爪の輪郭・サイドのハイライト */}
-                <div className="absolute top-6 left-6 right-6 h-12 rounded-t-[4rem] border-t-2 border-white/60 pointer-events-none" />
+                <div className="absolute top-5 left-5 right-5 h-12 rounded-t-[3.5rem] sm:rounded-t-[4rem] border-t-2 border-white/70 pointer-events-none" />
 
-                {/* アクション指示テキスト */}
-                <div className="absolute bottom-6 left-4 right-4 text-center pointer-events-none">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-plum-950/50 backdrop-blur-md text-white text-[11px] font-light tracking-wide">
-                    <Eye className="w-3.5 h-3.5" /> 触ると光が動きます
+                {/* 操作ガイドバナー */}
+                <div className="absolute bottom-5 left-3 right-3 text-center pointer-events-none">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-plum-950/60 backdrop-blur-md text-white text-[10px] sm:text-[11px] font-light tracking-wide shadow-sm">
+                    <Eye className="w-3 h-3 text-gold-300" />
+                    <span>{isUserInteracting ? "光を操作中 ✦" : "指でなぞるかスライダーで操作"}</span>
                   </span>
                 </div>
               </div>
+
+              {/* スマホ操作を快適にする補助コントローラー */}
+              <div className="w-full max-w-xs space-y-2.5 pt-1">
+                {/* 光の角度スライダー */}
+                <div className="p-3 rounded-2xl bg-white/80 border border-lavender-200/90 shadow-2xs space-y-1.5">
+                  <div className="flex items-center justify-between text-[11px] text-plum-900 font-medium">
+                    <span className="flex items-center gap-1">
+                      <Sliders className="w-3.5 h-3.5 text-lavender-600" />
+                      <span>光彩アングル調整</span>
+                    </span>
+                    <span className="text-[10px] text-lavender-600 font-mono">
+                      {Math.round(mousePos.x)}°
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min="15"
+                    max="85"
+                    value={Math.round(mousePos.x)}
+                    onChange={handleSliderChange}
+                    className="w-full accent-lavender-600 cursor-pointer h-2 bg-lavender-100 rounded-lg"
+                    aria-label="光彩の角度を調整"
+                  />
+                  <div className="flex justify-between text-[9px] text-plum-400">
+                    <span>左から差す光</span>
+                    <span>中央</span>
+                    <span>右から差す光</span>
+                  </div>
+                </div>
+
+                {/* 自動揺らめきモードトグル */}
+                <div className="flex items-center justify-between px-3 py-1.5 rounded-xl bg-lavender-50/70 border border-lavender-200 text-[11px]">
+                  <span className="text-plum-700 flex items-center gap-1.5">
+                    <Smartphone className="w-3 h-3 text-lavender-600" />
+                    <span>自動揺らめき演出</span>
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsAutoPlay((prev) => !prev);
+                      setIsUserInteracting(false);
+                    }}
+                    className={`px-2.5 py-0.5 rounded-full text-[10px] font-medium flex items-center gap-1 transition-colors cursor-pointer ${
+                      isAutoPlay
+                        ? "bg-lavender-600 text-white shadow-2xs"
+                        : "bg-white text-plum-700 border border-lavender-200"
+                    }`}
+                  >
+                    {isAutoPlay ? <Pause className="w-2.5 h-2.5" /> : <Play className="w-2.5 h-2.5" />}
+                    <span>{isAutoPlay ? "ON (揺らめき中)" : "OFF"}</span>
+                  </button>
+                </div>
+              </div>
+
             </div>
 
             {/* 右側: カラー切り替え & 説明 */}
@@ -146,13 +253,16 @@ export default function MagnetGlowLab() {
 
               {/* カラーセレクターボタン */}
               <div className="space-y-2">
-                <p className="text-xs font-normal text-plum-900 tracking-wide">大人可愛いカラーパレットを選択:</p>
+                <p className="text-xs font-normal text-plum-900 tracking-wide">カラーパレットをタップして変更:</p>
                 <div className="grid grid-cols-2 gap-2.5">
                   {magnetTones.map((tone, idx) => (
                     <button
                       key={tone.id}
-                      onClick={() => setActiveColor(idx)}
-                      className={`p-3 rounded-2xl text-left border transition-all flex items-center gap-3 ${
+                      onClick={() => {
+                        setActiveColor(idx);
+                        startUserInteraction();
+                      }}
+                      className={`p-3 rounded-2xl text-left border transition-all flex items-center gap-3 cursor-pointer ${
                         activeColor === idx
                           ? "bg-white border-lavender-500 shadow-md scale-102 ring-2 ring-lavender-200"
                           : "bg-white/70 border-lavender-100 hover:bg-white"
