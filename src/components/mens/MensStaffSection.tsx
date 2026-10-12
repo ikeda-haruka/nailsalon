@@ -26,8 +26,8 @@ export default function MensStaffSection() {
           </h2>
 
           <p className="text-xs sm:text-sm text-zinc-400 font-light leading-relaxed">
-            サロンには総勢5名の男性ネイリストが在籍。<br className="hidden sm:inline" />
-            男性特有の爪の悩み、骨格、ライフスタイルに寄り添い、完全個室で一人ひとりと真摯に向き合います。<br className="hidden sm:inline" />
+            黒・グレー・白を基調としたミニマル＆ラグジュアリーな完全個室空間に、総勢5名の専任男性ネイリストが在籍。<br className="hidden sm:inline" />
+            男性特有の爪の悩み、骨格、ライフスタイルに寄り添い、シャープで清潔感ある理想の指先へと導きます。<br className="hidden sm:inline" />
             スタッフ指名料: <strong className="text-white font-mono">{MENS_SALON_INFO.nominationFee}</strong>
           </p>
         </div>
@@ -40,8 +40,8 @@ export default function MensStaffSection() {
               className="mens-glass-card rounded-3xl p-5 flex flex-col justify-between group transition-all duration-300 space-y-4"
             >
               <div className="space-y-3">
-                {/* 写真コンテナ（男性ネイリスト顔写真ポートレート） */}
-                <div className="relative aspect-[4/5] w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800">
+                {/* 写真コンテナ（男性ネイリスト顔写真ポートレート：黒・グレー・白スタジオ統一テンポ） */}
+                <div className="relative aspect-[4/5] w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800/90 shadow-lg">
                   {!failedImages[staff.id] ? (
                     <Image
                       src={staff.image}
@@ -49,7 +49,7 @@ export default function MensStaffSection() {
                       fill
                       sizes="(max-width: 768px) 100vw, 20vw"
                       onError={() => setFailedImages(prev => ({ ...prev, [staff.id]: true }))}
-                      className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                      className="object-cover object-top group-hover:scale-105 transition-transform duration-700 contrast-[1.04]"
                     />
                   ) : (
                     <MensBrandLogoPlaceholder
@@ -58,15 +58,18 @@ export default function MensStaffSection() {
                       size="md"
                     />
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none" />
+                  {/* 黒・グレー・白のシネマティックモノトーン統一グラデーション */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-zinc-950/20 to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-2xl pointer-events-none" />
 
-                  <span className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full bg-zinc-900/90 text-zinc-300 text-[10px] font-mono border border-zinc-700">
+                  {/* 歴年数バッジ */}
+                  <span className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full bg-zinc-900/95 backdrop-blur-sm text-zinc-300 text-[10px] font-mono border border-zinc-700 shadow-sm">
                     {staff.experience}
                   </span>
 
                   <div className="absolute bottom-3 left-3 right-3 text-white">
-                    <p className="text-[10px] text-zinc-400 font-light">{staff.kana}</p>
-                    <h3 className="font-serif text-lg font-medium leading-tight">{staff.name}</h3>
+                    <p className="text-[10px] text-zinc-400 font-mono tracking-wider">{staff.kana}</p>
+                    <h3 className="font-serif text-lg font-medium leading-tight tracking-wide drop-shadow-sm">{staff.name}</h3>
                   </div>
                 </div>
 
