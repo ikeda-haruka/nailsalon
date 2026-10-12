@@ -93,7 +93,7 @@ export default function MensHeroSection() {
             <div className="mens-glass p-5 sm:p-7 rounded-[2.5rem] relative overflow-hidden shadow-2xl group">
               
               {/* 写真フレーム */}
-              <div className="relative aspect-4/3 sm:aspect-square rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 shadow-inner">
+              <div className="relative aspect-[4/3] sm:aspect-square rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 shadow-inner">
                 {!imageError ? (
                   <Image
                     src="/images/mens_matte_black.jpg"

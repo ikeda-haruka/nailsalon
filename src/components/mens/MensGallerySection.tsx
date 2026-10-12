@@ -86,7 +86,7 @@ export default function MensGallerySection() {
             >
               <div>
                 {/* 写真コンテナ */}
-                <div className="relative aspect-4/3 sm:aspect-square overflow-hidden bg-zinc-950">
+                <div className="relative aspect-[4/3] sm:aspect-square overflow-hidden bg-zinc-950">
                   {!failedImages[item.id] ? (
                     <Image
                       src={item.image}

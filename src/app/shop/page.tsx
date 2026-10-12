@@ -502,7 +502,7 @@ export default function ShopPage() {
 
             {/* 右側：ネイルチップ写真ギャラリー */}
             <div className="lg:col-span-5 relative">
-              <div className="relative rounded-3xl overflow-hidden shadow-xl aspect-4/3 sm:aspect-16/10 border border-lavender-200">
+              <div className="relative rounded-3xl overflow-hidden shadow-xl aspect-[4/3] sm:aspect-[16/10] w-full border border-lavender-200">
                 <Image
                   src="/images/hero.jpg"
                   alt="パラジェル ネイルチップ 透き通る水光ラベンダー"

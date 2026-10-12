@@ -41,7 +41,7 @@ export default function MensStaffSection() {
             >
               <div className="space-y-3">
                 {/* 写真コンテナ（男性ネイリスト顔写真ポートレート） */}
-                <div className="relative aspect-4/5 rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800">
+                <div className="relative aspect-[4/5] w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800">
                   {!failedImages[staff.id] ? (
                     <Image
                       src={staff.image}
