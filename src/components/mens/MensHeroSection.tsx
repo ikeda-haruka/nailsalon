@@ -1,12 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Sparkles, Calendar, ArrowRight, ShieldCheck, ShoppingBag, Users, CheckCircle2 } from "lucide-react";
 import { MENS_SALON_INFO } from "@/data/mensSalonData";
+import MensBrandLogoPlaceholder from "@/components/mens/MensBrandLogoPlaceholder";
 
 export default function MensHeroSection() {
+  const [imageError, setImageError] = useState(false);
   return (
     <section className="relative min-h-[92vh] flex items-center justify-center pt-32 pb-20 overflow-hidden mens-bg">
       {/* 背景のモノトーンメッシュグラデーション */}
@@ -92,13 +94,21 @@ export default function MensHeroSection() {
               
               {/* 写真フレーム */}
               <div className="relative aspect-4/3 sm:aspect-square rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 shadow-inner">
-                <Image
-                  src="/images/magnet_nail.jpg"
-                  alt="メンズ パラジェル ネイル チタンマグネット＆マットブラック"
-                  fill
-                  priority
-                  className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 contrast-125 grayscale-[30%]"
-                />
+                {!imageError ? (
+                  <Image
+                    src="/images/mens_matte_black.jpg"
+                    alt="男性の指先に似合うマットブラック×スモーキーチタンネイル"
+                    fill
+                    priority
+                    onError={() => setImageError(true)}
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                ) : (
+                  <MensBrandLogoPlaceholder
+                    styleName="マットブラック × スモーキーチタン"
+                    categoryLabel="SIGNATURE MENS STYLE"
+                  />
+                )}
                 
                 {/* オーバーレイグラデーション */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none" />

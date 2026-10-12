@@ -47,6 +47,7 @@ import { useAuth } from "@/context/AuthContext";
 import { getRankPointRate } from "@/data/memberData";
 import MensHeader from "@/components/mens/MensHeader";
 import MensFooter from "@/components/mens/MensFooter";
+import MensBrandLogoPlaceholder from "@/components/mens/MensBrandLogoPlaceholder";
 
 interface MensCartItem {
   product: MensShopProduct;
@@ -648,18 +649,20 @@ export default function MensShopPage() {
                 >
                   <div>
                     <div className="relative aspect-4/3 overflow-hidden bg-zinc-950">
-                      {/* 画像未生成時はブランドロゴエンブレムを表示 */}
-                      <div className="w-full h-full flex flex-col items-center justify-center p-4 bg-gradient-to-br from-[#18181b] via-[#09090b] to-[#18181b]">
-                        <div className="w-14 h-14 rounded-full border border-zinc-700 bg-zinc-900 flex items-center justify-center shadow-md">
-                          <span className="font-serif text-lg font-bold text-white">H</span>
-                        </div>
-                        <span className="font-serif text-[10px] tracking-widest text-zinc-400 uppercase mt-2">
-                          Salon de Fraise HOMME
-                        </span>
-                        <span className="font-mono text-[9px] text-zinc-500 mt-0.5">
-                          {p.itemCode}
-                        </span>
-                      </div>
+                      {p.image && (p.image.endsWith(".jpg") || p.image.endsWith(".png")) && !p.image.includes("hero.jpg") && !p.image.includes("gallery-") ? (
+                        <Image
+                          src={p.image}
+                          alt={p.name}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 contrast-125"
+                        />
+                      ) : (
+                        <MensBrandLogoPlaceholder
+                          productName={p.name}
+                          itemCode={p.itemCode}
+                          categoryLabel={p.categoryLabel}
+                        />
+                      )}
 
                       <span className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-zinc-900/90 text-white text-[10px] font-mono border border-zinc-700">
                         {p.tag}
@@ -1066,12 +1069,22 @@ export default function MensShopPage() {
             </button>
 
             <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-start">
-              <div className="sm:col-span-5 aspect-square rounded-2xl bg-zinc-950 border border-zinc-800 flex flex-col items-center justify-center p-4">
-                <div className="w-16 h-16 rounded-full border border-zinc-700 bg-zinc-900 flex items-center justify-center font-serif text-xl font-bold text-white mb-2">
-                  H
-                </div>
-                <span className="font-serif text-xs text-zinc-400 tracking-widest uppercase">Salon de Fraise HOMME</span>
-                <span className="font-mono text-[10px] text-zinc-500 mt-1">{selectedProduct.itemCode}</span>
+              <div className="sm:col-span-5 aspect-square rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 relative">
+                {selectedProduct.image && (selectedProduct.image.endsWith(".jpg") || selectedProduct.image.endsWith(".png")) && !selectedProduct.image.includes("hero.jpg") && !selectedProduct.image.includes("gallery-") ? (
+                  <Image
+                    src={selectedProduct.image}
+                    alt={selectedProduct.name}
+                    fill
+                    className="object-cover"
+                  />
+                ) : (
+                  <MensBrandLogoPlaceholder
+                    productName={selectedProduct.name}
+                    itemCode={selectedProduct.itemCode}
+                    categoryLabel={selectedProduct.categoryLabel}
+                    size="lg"
+                  />
+                )}
               </div>
 
               <div className="sm:col-span-7 space-y-3 text-xs text-zinc-300">

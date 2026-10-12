@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { Users, Calendar, Sparkles, CheckCircle2, ShieldCheck } from "lucide-react";
 import { MENS_STAFFS, MENS_SALON_INFO } from "@/data/mensSalonData";
+import MensBrandLogoPlaceholder from "@/components/mens/MensBrandLogoPlaceholder";
 
 export default function MensStaffSection() {
   return (
@@ -37,15 +38,14 @@ export default function MensStaffSection() {
               className="mens-glass-card rounded-3xl p-5 flex flex-col justify-between group transition-all duration-300 space-y-4"
             >
               <div className="space-y-3">
-                {/* 写真コンテナ */}
+                {/* 写真コンテナ（メンズサロン専用ブランドロゴエンブレム） */}
                 <div className="relative aspect-4/5 rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800">
-                  <Image
-                    src={staff.image}
-                    alt={staff.name}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 contrast-125 grayscale-[35%]"
+                  <MensBrandLogoPlaceholder
+                    staffName={staff.name}
+                    categoryLabel={staff.role}
+                    size="md"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
 
                   <span className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full bg-zinc-900/90 text-zinc-300 text-[10px] font-mono border border-zinc-700">
                     {staff.experience}

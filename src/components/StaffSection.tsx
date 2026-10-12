@@ -1,11 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { Sparkles, Heart, Award, Calendar, CheckCircle2 } from "lucide-react";
 import { STAFFS, SALON_INFO } from "@/data/salonData";
+import BrandLogoPlaceholder from "@/components/BrandLogoPlaceholder";
 
 export default function StaffSection() {
+  const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
+
   return (
     <section id="staff" className="py-20 sm:py-24 bg-gradient-to-b from-white via-lavender-50/20 to-white relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -36,13 +39,21 @@ export default function StaffSection() {
               <div>
                 {/* ネイル作品写真ポートレート */}
                 <div className="relative h-72 sm:h-80 rounded-2xl overflow-hidden mb-5 bg-lavender-100">
-                  <Image
-                    src={staff.image}
-                    alt={`${staff.name} (${staff.kana}) 担当シグネチャーネイル: ${staff.signatureDesignTitle}`}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
+                  {!failedImages[staff.id] ? (
+                    <Image
+                      src={staff.image}
+                      alt={`${staff.name} (${staff.kana}) 担当シグネチャーネイル: ${staff.signatureDesignTitle}`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      onError={() => setFailedImages(prev => ({ ...prev, [staff.id]: true }))}
+                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                  ) : (
+                    <BrandLogoPlaceholder
+                      categoryLabel={staff.role}
+                      productName={staff.signatureDesignTitle}
+                    />
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-plum-950/75 via-transparent to-transparent pointer-events-none" />
 
                   {/* 代表作バッジ */}

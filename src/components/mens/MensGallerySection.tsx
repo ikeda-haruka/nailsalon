@@ -3,9 +3,11 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { Sparkles, CheckCircle2, ChevronRight, Eye } from "lucide-react";
+import MensBrandLogoPlaceholder from "@/components/mens/MensBrandLogoPlaceholder";
 
 export default function MensGallerySection() {
   const [selectedCategory, setSelectedCategory] = useState<"all" | "natural" | "matte" | "magnet">("all");
+  const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
 
   const styles = [
     {
@@ -15,7 +17,7 @@ export default function MensGallerySection() {
       categoryName: "ビジネス・身だしなみ",
       price: "¥8,800",
       time: "60分",
-      image: "/images/spring.jpg",
+      image: "/images/mens_natural_matte.jpg",
       popular: true,
       desc: "一切のツヤを消し去り、手入れの行き届いた清潔な自爪そのものに見せるNo.1人気スタイル。名刺交換や商談でもバレずに好印象。"
     },
@@ -26,7 +28,7 @@ export default function MensGallerySection() {
       categoryName: "モード＆ストリート",
       price: "¥11,000",
       time: "75分",
-      image: "/images/hero.jpg",
+      image: "/images/mens_matte_black.jpg",
       desc: "男性のスクエアな爪に映えるマットブラック。シルバーアクセサリーや時計と抜群の相性を誇る大人の自己表現スタイル。"
     },
     {
@@ -36,7 +38,7 @@ export default function MensGallerySection() {
       categoryName: "メンズマグネット",
       price: "¥11,000",
       time: "75分",
-      image: "/images/magnet_nail.jpg",
+      image: "/images/mens_matte_black.jpg",
       desc: "黒曜石のような深みのあるブラックベースに、微粒子のシルバー光筋をシャープに集めた立体光彩アート。"
     },
     {
@@ -46,7 +48,7 @@ export default function MensGallerySection() {
       categoryName: "自爪補強・割れ爪予防",
       price: "¥7,700",
       time: "50分",
-      image: "/images/interior.jpg",
+      image: "/images/mens_interior.jpg",
       desc: "筋トレや楽器演奏、PC作業で割れやすい爪をパラジェルの弾力膜でガッチリ保護。深爪緩和にも最適。"
     }
   ];
@@ -85,12 +87,20 @@ export default function MensGallerySection() {
               <div>
                 {/* 写真コンテナ */}
                 <div className="relative aspect-4/3 sm:aspect-square overflow-hidden bg-zinc-950">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 contrast-125 grayscale-[35%]"
-                  />
+                  {!failedImages[item.id] ? (
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      onError={() => setFailedImages(prev => ({ ...prev, [item.id]: true }))}
+                      className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 contrast-125"
+                    />
+                  ) : (
+                    <MensBrandLogoPlaceholder
+                      styleName={item.title}
+                      categoryLabel={item.categoryName}
+                    />
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
 
                   {item.popular && (

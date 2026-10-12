@@ -1,13 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ShoppingBag, ArrowRight, Truck, Award, ShieldCheck, CheckCircle2 } from "lucide-react";
 import { MENS_SHOP_PRODUCTS } from "@/data/mensShopData";
+import MensBrandLogoPlaceholder from "@/components/mens/MensBrandLogoPlaceholder";
 
 export default function MensShopFeatureSection() {
   const featured = MENS_SHOP_PRODUCTS.slice(0, 4);
+  const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
 
   return (
     <section className="py-24 sm:py-32 mens-bg relative border-t border-zinc-800">
@@ -39,12 +41,21 @@ export default function MensShopFeatureSection() {
             >
               <div>
                 <div className="relative aspect-4/3 overflow-hidden bg-zinc-950">
-                  <Image
-                    src={p.image}
-                    alt={p.name}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 contrast-125 grayscale-[35%]"
-                  />
+                  {p.image && !failedImages[p.id] && !p.image.includes("gallery-") && !p.image.includes("spring.jpg") && !p.image.includes("hero.jpg") ? (
+                    <Image
+                      src={p.image}
+                      alt={p.name}
+                      fill
+                      onError={() => setFailedImages(prev => ({ ...prev, [p.id]: true }))}
+                      className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 contrast-125"
+                    />
+                  ) : (
+                    <MensBrandLogoPlaceholder
+                      productName={p.name}
+                      itemCode={p.itemCode}
+                      categoryLabel={p.categoryLabel}
+                    />
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
 
                   <span className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-white text-zinc-950 text-[10px] font-mono font-bold">

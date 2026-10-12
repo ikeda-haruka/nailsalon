@@ -198,7 +198,7 @@ export const INITIAL_RESERVATIONS: SalonReservation[] = [
     staffName: "高橋（トップネイリスト）",
     designId: "autumn-bordeaux",
     designTitle: "秋ボルドー＆金箔ニュアンス",
-    designImage: "/images/autumn_nail.jpg",
+    designImage: "/images/brand_logo.svg",
     finalPrice: 9900,
     status: "completed",
     note: "ご来店完了（施術ポイント400pt付与済み）",
