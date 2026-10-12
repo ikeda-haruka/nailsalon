@@ -42,24 +42,24 @@ export default function StaffSection() {
                   {!failedImages[staff.id] ? (
                     <Image
                       src={staff.image}
-                      alt={`${staff.name} (${staff.kana}) 担当シグネチャーネイル: ${staff.signatureDesignTitle}`}
+                      alt={`${staff.name} (${staff.kana}) ${staff.role}`}
                       fill
                       sizes="(max-width: 768px) 100vw, 33vw"
                       onError={() => setFailedImages(prev => ({ ...prev, [staff.id]: true }))}
-                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                      className="object-cover object-top group-hover:scale-105 transition-transform duration-700"
                     />
                   ) : (
                     <BrandLogoPlaceholder
                       categoryLabel={staff.role}
-                      productName={staff.signatureDesignTitle}
+                      productName={staff.name}
                     />
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-plum-950/75 via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-plum-950/80 via-transparent to-transparent pointer-events-none" />
 
-                  {/* 代表作バッジ */}
+                  {/* 在籍ネイリストバッジ */}
                   <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-normal text-lavender-700 shadow-2xs flex items-center gap-1.5 border border-lavender-100 font-serif tracking-wide">
                     <Sparkles className="w-3 h-3 text-gold-500" />
-                    <span>担当シグネチャー作品</span>
+                    <span>在籍プロネイリスト</span>
                   </div>
 
                   {/* 経験年数バッジ */}

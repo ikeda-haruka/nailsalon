@@ -1,12 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { Users, Calendar, Sparkles, CheckCircle2, ShieldCheck } from "lucide-react";
 import { MENS_STAFFS, MENS_SALON_INFO } from "@/data/mensSalonData";
 import MensBrandLogoPlaceholder from "@/components/mens/MensBrandLogoPlaceholder";
 
 export default function MensStaffSection() {
+  const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
+
   return (
     <section id="staff" className="py-24 sm:py-32 mens-bg relative border-t border-zinc-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-16">
@@ -38,14 +40,25 @@ export default function MensStaffSection() {
               className="mens-glass-card rounded-3xl p-5 flex flex-col justify-between group transition-all duration-300 space-y-4"
             >
               <div className="space-y-3">
-                {/* 写真コンテナ（メンズサロン専用ブランドロゴエンブレム） */}
+                {/* 写真コンテナ（男性ネイリスト顔写真ポートレート） */}
                 <div className="relative aspect-4/5 rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800">
-                  <MensBrandLogoPlaceholder
-                    staffName={staff.name}
-                    categoryLabel={staff.role}
-                    size="md"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+                  {!failedImages[staff.id] ? (
+                    <Image
+                      src={staff.image}
+                      alt={`${staff.name} (${staff.kana}) ${staff.role}`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 20vw"
+                      onError={() => setFailedImages(prev => ({ ...prev, [staff.id]: true }))}
+                      className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                    />
+                  ) : (
+                    <MensBrandLogoPlaceholder
+                      staffName={staff.name}
+                      categoryLabel={staff.role}
+                      size="md"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none" />
 
                   <span className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full bg-zinc-900/90 text-zinc-300 text-[10px] font-mono border border-zinc-700">
                     {staff.experience}

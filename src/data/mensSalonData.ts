@@ -66,7 +66,7 @@ export const MENS_STAFFS: MensStaff[] = [
     message: "「男がネイルサロンに行くなんて…」と最初は誰でも緊張します。でも、爪が清潔に整った瞬間の気分の高揚感は、スーツを仕立てた時の感動と同じです。気兼ねなく何でもご相談ください。",
     signatureStyle: "完全ツヤ消し自爪風ナチュラルマット仕上げ",
     nominationFee: "¥550",
-    image: "/images/brand_logo_homme.svg"
+    image: "/images/staff/kamiya.jpg"
   },
   {
     id: "shun-kurosaki",
@@ -78,7 +78,7 @@ export const MENS_STAFFS: MensStaff[] = [
     message: "パラジェルは自爪を削らないから、薄くならず割れにくい。二枚爪や乾燥で悩む男性の手元を根本から強く健康にします。僕自身もパラジェルで爪割れを克服しました。",
     signatureStyle: "高強度パラジェルベース＆チタンクリア補強",
     nominationFee: "¥550",
-    image: "/images/brand_logo_homme.svg"
+    image: "/images/staff/kurosaki.jpg"
   },
   {
     id: "kohei-saeki",
@@ -90,7 +90,7 @@ export const MENS_STAFFS: MensStaff[] = [
     message: "男性の骨格や指の太さにマッチする、シャープで無骨すぎないモノトーンアートが得意です。1本だけのワンポイントアートでも、ファッションが劇的に洗練されます。",
     signatureStyle: "漆黒マットブラック × スモーキーシルバーマグネット",
     nominationFee: "¥550",
-    image: "/images/brand_logo_homme.svg"
+    image: "/images/staff/saeki.jpg"
   },
   {
     id: "yuma-sanada",
@@ -102,7 +102,7 @@ export const MENS_STAFFS: MensStaff[] = [
     message: "営業職や経営者の方から『名刺交換や商談で手元を見られても自信が持てるようになった』とのお声を多数いただきます。指先は最も雄弁な名刺です。",
     signatureStyle: "精密ウォーターケア＆血色感スキンコーティング",
     nominationFee: "¥550",
-    image: "/images/brand_logo_homme.svg"
+    image: "/images/staff/sanada.jpg"
   },
   {
     id: "riku-tachibana",
@@ -114,7 +114,7 @@ export const MENS_STAFFS: MensStaff[] = [
     message: "初めてサロンに来られる方の不安をゼロにすることが僕の役目です。道具の使い方やオイルの塗り方まで、丁寧にお伝えします。男同士、気楽に話しましょう！",
     signatureStyle: "自爪育成トリートメント＆高保湿メンズオイル仕上げ",
     nominationFee: "¥550",
-    image: "/images/brand_logo_homme.svg"
+    image: "/images/staff/tachibana.jpg"
   }
 ];
 

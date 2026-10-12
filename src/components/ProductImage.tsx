@@ -24,7 +24,15 @@ const EXISTING_IMAGE_FILES = new Set([
   "/images/office_nude_nail.jpg",
   "/images/mens_matte_black.jpg",
   "/images/mens_natural_matte.jpg",
-  "/images/mens_interior.jpg"
+  "/images/mens_interior.jpg",
+  "/images/staff/ikeda.jpg",
+  "/images/staff/takahashi.jpg",
+  "/images/staff/mizuno.jpg",
+  "/images/staff/kamiya.jpg",
+  "/images/staff/kurosaki.jpg",
+  "/images/staff/saeki.jpg",
+  "/images/staff/sanada.jpg",
+  "/images/staff/tachibana.jpg"
 ]);
 
 export default function ProductImage({
