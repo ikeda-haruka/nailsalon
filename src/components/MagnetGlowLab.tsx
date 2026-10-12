@@ -156,17 +156,46 @@ export default function MagnetGlowLab() {
                 {/* ぷっくり爪のトップハイライト（ジェル特有の濡れツヤ） */}
                 <div className="absolute inset-0 bg-gradient-to-b from-white/45 via-transparent to-black/25 pointer-events-none" />
 
-                {/* 追従する水光マグネットの光彩ビーム */}
+                {/* 追従する水光マグネットの光彩ビーム（周囲に広がる柔らかな水光オーラ） */}
                 <div
-                  className="absolute pointer-events-none transition-all duration-100 ease-out rounded-full blur-xl"
+                  className="absolute pointer-events-none rounded-full blur-2xl transition-colors duration-500"
                   style={{
-                    width: "170px",
-                    height: "170px",
+                    width: "210px",
+                    height: "210px",
                     left: `${mousePos.x}%`,
                     top: `${mousePos.y}%`,
-                    transform: "translate(-50%, -50%) rotate(25deg)",
-                    background: `radial-gradient(ellipse at center, ${current.shimmerColor} 0%, rgba(255,255,255,0.45) 40%, transparent 70%)`,
-                    boxShadow: `0 0 45px ${current.shimmerColor}`,
+                    transform: "translate(-50%, -50%)",
+                    background: `radial-gradient(circle at center, ${current.shimmerColor} 0%, rgba(255,255,255,0.4) 40%, transparent 75%)`,
+                    boxShadow: `0 0 50px ${current.shimmerColor}`,
+                    opacity: 0.85,
+                  }}
+                />
+
+                {/* 追従する水光マグネットのメインビーム（斜めに走るキャッツアイ・水光ラインの強い帯光） */}
+                <div
+                  className="absolute pointer-events-none rounded-[50%] blur-md transition-colors duration-500"
+                  style={{
+                    width: "115px",
+                    height: "260px",
+                    left: `${mousePos.x}%`,
+                    top: `${mousePos.y}%`,
+                    transform: `translate(-50%, -50%) rotate(${22 + (mousePos.x - 50) * 0.25}deg)`,
+                    background: `radial-gradient(ellipse at center, ${current.shimmerColor} 0%, rgba(255,255,255,0.75) 30%, transparent 70%)`,
+                    boxShadow: `0 0 35px ${current.shimmerColor}, 0 0 15px rgba(255,255,255,0.9)`,
+                  }}
+                />
+
+                {/* 水光ビームの中心を貫くシルキーなコアハイライト */}
+                <div
+                  className="absolute pointer-events-none rounded-full blur-[2px] transition-opacity duration-300"
+                  style={{
+                    width: "26px",
+                    height: "190px",
+                    left: `${mousePos.x}%`,
+                    top: `${mousePos.y}%`,
+                    transform: `translate(-50%, -50%) rotate(${22 + (mousePos.x - 50) * 0.25}deg)`,
+                    background: `linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.95) 45%, rgba(255,255,255,0.95) 55%, transparent 100%)`,
+                    opacity: 0.9,
                   }}
                 />
 
