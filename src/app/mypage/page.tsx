@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -26,20 +26,31 @@ import {
   Edit3,
   Percent,
   BadgePercent,
-  Crown
+  Crown,
+  MapPin,
+  XCircle,
+  HelpCircle
 } from "lucide-react";
 
 import { useAuth } from "@/context/AuthContext";
 import { REWARD_ITEMS, MEMBER_RANKS_CONFIG, getRankPointRate } from "@/data/memberData";
+import { SalonReservation, calculateEndTime } from "@/types/reservation";
+import BookingModal from "@/components/BookingModal";
 
 export default function MyPage() {
   const router = useRouter();
   const { user, isLoading, logout, redeemReward, useCoupon, loginDemoUser, updateBirthday } = useAuth();
 
-  const [activeTab, setActiveTab] = useState<"coupons" | "rewards" | "history">("coupons");
+  const [activeTab, setActiveTab] = useState<"reservations" | "coupons" | "rewards" | "history">("reservations");
   const [redeemingId, setRedeemingId] = useState<string | null>(null);
   const [usingCouponId, setUsingCouponId] = useState<string | null>(null);
   const [notification, setNotification] = useState<{ type: "success" | "error"; message: string } | null>(null);
+
+  // 予約管理State
+  const [reservations, setReservations] = useState<SalonReservation[]>([]);
+  const [isLoadingReservations, setIsLoadingReservations] = useState<boolean>(false);
+  const [cancellingId, setCancellingId] = useState<string | null>(null);
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState<boolean>(false);
 
   // 誕生日設定・変更State
   const [isEditingBirthday, setIsEditingBirthday] = useState<boolean>(false);
@@ -57,6 +68,60 @@ export default function MyPage() {
     setTimeout(() => {
       setNotification(null);
     }, 4500);
+  };
+
+  // 予約データの取得
+  const fetchReservations = async () => {
+    if (!user) return;
+    setIsLoadingReservations(true);
+    try {
+      const res = await fetch(`/api/reservations?memberId=${user.id}`);
+      const data = await res.json();
+      if (data.success && Array.isArray(data.reservations)) {
+        setReservations(data.reservations);
+      }
+    } catch (err) {
+      console.error("予約取得エラー", err);
+    } finally {
+      setIsLoadingReservations(false);
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      fetchReservations();
+    }
+  }, [user]);
+
+  // 予約キャンセル処理
+  const handleCancelReservation = async (reservation: SalonReservation) => {
+    if (
+      !confirm(
+        `【予約キャンセル確認】\n「${reservation.menuName}」(${reservation.date} ${reservation.timeSlot}〜)\nのご予約を取り消しますか？\n\n※ キャンセルすると予約枠が自動的に即時開放され、他の会員様が予約可能になります。`
+      )
+    ) {
+      return;
+    }
+
+    setCancellingId(reservation.id);
+    try {
+      const res = await fetch("/api/reservations", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reservationId: reservation.id, action: "cancel" })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showNotification("success", data.message || "ご予約をキャンセルしました（空き枠が開放されました）");
+        fetchReservations();
+      } else {
+        showNotification("error", data.message || "キャンセル処理に失敗しました");
+      }
+    } catch (err) {
+      showNotification("error", "通信エラーが発生しました");
+    } finally {
+      setCancellingId(null);
+    }
   };
 
   // 誕生日保存処理
@@ -545,21 +610,183 @@ export default function MyPage() {
                 <Gift className="w-4 h-4 text-gold-300" />
                 <span>ポイントを特典と交換する</span>
               </button>
-              <a
-                href="#reservation"
-                onClick={() => router.push("/#reservation")}
+              <button
+                onClick={() => setIsBookingModalOpen(true)}
                 className="w-full py-2 px-4 rounded-xl bg-white border border-lavender-300 hover:border-lavender-500 text-plum-900 text-xs font-medium flex items-center justify-center gap-1.5 transition-all cursor-pointer"
               >
                 <Calendar className="w-3.5 h-3.5 text-lavender-600" />
-                <span>次回のご来店を予約する</span>
-              </a>
+                <span>次回のご来店を即時予約する</span>
+              </button>
             </div>
           </div>
 
         </div>
 
+        {/* 次回のご予約状況カード（直近確定予約） */}
+        {(() => {
+          const upcoming = reservations.find((r) => r.status === "confirmed");
+          return (
+            <div className="pearl-glass p-6 sm:p-7 rounded-[2rem] border-2 border-lavender-300/80 shadow-lg bg-gradient-to-br from-white via-lavender-50/40 to-gold-50/30 space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-lavender-200/70 pb-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-9 h-9 rounded-xl bg-lavender-100 flex items-center justify-center text-lavender-700">
+                    <Calendar className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-mono tracking-wider uppercase px-2 py-0.5 rounded-full bg-lavender-100 text-lavender-800 border border-lavender-200">
+                        Upcoming Appointment
+                      </span>
+                      {upcoming && (
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center gap-1">
+                          <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                          <span>予約確定（席確保済）</span>
+                        </span>
+                      )}
+                    </div>
+                    <h2 className="text-base sm:text-lg font-serif text-plum-950 font-normal mt-0.5">
+                      次回のご予約状況
+                    </h2>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => fetchReservations()}
+                    disabled={isLoadingReservations}
+                    className="p-2 rounded-xl bg-white border border-lavender-200 hover:border-lavender-400 text-plum-600 hover:text-plum-900 transition-all cursor-pointer text-xs flex items-center gap-1"
+                    title="予約状況を最新に更新"
+                  >
+                    <RefreshCw className={`w-3.5 h-3.5 ${isLoadingReservations ? "animate-spin" : ""}`} />
+                    <span className="hidden sm:inline">更新</span>
+                  </button>
+                  <button
+                    onClick={() => setIsBookingModalOpen(true)}
+                    className="py-2 px-3.5 rounded-xl luxe-button text-xs font-medium flex items-center gap-1.5 shadow-xs cursor-pointer"
+                  >
+                    <Calendar className="w-3.5 h-3.5 text-gold-300" />
+                    <span>新規WEB予約を行う</span>
+                  </button>
+                </div>
+              </div>
+
+              {upcoming ? (
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                    <div className="p-3.5 rounded-xl bg-white border border-lavender-200/80 space-y-1">
+                      <span className="text-[10px] text-plum-500 uppercase tracking-widest font-mono">ご来店日時</span>
+                      <p className="font-serif font-bold text-sm text-plum-950">
+                        {upcoming.date}
+                      </p>
+                      <p className="text-xs text-lavender-700 font-medium">
+                        {upcoming.timeSlot} 〜 {calculateEndTime(upcoming.timeSlot, upcoming.durationMinutes)} ({upcoming.durationMinutes}分)
+                      </p>
+                    </div>
+
+                    <div className="p-3.5 rounded-xl bg-white border border-lavender-200/80 space-y-1">
+                      <span className="text-[10px] text-plum-500 uppercase tracking-widest font-mono">サロン店舗</span>
+                      <p className="font-serif font-medium text-sm text-plum-950">
+                        {upcoming.salonType === "mens" ? "Salon de Fraise HOMME" : "Salon de Fraise"}
+                      </p>
+                      <p className="text-[11px] text-plum-600">表参道店（個室・専任席）</p>
+                    </div>
+
+                    <div className="p-3.5 rounded-xl bg-white border border-lavender-200/80 space-y-1">
+                      <span className="text-[10px] text-plum-500 uppercase tracking-widest font-mono">施術メニュー</span>
+                      <p className="font-medium text-xs text-plum-950 leading-snug">
+                        {upcoming.menuName}
+                      </p>
+                      <p className="text-[10px] text-emerald-700 font-medium">
+                        自爪育成パラジェルベース使用
+                      </p>
+                    </div>
+
+                    <div className="p-3.5 rounded-xl bg-white border border-lavender-200/80 space-y-1">
+                      <span className="text-[10px] text-plum-500 uppercase tracking-widest font-mono">担当スタッフ</span>
+                      <p className="font-serif font-medium text-sm text-plum-950">
+                        {upcoming.staffName}
+                      </p>
+                      <p className="text-[10px] text-plum-500 font-mono">予約番号: {upcoming.id}</p>
+                    </div>
+                  </div>
+
+                  {/* 料金明細＆割引 */}
+                  <div className="p-3.5 rounded-xl bg-lavender-50/60 border border-lavender-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+                    <div className="space-y-0.5">
+                      <div className="flex items-center gap-2">
+                        <span className="text-plum-700 font-light">お会計予定額（税込）:</span>
+                        <span className="text-base font-serif font-bold text-plum-950">
+                          ¥{upcoming.finalPrice.toLocaleString()}
+                        </span>
+                        {(upcoming.couponDiscount || 0) > 0 && (
+                          <span className="text-[11px] text-rose-700 font-medium bg-rose-50 px-2 py-0.5 rounded-md border border-rose-200">
+                            ¥{(upcoming.couponDiscount || 0).toLocaleString()} 割引適用済
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[10px] text-plum-500">
+                        {upcoming.couponTitle && `適用クーポン: ${upcoming.couponTitle} `}
+                        {upcoming.usedPoints && upcoming.usedPoints > 0 ? `(利用ポイント: ${upcoming.usedPoints}pt)` : ""}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-2 w-full sm:w-auto">
+                      <button
+                        onClick={() => handleCancelReservation(upcoming)}
+                        disabled={cancellingId === upcoming.id}
+                        className="py-2 px-3 rounded-xl bg-white border border-rose-300 hover:border-rose-500 text-rose-700 hover:text-rose-900 text-xs font-medium transition-all flex items-center justify-center gap-1 cursor-pointer disabled:opacity-50"
+                      >
+                        <XCircle className="w-3.5 h-3.5 text-rose-600" />
+                        <span>{cancellingId === upcoming.id ? "キャンセル中..." : "予約をキャンセルする"}</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <p className="text-[10px] text-plum-500 font-light flex items-center gap-1">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>
+                      キャンセル実行時はサーバー側で即座に予約枠が開放され、空き枠が他の会員様へリアルタイムに復元されます。
+                    </span>
+                  </p>
+                </div>
+              ) : (
+                <div className="py-6 text-center space-y-3">
+                  <div className="w-12 h-12 rounded-full bg-lavender-100 mx-auto flex items-center justify-center text-lavender-600">
+                    <Calendar className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-plum-950">現在、確定している次回のご予約はありません</p>
+                    <p className="text-xs text-plum-600 font-light mt-0.5">
+                      空き枠を自動計算し、その場で予約枠を確保できる公式WEB即時予約をご利用いただけます。
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setIsBookingModalOpen(true)}
+                    className="py-2.5 px-5 rounded-full luxe-button text-xs font-medium inline-flex items-center gap-2 shadow-sm cursor-pointer"
+                  >
+                    <Calendar className="w-4 h-4 text-gold-300" />
+                    <span>24時間即時WEB予約を申し込む</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          );
+        })()}
+
         {/* タブナビゲーション */}
         <div className="pearl-glass p-1.5 rounded-2xl border border-lavender-200 flex gap-1">
+          <button
+            onClick={() => setActiveTab("reservations")}
+            className={`flex-1 py-3 px-3 rounded-xl text-xs sm:text-sm font-medium transition-all flex items-center justify-center gap-2 cursor-pointer ${
+              activeTab === "reservations"
+                ? "bg-white text-plum-950 shadow-sm border border-lavender-200"
+                : "text-plum-600 hover:text-plum-900"
+            }`}
+          >
+            <Calendar className="w-4 h-4 text-lavender-600" />
+            <span>ご予約・来店履歴 ({reservations.length}件)</span>
+          </button>
+
           <button
             onClick={() => setActiveTab("coupons")}
             className={`flex-1 py-3 px-3 rounded-xl text-xs sm:text-sm font-medium transition-all flex items-center justify-center gap-2 cursor-pointer ${
@@ -596,6 +823,138 @@ export default function MyPage() {
             <span>ポイント履歴 ({user.transactions.length}件)</span>
           </button>
         </div>
+
+        {/* タブ0: ご予約・施術履歴一覧 */}
+        {activeTab === "reservations" && (
+          <div className="space-y-6 animate-fade-in">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+              <div>
+                <h2 className="text-lg font-serif text-plum-950 flex items-center gap-2">
+                  <Calendar className="w-5 h-5 text-lavender-600" />
+                  <span>ご予約およびご来店施術履歴</span>
+                </h2>
+                <p className="text-xs text-plum-600 font-light mt-0.5">
+                  確定中のご予約の確認・キャンセル、過去の施術履歴（ポイント付与実績）をご覧いただけます。
+                </p>
+              </div>
+
+              <button
+                onClick={() => setIsBookingModalOpen(true)}
+                className="py-2 px-3.5 rounded-xl luxe-button text-xs font-medium flex items-center gap-1.5 shadow-xs cursor-pointer"
+              >
+                <Calendar className="w-3.5 h-3.5 text-gold-300" />
+                <span>新しいWEB予約を取る</span>
+              </button>
+            </div>
+
+            {reservations.length === 0 ? (
+              <div className="pearl-glass p-8 rounded-2xl text-center space-y-3 border border-lavender-200">
+                <Calendar className="w-8 h-8 text-lavender-400 mx-auto" />
+                <p className="text-xs text-plum-700">ご予約および施術履歴はまだありません。</p>
+                <button
+                  onClick={() => setIsBookingModalOpen(true)}
+                  className="text-xs text-lavender-700 font-medium hover:underline inline-flex items-center gap-1 cursor-pointer"
+                >
+                  <span>WEB即時予約を申し込む</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {reservations.map((r) => {
+                  const isConfirmed = r.status === "confirmed";
+                  const isCompleted = r.status === "completed";
+                  const isCancelled = r.status === "cancelled";
+
+                  return (
+                    <div
+                      key={r.id}
+                      className={`pearl-glass p-5 rounded-2xl border transition-all space-y-3 ${
+                        isConfirmed
+                          ? "border-2 border-lavender-300 bg-white/95 shadow-sm"
+                          : isCompleted
+                          ? "border-emerald-200 bg-white/80"
+                          : "border-stone-200 bg-stone-50/70 opacity-75"
+                      }`}
+                    >
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-lavender-100 pb-2.5">
+                        <div className="flex items-center gap-2">
+                          <span
+                            className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${
+                              isConfirmed
+                                ? "bg-lavender-100 text-lavender-800 border-lavender-300"
+                                : isCompleted
+                                ? "bg-emerald-100 text-emerald-800 border-emerald-300"
+                                : "bg-stone-200 text-stone-600 border-stone-300"
+                            }`}
+                          >
+                            {isConfirmed ? "予約確定（受付済）" : isCompleted ? "来店完了・施術済" : "キャンセル済"}
+                          </span>
+                          <span className="text-[11px] font-mono text-plum-500">ID: {r.id}</span>
+                          <span className="text-[11px] text-plum-600 font-serif">
+                            {r.salonType === "mens" ? "Salon de Fraise HOMME" : "Salon de Fraise"}
+                          </span>
+                        </div>
+
+                        <div className="text-[11px] text-plum-500 font-mono">
+                          予約日: {r.createdAt}
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+                        <div className="sm:col-span-8 space-y-1">
+                          <div className="flex items-baseline gap-2">
+                            <span className="font-serif text-sm sm:text-base font-bold text-plum-950">
+                              {r.date} {r.timeSlot} 〜 {calculateEndTime(r.timeSlot, r.durationMinutes)}
+                            </span>
+                            <span className="text-xs text-lavender-700 font-medium font-mono">
+                              ({r.durationMinutes}分)
+                            </span>
+                          </div>
+                          <p className="text-xs font-medium text-plum-900 leading-snug">
+                            {r.menuName}
+                          </p>
+                          <div className="flex items-center gap-3 text-[11px] text-plum-600 font-light">
+                            <span>担当スタッフ: {r.staffName}</span>
+                            <span>お会計: ¥{r.finalPrice.toLocaleString()} (税込)</span>
+                            {(r.couponDiscount || 0) > 0 && (
+                              <span className="text-rose-600">割引: -¥{(r.couponDiscount || 0).toLocaleString()}</span>
+                            )}
+                          </div>
+                          {r.note && (
+                            <p className="text-[11px] text-plum-500 italic">要望・備考: {r.note}</p>
+                          )}
+                        </div>
+
+                        <div className="sm:col-span-4 flex sm:justify-end items-center gap-2">
+                          {isConfirmed ? (
+                            <button
+                              onClick={() => handleCancelReservation(r)}
+                              disabled={cancellingId === r.id}
+                              className="py-1.5 px-3 rounded-xl bg-white border border-rose-300 hover:border-rose-500 text-rose-700 hover:text-rose-900 text-xs font-medium transition-all flex items-center gap-1 cursor-pointer disabled:opacity-50"
+                            >
+                              <XCircle className="w-3.5 h-3.5 text-rose-600" />
+                              <span>{cancellingId === r.id ? "処理中..." : "キャンセルする"}</span>
+                            </button>
+                          ) : isCompleted ? (
+                            <span className="text-xs text-emerald-700 font-medium flex items-center gap-1 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
+                              <CheckCircle2 className="w-3.5 h-3.5" />
+                              <span>施術完了（ポイント還元済）</span>
+                            </span>
+                          ) : (
+                            <span className="text-xs text-stone-500 font-light">
+                              空き枠開放済み
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )}
 
         {/* タブ1: 保有クーポン一覧 */}
         {activeTab === "coupons" && (
@@ -975,6 +1334,18 @@ export default function MyPage() {
         </div>
 
       </div>
+
+      {/* WEB即時予約モーダル */}
+      <BookingModal
+        isOpen={isBookingModalOpen}
+        onClose={() => setIsBookingModalOpen(false)}
+        initialSalonType="ladies"
+        onBookingSuccess={() => {
+          fetchReservations();
+          showNotification("success", "WEB即時予約が完了しました！ご予約状況を更新しました。");
+          setActiveTab("reservations");
+        }}
+      />
     </div>
   );
 }

@@ -6,11 +6,16 @@ import Link from "next/link";
 import confetti from "canvas-confetti";
 import { Sparkles, Calendar, Heart, ArrowRight, RotateCcw, Clock, ShieldCheck, Award, Ticket } from "lucide-react";
 import { SALON_INFO, DESIGNS } from "@/data/salonData";
+import BookingModal from "@/components/BookingModal";
 
 export default function InteractiveSection() {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [answers, setAnswers] = useState<number[]>([]);
   const [result, setResult] = useState<typeof DESIGNS[0] | null>(null);
+
+  // 予約モーダルState
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  const [bookingDesign, setBookingDesign] = useState<{ id: string; title: string; image: string } | null>(null);
 
   const questions = [
     {
@@ -211,15 +216,22 @@ export default function InteractiveSection() {
 
                 {/* アクションボタン群 */}
                 <div className="flex flex-col sm:flex-row gap-2 pt-1">
-                  <a
-                    href={SALON_INFO.links.hotpepper}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="luxe-button flex-1 text-center py-3 rounded-full text-xs font-medium flex items-center justify-center gap-1.5 shadow-md tracking-wider"
+                  <button
+                    onClick={() => {
+                      if (result) {
+                        setBookingDesign({
+                          id: result.id,
+                          title: result.title,
+                          image: result.image
+                        });
+                      }
+                      setIsBookingModalOpen(true);
+                    }}
+                    className="luxe-button flex-1 text-center py-3 rounded-full text-xs font-medium flex items-center justify-center gap-1.5 shadow-md tracking-wider cursor-pointer"
                   >
-                    <Calendar className="w-4 h-4" />
-                    <span>このデザインで即時予約</span>
-                  </a>
+                    <Calendar className="w-4 h-4 text-gold-300" />
+                    <span>この診断デザインでWEB即時予約</span>
+                  </button>
                   <Link
                     href="/mypage"
                     className="gold-button flex-1 text-center py-3 rounded-full text-xs font-medium flex items-center justify-center gap-1.5 shadow-md transition-all hover:scale-102 tracking-wide"
@@ -240,7 +252,7 @@ export default function InteractiveSection() {
             )}
           </div>
 
-          {/* 右側: リアルタイム予約連携・空き枠案内（固定ダミー日時は廃止し、本物の予約システム直結UXへ） */}
+          {/* 右側: リアルタイム予約連携・空き枠案内 */}
           <div className="lg:col-span-6 pearl-glass rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-10 border border-lavender-200 shadow-xl">
             <div className="mb-6 space-y-2">
               <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-gold-100 text-gold-700 text-xs font-normal tracking-widest uppercase border border-gold-200 font-serif">
@@ -251,7 +263,7 @@ export default function InteractiveSection() {
                 最新の空席・ご予約枠のご案内
               </h3>
               <p className="text-xs text-plum-700 font-light tracking-wide">
-                空席はHOT PEPPER Beautyにて24時間リアルタイム自動更新・即時確定いただけます。
+                空席は公式WEB予約システムにて24時間リアルタイム自動計算・即時確定いただけます。
               </p>
             </div>
 
@@ -287,7 +299,7 @@ export default function InteractiveSection() {
               ))}
             </div>
 
-            {/* 予約カレンダー直結CTA（最短クリック数で予約確定へ） */}
+            {/* 予約カレンダー直結CTA */}
             <div className="p-4 sm:p-5 rounded-2xl bg-lavender-50/70 border border-lavender-200/80 space-y-3">
               <div className="flex items-center gap-2">
                 <span className="flex h-2 w-2 relative">
@@ -295,20 +307,21 @@ export default function InteractiveSection() {
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                 </span>
                 <p className="text-xs font-normal text-plum-900 tracking-wide">
-                  最新の空席カレンダーは予約ページでリアルタイム表示中：
+                  最新の空席スロットは公式WEB予約でリアルタイム判定中：
                 </p>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-2.5 pt-1">
-                <a
-                  href={SALON_INFO.links.hotpepper}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="luxe-button flex-1 text-center py-3 rounded-full text-xs font-medium flex items-center justify-center gap-1.5 shadow-md tracking-wider"
+                <button
+                  onClick={() => {
+                    setBookingDesign(null);
+                    setIsBookingModalOpen(true);
+                  }}
+                  className="luxe-button flex-1 text-center py-3 rounded-full text-xs font-medium flex items-center justify-center gap-1.5 shadow-md tracking-wider cursor-pointer"
                 >
-                  <Calendar className="w-4 h-4" />
-                  <span>最新の空席を確認してWeb予約</span>
-                </a>
+                  <Calendar className="w-4 h-4 text-gold-300" />
+                  <span>空き枠を確認してWEB即時予約</span>
+                </button>
                 <Link
                   href="/mypage"
                   className="gold-button flex-1 text-center py-3 rounded-full text-xs font-medium flex items-center justify-center gap-1.5 shadow-md transition-all hover:scale-102 tracking-wide"
@@ -324,6 +337,14 @@ export default function InteractiveSection() {
         </div>
 
       </div>
+
+      {/* WEB即時予約モーダル */}
+      <BookingModal
+        isOpen={isBookingModalOpen}
+        onClose={() => setIsBookingModalOpen(false)}
+        initialSalonType="ladies"
+        initialDesign={bookingDesign}
+      />
     </section>
   );
 }

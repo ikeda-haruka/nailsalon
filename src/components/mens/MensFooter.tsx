@@ -88,6 +88,16 @@ export default function MensFooter() {
 
       </div>
 
+      {/* ポートフォリオ実績用デモ明記バナー */}
+      <div className="border-t border-zinc-900/80 py-4 px-4 sm:px-6 lg:px-8 bg-zinc-950/40 text-center text-[11px] text-zinc-500">
+        <p className="font-mono text-zinc-400">
+          【ポートフォリオ実績用デモサイト】
+        </p>
+        <p className="font-light mt-0.5 leading-relaxed">
+          当サイト（Salon de Fraise HOMME）に掲載されている店舗・男性ネイリスト・施術メニュー・予約枠・オンラインショップ等は、Webエンジニアとしてのシステム設計・実装力を示すためのポートフォリオデモです。実在の店舗や課金・施術は発生いたしません。
+        </p>
+      </div>
+
       {/* コピーライト */}
       <div className="border-t border-zinc-900 py-6 text-center text-[10px] text-zinc-600 font-mono">
         &copy; {new Date().getFullYear()} Salon de Fraise HOMME. All Rights Reserved. Designed for Modern Gentlemen.

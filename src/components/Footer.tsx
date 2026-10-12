@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Sparkles, MapPin, Clock, Calendar, Phone, CreditCard, Car, Coffee, Dog, Baby, ExternalLink, Heart, ShoppingBag } from "lucide-react";
@@ -156,8 +156,18 @@ export default function Footer() {
 
         </div>
 
+        {/* ポートフォリオ実績用デモ明記バナー */}
+        <div className="my-6 p-4 rounded-2xl bg-white/80 border border-lavender-200/90 text-center text-[11px] text-plum-600 space-y-1">
+          <p className="font-medium text-plum-900">
+            【ポートフォリオ実績用デモサイトについて】
+          </p>
+          <p className="font-light leading-relaxed">
+            当サイト（Salon de Fraise 及び Salon de Fraise HOMME）に掲載されている店舗・スタッフ・施術メニュー・予約枠・オンラインショップ等は、Webエンジニアとしてのシステム設計・実装力を示すためのポートフォリオデモです。実在の店舗や課金・施術は発生いたしません。
+          </p>
+        </div>
+
         {/* 最下部コピーライト */}
-        <div className="pt-8 border-t border-lavender-200/80 flex flex-col sm:flex-row items-center justify-between text-xs text-plum-500 gap-4 font-light">
+        <div className="pt-6 border-t border-lavender-200/80 flex flex-col sm:flex-row items-center justify-between text-xs text-plum-500 gap-4 font-light">
           <p className="font-serif">© 2026 Salon de Fraise (サロン ド フレーズ). All Rights Reserved.</p>
           <div className="flex flex-wrap gap-4 text-[11px] tracking-wide">
             <Link href="/mens" className="text-neutral-900 hover:text-plum-900 transition-colors font-medium">提携メンズサロン HOMME</Link>

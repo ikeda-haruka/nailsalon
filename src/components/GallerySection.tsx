@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { Sparkles, Calendar, Heart, Eye, X, Clock, Check, ChevronRight, Bookmark } from "lucide-react";
 import { DESIGNS, NailDesign, SALON_INFO } from "@/data/salonData";
+import BookingModal from "@/components/BookingModal";
 
 export default function GallerySection() {
   const [activeCategory, setActiveCategory] = useState<string>("all");
@@ -12,6 +13,49 @@ export default function GallerySection() {
   const [selectedDesign, setSelectedDesign] = useState<NailDesign | null>(null);
   const [likedIds, setLikedIds] = useState<Record<string, boolean>>({});
   const [showFilterBar, setShowFilterBar] = useState(false);
+
+  // 予約モーダルState
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  const [bookingDesign, setBookingDesign] = useState<{ id: string; title: string; image: string } | null>(null);
+
+  // お気に入りを localStorage から読み込み
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("salon_fraise_liked_designs");
+      if (saved) {
+        setLikedIds(JSON.parse(saved));
+      }
+    } catch (e) {
+      // ignore
+    }
+  }, []);
+
+  const toggleLike = (e: React.MouseEvent, id: string) => {
+    e.stopPropagation();
+    setLikedIds((prev) => {
+      const updated = { ...prev, [id]: !prev[id] };
+      try {
+        localStorage.setItem("salon_fraise_liked_designs", JSON.stringify(updated));
+      } catch (err) {
+        // ignore
+      }
+      return updated;
+    });
+  };
+
+  const handleOpenBooking = (design?: NailDesign) => {
+    if (design) {
+      setBookingDesign({
+        id: design.id,
+        title: design.title,
+        image: design.image
+      });
+    } else {
+      setBookingDesign(null);
+    }
+    setSelectedDesign(null);
+    setIsBookingModalOpen(true);
+  };
 
   const categories = [
     { id: "all", label: "ALL", jp: "すべて" },
@@ -54,11 +98,6 @@ export default function GallerySection() {
     setActiveCategory("all");
     setActiveColor("all");
     setActivePrice("all");
-  };
-
-  const toggleLike = (e: React.MouseEvent, id: string) => {
-    e.stopPropagation();
-    setLikedIds((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
   return (
@@ -270,16 +309,17 @@ export default function GallerySection() {
         )}
 
         {/* 下部予約CTA */}
-        <div className="mt-12 text-center">
-          <a
-            href={SALON_INFO.links.hotpepper}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="luxe-button inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-xs sm:text-sm font-medium shadow-lg tracking-wider"
+        <div className="mt-12 text-center space-y-2">
+          <button
+            onClick={() => handleOpenBooking()}
+            className="luxe-button inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-xs sm:text-sm font-medium shadow-lg tracking-wider cursor-pointer"
           >
-            <Calendar className="w-4 h-4" />
-            <span>HOT PEPPER Beauty で全デザイン・クーポンを見る</span>
-          </a>
+            <Calendar className="w-4 h-4 text-gold-300" />
+            <span>24時間公式WEB即時予約（空き枠自動計算）</span>
+          </button>
+          <p className="text-[11px] text-plum-500 font-light">
+            ※ 施術時間に応じたリアルタイム空席枠を自動判定。マイページでいつでも確認・キャンセル可能です。
+          </p>
         </div>
 
       </div>
@@ -298,7 +338,7 @@ export default function GallerySection() {
             <button
               onClick={() => setSelectedDesign(null)}
               aria-label="閉じる"
-              className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-plum-950/50 text-white flex items-center justify-center hover:bg-plum-950/70 transition-colors"
+              className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-plum-950/50 text-white flex items-center justify-center hover:bg-plum-950/70 transition-colors cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
@@ -356,20 +396,26 @@ export default function GallerySection() {
               </div>
 
               <div className="pt-2 flex gap-2.5">
-                <a
-                  href={SALON_INFO.links.hotpepper}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="luxe-button flex-1 text-center py-3 rounded-full text-xs font-medium flex items-center justify-center gap-1.5 shadow-md tracking-wider"
+                <button
+                  onClick={() => handleOpenBooking(selectedDesign)}
+                  className="luxe-button flex-1 text-center py-3.5 rounded-full text-xs font-medium flex items-center justify-center gap-1.5 shadow-md tracking-wider cursor-pointer"
                 >
-                  <Calendar className="w-4 h-4" />
-                  <span>このデザインで即時予約する</span>
-                </a>
+                  <Calendar className="w-4 h-4 text-gold-300" />
+                  <span>このデザインでWEB即時予約する</span>
+                </button>
               </div>
             </div>
           </div>
         </div>
       )}
+
+      {/* WEB即時予約モーダル */}
+      <BookingModal
+        isOpen={isBookingModalOpen}
+        onClose={() => setIsBookingModalOpen(false)}
+        initialSalonType="ladies"
+        initialDesign={bookingDesign}
+      />
 
     </section>
   );

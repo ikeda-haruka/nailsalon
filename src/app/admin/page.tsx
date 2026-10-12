@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
   ShieldCheck,
@@ -18,10 +19,29 @@ import {
   FileCheck,
   Users,
   ChevronRight,
-  Lock
+  Lock,
+  Calendar,
+  Layers,
+  Edit3,
+  DollarSign,
+  Palette,
+  Eye,
+  EyeOff,
+  Filter,
+  Check,
+  X,
+  XCircle,
+  Scissors,
+  Save,
+  FileText,
+  BadgeCheck,
+  ShoppingBag
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { STAFF_ACCOUNTS } from "@/data/memberData";
+import { UNIFIED_SALON_MENUS, SalonMenuItem } from "@/data/salonMenuData";
+import { DESIGNS, NailDesign } from "@/data/salonData";
+import { SalonReservation, calculateEndTime } from "@/types/reservation";
 
 export default function AdminPage() {
   const router = useRouter();
@@ -35,19 +55,11 @@ export default function AdminPage() {
     isLoading
   } = useAuth();
 
-  // ポイント付与フォームState
-  const [grantAmount, setGrantAmount] = useState<number>(300);
-  const [grantReason, setGrantReason] = useState<string>("施術ご来店ポイント（水光マグネットコース）");
-  const [customReason, setCustomReason] = useState<string>("");
-  const [selectedStaffIndex, setSelectedStaffIndex] = useState<number>(0);
-  const [isGranting, setIsGranting] = useState<boolean>(false);
+  // タブ管理 ("reservations" | "menus" | "designs" | "customers")
+  const [activeTab, setActiveTab] = useState<"reservations" | "menus" | "designs" | "customers">("reservations");
 
-  // クーポン消込State
-  const [processingCouponId, setProcessingCouponId] = useState<string | null>(null);
-
-  // 通知
+  // 通知フィードバック
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
-
   const showFeedback = (type: "success" | "error", message: string) => {
     setFeedback({ type, message });
     setTimeout(() => {
@@ -55,14 +67,186 @@ export default function AdminPage() {
     }, 4500);
   };
 
-  // スタッフ切り替え
+  // 担当スタッフ選択
+  const [selectedStaffIndex, setSelectedStaffIndex] = useState<number>(0);
+  const activeStaff = currentStaff || STAFF_ACCOUNTS[0];
+
   const handleSwitchStaff = (index: number) => {
     setSelectedStaffIndex(index);
     loginDemoStaff(index);
     showFeedback("success", `担当スタッフを「${STAFF_ACCOUNTS[index].name}（${STAFF_ACCOUNTS[index].title}）」に切り替えました`);
   };
 
-  // ポイント付与実行
+  // ==========================================
+  // ① 予約管理State & ロジック
+  // ==========================================
+  const [reservations, setReservations] = useState<SalonReservation[]>([]);
+  const [reservationFilter, setReservationFilter] = useState<"all" | "confirmed" | "completed" | "cancelled">("all");
+  const [isLoadingReservations, setIsLoadingReservations] = useState<boolean>(false);
+  const [updatingResId, setUpdatingResId] = useState<string | null>(null);
+
+  const fetchReservations = async () => {
+    setIsLoadingReservations(true);
+    try {
+      const res = await fetch("/api/reservations?all=true");
+      const data = await res.json();
+      if (data.success && Array.isArray(data.reservations)) {
+        setReservations(data.reservations);
+      }
+    } catch (err) {
+      console.error("予約取得エラー", err);
+    } finally {
+      setIsLoadingReservations(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchReservations();
+  }, []);
+
+  // 予約ステータス変更処理 (completed / cancel)
+  const handleUpdateReservationStatus = async (
+    reservationId: string,
+    action: "completed" | "cancel",
+    menuName: string
+  ) => {
+    const isCancel = action === "cancel";
+    const confirmMsg = isCancel
+      ? `【予約キャンセル確認】\n「${menuName}」のご予約を取り消しますか？\nサーバー側で予約枠が即座に開放されます。`
+      : `【来店・施術完了確認】\n「${menuName}」の施術を完了（来店済）にしますか？`;
+
+    if (!confirm(confirmMsg)) return;
+
+    setUpdatingResId(reservationId);
+    try {
+      const payload = isCancel
+        ? { reservationId, action: "cancel" }
+        : { reservationId, status: "completed" };
+
+      const res = await fetch("/api/reservations", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (data.success) {
+        showFeedback("success", data.message || "予約ステータスを更新しました");
+        fetchReservations();
+      } else {
+        showFeedback("error", data.message || "更新に失敗しました");
+      }
+    } catch (err) {
+      showFeedback("error", "通信エラーが発生しました");
+    } finally {
+      setUpdatingResId(null);
+    }
+  };
+
+  const filteredReservations = reservations.filter((r) => {
+    if (reservationFilter === "all") return true;
+    return r.status === reservationFilter;
+  });
+
+  // ==========================================
+  // ② メニュー・料金一元管理State & ロジック
+  // ==========================================
+  const [menuList, setMenuList] = useState<SalonMenuItem[]>(UNIFIED_SALON_MENUS);
+  const [editingMenuId, setEditingMenuId] = useState<string | null>(null);
+  const [editPrice, setEditPrice] = useState<number>(0);
+  const [editDuration, setEditDuration] = useState<number>(0);
+  const [menuFilter, setMenuFilter] = useState<"all" | "ladies" | "mens">("all");
+
+  const handleStartEditMenu = (menu: SalonMenuItem) => {
+    setEditingMenuId(menu.id);
+    setEditPrice(menu.price);
+    setEditDuration(menu.durationMinutes);
+  };
+
+  const handleSaveMenuEdit = (menuId: string) => {
+    setMenuList((prev) =>
+      prev.map((m) =>
+        m.id === menuId
+          ? {
+              ...m,
+              price: editPrice,
+              durationMinutes: editDuration
+            }
+          : m
+      )
+    );
+    setEditingMenuId(null);
+    showFeedback("success", "メニュー料金・所要時間の変更を反映しました（料金一元管理デモ）");
+  };
+
+  const filteredMenus = menuList.filter((m) => {
+    if (menuFilter === "all") return true;
+    return m.salonType === menuFilter;
+  });
+
+  // ==========================================
+  // ③ デザインカタログ管理State & ロジック
+  // ==========================================
+  const [designList, setDesignList] = useState<(NailDesign & { isPublished: boolean })[]>(
+    DESIGNS.map((d) => ({ ...d, isPublished: true }))
+  );
+  const [isAddingDesign, setIsAddingDesign] = useState<boolean>(false);
+  const [newDesignTitle, setNewDesignTitle] = useState<string>("");
+  const [newDesignCategory, setNewDesignCategory] = useState<"magnet" | "office" | "simple" | "glam">("magnet");
+  const [newDesignPrice, setNewDesignPrice] = useState<number>(8800);
+  const [newDesignDuration, setNewDesignDuration] = useState<number>(75);
+  const [newDesignTone, setNewDesignTone] = useState<"lavender" | "pink" | "beige" | "gold">("lavender");
+
+  const handleToggleDesignPublish = (id: string) => {
+    setDesignList((prev) =>
+      prev.map((d) => {
+        if (d.id === id) {
+          const nextState = !d.isPublished;
+          showFeedback("success", `「${d.title}」を${nextState ? "【公開】" : "【非公開】"}に変更しました`);
+          return { ...d, isPublished: nextState };
+        }
+        return d;
+      })
+    );
+  };
+
+  const handleCreateDesign = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newDesignTitle) return;
+
+    const newDesign: NailDesign & { isPublished: boolean } = {
+      id: `custom-${Date.now()}`,
+      title: newDesignTitle,
+      category: newDesignCategory,
+      categoryLabel: newDesignCategory === "magnet" ? "水光マグネット" : newDesignCategory === "office" ? "オフィス向け" : "華やかトレンド",
+      image: "/images/magnet_nail.jpg",
+      description: "管理画面から新規追加された最新サロンデザインです。",
+      price: `¥${newDesignPrice.toLocaleString()}`,
+      priceValue: newDesignPrice,
+      duration: `${newDesignDuration}分`,
+      durationMinutes: newDesignDuration,
+      colorTone: newDesignTone,
+      colorChangeable: true,
+      paragelIncluded: true,
+      tags: ["新規登録", "パラジェル", "限定デザイン"],
+      features: ["自爪削りなし", "カラー変更可"],
+      isPublished: true
+    };
+
+    setDesignList((prev) => [newDesign, ...prev]);
+    setIsAddingDesign(false);
+    setNewDesignTitle("");
+    showFeedback("success", `新デザイン「${newDesign.title}」を登録・公開しました`);
+  };
+
+  // ==========================================
+  // ④ 顧客台帳・ポイント付与State & ロジック
+  // ==========================================
+  const [grantAmount, setGrantAmount] = useState<number>(300);
+  const [grantReason, setGrantReason] = useState<string>("施術ご来店ポイント（水光マグネットコース）");
+  const [customReason, setCustomReason] = useState<string>("");
+  const [isGranting, setIsGranting] = useState<boolean>(false);
+  const [processingCouponId, setProcessingCouponId] = useState<string | null>(null);
+
   const handleGrant = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) {
@@ -92,7 +276,6 @@ export default function AdminPage() {
     }
   };
 
-  // クーポン消込実行
   const handleRedeemCoupon = async (couponId: string, title: string) => {
     if (!confirm(`スタッフ権限でクーポン「${title}」の消込（利用済み）を実行しますか？`)) {
       return;
@@ -114,18 +297,15 @@ export default function AdminPage() {
       <div className="min-h-screen pt-36 pb-20 flex items-center justify-center aurora-bg">
         <div className="pearl-glass p-8 rounded-3xl flex items-center gap-3 text-sm text-plum-800">
           <RefreshCw className="w-5 h-5 animate-spin text-lavender-600" />
-          <span>管理画面を読み込み中...</span>
+          <span>管理システムを読み込み中...</span>
         </div>
       </div>
     );
   }
 
-  // スタッフとして未認証の場合のクイック認証バー
-  const activeStaff = currentStaff || STAFF_ACCOUNTS[0];
-
   return (
     <div className="min-h-screen pt-36 sm:pt-40 lg:pt-44 pb-24 px-4 sm:px-6 lg:px-8 aurora-bg">
-      <div className="max-w-4xl mx-auto space-y-8">
+      <div className="max-w-6xl mx-auto space-y-8">
 
         {/* トースト通知 */}
         {feedback && (
@@ -146,19 +326,19 @@ export default function AdminPage() {
         )}
 
         {/* ヘッダー */}
-        <div className="pearl-glass p-6 rounded-[2rem] border border-lavender-200 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div className="pearl-glass p-6 sm:p-7 rounded-[2rem] border border-lavender-200 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
               <span className="text-[10px] font-mono tracking-widest uppercase px-2.5 py-0.5 rounded-full bg-plum-900 text-gold-300">
-                Staff Admin Portal
+                Salon Back-Office ERP
               </span>
-              <span className="text-xs text-plum-500">店舗専用バックオフィス</span>
+              <span className="text-xs text-plum-500 font-mono">Ver 2.5 / Java & Next.js Architecture</span>
             </div>
-            <h1 className="text-2xl font-serif text-plum-950 mt-1">
-              サロン店頭・スタッフ管理コンソール
+            <h1 className="text-2xl sm:text-3xl font-serif text-plum-950 mt-1">
+              サロン運営者・店舗管理コンソール
             </h1>
-            <p className="text-xs text-plum-600 font-light mt-0.5">
-              お客様への施術ポイント付与・クーポン消込・会員ステータス確認を行えます。
+            <p className="text-xs text-plum-600 font-light mt-0.5 leading-relaxed">
+              予約台帳・メニュー料金一元管理・デザインカタログ公開設定・顧客ポイント管理を一元統括する業務基幹システムです。
             </p>
           </div>
 
@@ -167,7 +347,7 @@ export default function AdminPage() {
               href="/mypage"
               className="flex-1 md:flex-none text-center py-2.5 px-4 rounded-xl luxe-button text-xs font-medium shadow-md flex items-center justify-center gap-1.5"
             >
-              <span>顧客マイページを見る</span>
+              <span>お客様マイページ</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
             <Link
@@ -185,10 +365,10 @@ export default function AdminPage() {
             <div className="flex items-center gap-2">
               <UserCheck className="w-4 h-4 text-gold-600" />
               <span className="text-xs font-serif font-semibold text-plum-950">
-                操作中の担当スタッフ: {activeStaff.name} ({activeStaff.title})
+                操作中スタッフ: {activeStaff.name} ({activeStaff.title})
               </span>
             </div>
-            <span className="text-[10px] text-plum-500 font-light">スタッフ切り替え可能</span>
+            <span className="text-[10px] text-plum-500 font-light">スタッフ権限切替可能</span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -216,243 +396,830 @@ export default function AdminPage() {
           </div>
         </div>
 
-        {/* 顧客情報サマリー（対象顧客カード） */}
-        <div className="pearl-glass p-6 rounded-[2rem] border border-lavender-200 shadow-md space-y-4">
-          <div className="flex items-center justify-between border-b border-lavender-100 pb-3">
-            <div className="flex items-center gap-2">
-              <Users className="w-4 h-4 text-lavender-600" />
-              <span className="text-xs font-serif font-medium text-plum-950">
-                現在読み込み中のご来店顧客
-              </span>
-            </div>
-            <span className="text-[11px] text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 font-mono">
-              Status: Active In-Store
-            </span>
-          </div>
+        {/* 4大管理タブナビゲーション */}
+        <div className="pearl-glass p-1.5 rounded-2xl border border-lavender-200 flex flex-wrap gap-1">
+          <button
+            onClick={() => setActiveTab("reservations")}
+            className={`flex-1 min-w-[140px] py-3 px-3 rounded-xl text-xs sm:text-sm font-medium transition-all flex items-center justify-center gap-2 cursor-pointer ${
+              activeTab === "reservations"
+                ? "bg-white text-plum-950 shadow-sm border border-lavender-200"
+                : "text-plum-600 hover:text-plum-900"
+            }`}
+          >
+            <Calendar className="w-4 h-4 text-lavender-600" />
+            <span>予約台帳・枠管理 ({reservations.length}件)</span>
+          </button>
 
-          {user ? (
-            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 text-xs">
-              <div className="p-3 rounded-xl bg-white border border-lavender-100 space-y-1">
-                <span className="text-[10px] text-plum-500 uppercase tracking-widest font-mono">お名前</span>
-                <p className="font-serif font-medium text-sm text-plum-950">{user.name} 様</p>
-                <p className="text-[10px] text-plum-500">{user.kana}</p>
-              </div>
+          <button
+            onClick={() => setActiveTab("menus")}
+            className={`flex-1 min-w-[140px] py-3 px-3 rounded-xl text-xs sm:text-sm font-medium transition-all flex items-center justify-center gap-2 cursor-pointer ${
+              activeTab === "menus"
+                ? "bg-white text-plum-950 shadow-sm border border-lavender-200"
+                : "text-plum-600 hover:text-plum-900"
+            }`}
+          >
+            <DollarSign className="w-4 h-4 text-gold-600" />
+            <span>メニュー・料金一元管理 ({menuList.length}件)</span>
+          </button>
 
-              <div className="p-3 rounded-xl bg-white border border-lavender-100 space-y-1">
-                <span className="text-[10px] text-plum-500 uppercase tracking-widest font-mono">会員番号</span>
-                <p className="font-mono font-medium text-plum-900">{user.memberNumber}</p>
-                <p className="text-[10px] text-plum-500">ランク: {user.rank}</p>
-              </div>
+          <button
+            onClick={() => setActiveTab("designs")}
+            className={`flex-1 min-w-[140px] py-3 px-3 rounded-xl text-xs sm:text-sm font-medium transition-all flex items-center justify-center gap-2 cursor-pointer ${
+              activeTab === "designs"
+                ? "bg-white text-plum-950 shadow-sm border border-lavender-200"
+                : "text-plum-600 hover:text-plum-900"
+            }`}
+          >
+            <Palette className="w-4 h-4 text-rose-500" />
+            <span>デザインカタログ公開設定 ({designList.length}件)</span>
+          </button>
 
-              <div className="p-3 rounded-xl bg-white border border-lavender-100 space-y-1">
-                <span className="text-[10px] text-plum-500 uppercase tracking-widest font-mono">現在のポイント</span>
-                <p className="text-base font-serif font-semibold text-gold-700">
-                  {user.points.toLocaleString()} <span className="text-xs text-plum-600 font-normal">pt</span>
-                </p>
-                <p className="text-[10px] text-plum-500">1pt = ¥1</p>
-              </div>
-
-              <div className="p-3 rounded-xl bg-white border border-lavender-100 space-y-1">
-                <span className="text-[10px] text-plum-500 uppercase tracking-widest font-mono">保有クーポン</span>
-                <p className="text-sm font-medium text-lavender-700">
-                  {user.coupons.filter(c => !c.isUsed).length} 枚 未利用
-                </p>
-                <p className="text-[10px] text-plum-500">（全{user.coupons.length}枚）</p>
-              </div>
-            </div>
-          ) : (
-            <div className="p-6 text-center text-xs text-plum-600">
-              会員データが読み込まれていません。
-            </div>
-          )}
+          <button
+            onClick={() => setActiveTab("customers")}
+            className={`flex-1 min-w-[140px] py-3 px-3 rounded-xl text-xs sm:text-sm font-medium transition-all flex items-center justify-center gap-2 cursor-pointer ${
+              activeTab === "customers"
+                ? "bg-white text-plum-950 shadow-sm border border-lavender-200"
+                : "text-plum-600 hover:text-plum-900"
+            }`}
+          >
+            <Users className="w-4 h-4 text-plum-600" />
+            <span>顧客台帳・ポイント付与</span>
+          </button>
         </div>
 
-        {/* 2大操作エリア：ポイント付与 ＆ クーポン消込 */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+        {/* ========================================================= */}
+        {/* タブ①: 予約台帳・ステータス管理 */}
+        {/* ========================================================= */}
+        {activeTab === "reservations" && (
+          <div className="space-y-6 animate-fade-in">
+            {/* 説明バッジ・フィルター */}
+            <div className="pearl-glass p-5 rounded-2xl border border-lavender-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-serif font-bold text-plum-950">
+                    全予約台帳 ＆ リアルタイム排他制御ステータス
+                  </span>
+                  <span className="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-mono">
+                    API Connected
+                  </span>
+                </div>
+                <p className="text-xs text-plum-600 font-light mt-0.5">
+                  二重予約防止ロジックが稼働中。予約ステータスを「キャンセル」に変更すると即座に空き枠が開放されます。
+                </p>
+              </div>
 
-          {/* 左側：ポイント付与フォーム（7カラム） */}
-          <div className="md:col-span-7 pearl-glass p-6 rounded-[2rem] border border-lavender-200 shadow-md space-y-5 bg-white/95">
-            <div className="border-b border-lavender-100 pb-3">
-              <h2 className="text-base font-serif text-plum-950 flex items-center gap-2">
-                <PlusCircle className="w-5 h-5 text-gold-600" />
-                <span>来店施術ポイントの付与（サーバー側検証）</span>
-              </h2>
-              <p className="text-xs text-plum-600 font-light mt-0.5">
-                お会計金額や施術メニューに応じてポイントを付与します。
-              </p>
+              <div className="flex items-center gap-2 w-full md:w-auto">
+                <div className="flex bg-lavender-100/70 p-1 rounded-xl text-xs text-plum-700">
+                  <button
+                    onClick={() => setReservationFilter("all")}
+                    className={`px-3 py-1.5 rounded-lg transition-all ${
+                      reservationFilter === "all" ? "bg-white font-medium text-plum-950 shadow-2xs" : ""
+                    }`}
+                  >
+                    全件 ({reservations.length})
+                  </button>
+                  <button
+                    onClick={() => setReservationFilter("confirmed")}
+                    className={`px-3 py-1.5 rounded-lg transition-all ${
+                      reservationFilter === "confirmed" ? "bg-white font-medium text-plum-950 shadow-2xs" : ""
+                    }`}
+                  >
+                    確定中 ({reservations.filter((r) => r.status === "confirmed").length})
+                  </button>
+                  <button
+                    onClick={() => setReservationFilter("completed")}
+                    className={`px-3 py-1.5 rounded-lg transition-all ${
+                      reservationFilter === "completed" ? "bg-white font-medium text-plum-950 shadow-2xs" : ""
+                    }`}
+                  >
+                    来店済 ({reservations.filter((r) => r.status === "completed").length})
+                  </button>
+                  <button
+                    onClick={() => setReservationFilter("cancelled")}
+                    className={`px-3 py-1.5 rounded-lg transition-all ${
+                      reservationFilter === "cancelled" ? "bg-white font-medium text-plum-950 shadow-2xs" : ""
+                    }`}
+                  >
+                    キャンセル ({reservations.filter((r) => r.status === "cancelled").length})
+                  </button>
+                </div>
+
+                <button
+                  onClick={fetchReservations}
+                  disabled={isLoadingReservations}
+                  className="p-2.5 rounded-xl bg-white border border-lavender-200 hover:border-lavender-400 text-plum-700 cursor-pointer"
+                  title="最新データを再読み込み"
+                >
+                  <RefreshCw className={`w-4 h-4 ${isLoadingReservations ? "animate-spin" : ""}`} />
+                </button>
+              </div>
             </div>
 
-            <form onSubmit={handleGrant} className="space-y-4 text-xs">
-              <div className="space-y-1.5">
-                <label className="block text-plum-800 font-medium">
-                  付与するポイント数 <span className="text-rose-500">*</span>
-                </label>
-                <div className="flex gap-2">
-                  <input
-                    type="number"
-                    min="1"
-                    max="10000"
-                    required
-                    value={grantAmount}
-                    onChange={(e) => setGrantAmount(Number(e.target.value))}
-                    className="flex-1 px-3.5 py-2.5 rounded-xl bg-white border border-lavender-300 text-plum-950 text-sm font-semibold focus:outline-hidden focus:ring-2 focus:ring-lavender-400"
-                  />
-                  <div className="flex gap-1.5">
-                    {[100, 300, 500].map((pt) => (
-                      <button
-                        type="button"
-                        key={pt}
-                        onClick={() => setGrantAmount(pt)}
-                        className="px-2.5 py-1 rounded-lg border border-lavender-200 hover:border-lavender-400 bg-lavender-50/70 text-plum-800 text-xs cursor-pointer"
-                      >
-                        +{pt}
-                      </button>
-                    ))}
-                  </div>
-                </div>
+            {/* 予約リストテーブル */}
+            <div className="pearl-glass rounded-[2rem] border border-lavender-200 overflow-hidden shadow-sm">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-lavender-50/70 text-plum-800 border-b border-lavender-200/80 uppercase font-mono text-[10px]">
+                    <tr>
+                      <th className="p-4">予約番号 / 店舗</th>
+                      <th className="p-4">日時 / 所要時間</th>
+                      <th className="p-4">お客様情報</th>
+                      <th className="p-4">施術メニュー / スタッフ</th>
+                      <th className="p-4">料金 / 割引</th>
+                      <th className="p-4">ステータス</th>
+                      <th className="p-4 text-right">操作</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-lavender-100 bg-white/70">
+                    {filteredReservations.length === 0 ? (
+                      <tr>
+                        <td colSpan={7} className="p-8 text-center text-plum-500">
+                          該当する予約データはありません
+                        </td>
+                      </tr>
+                    ) : (
+                      filteredReservations.map((r) => {
+                        const isConfirmed = r.status === "confirmed";
+                        const isCompleted = r.status === "completed";
+                        const isCancelled = r.status === "cancelled";
+
+                        return (
+                          <tr key={r.id} className="hover:bg-lavender-50/40 transition-colors">
+                            <td className="p-4">
+                              <span className="font-mono font-medium text-plum-900 block">{r.id}</span>
+                              <span className="text-[10px] text-plum-500">
+                                {r.salonType === "mens" ? "Salon de Fraise HOMME" : "Salon de Fraise 本店"}
+                              </span>
+                            </td>
+
+                            <td className="p-4">
+                              <div className="font-serif font-bold text-plum-950">
+                                {r.date}
+                              </div>
+                              <div className="text-[11px] text-lavender-700 font-mono">
+                                {r.timeSlot} 〜 {calculateEndTime(r.timeSlot, r.durationMinutes)} ({r.durationMinutes}分)
+                              </div>
+                            </td>
+
+                            <td className="p-4">
+                              <div className="font-medium text-plum-950">{r.userName} 様</div>
+                              <div className="text-[10px] text-plum-500 font-mono">{r.userPhone}</div>
+                              <div className="text-[10px] text-plum-500 truncate max-w-[120px]">{r.userEmail}</div>
+                            </td>
+
+                            <td className="p-4">
+                              <div className="font-medium text-plum-900 max-w-[200px] leading-snug">
+                                {r.menuName}
+                              </div>
+                              <div className="text-[10px] text-plum-600 mt-0.5">
+                                担当: <strong className="font-serif">{r.staffName}</strong>
+                              </div>
+                              {r.note && (
+                                <div className="text-[10px] text-plum-400 italic mt-0.5 max-w-[180px] truncate">
+                                  要望: {r.note}
+                                </div>
+                              )}
+                            </td>
+
+                            <td className="p-4">
+                              <div className="font-serif font-bold text-plum-950">
+                                ¥{r.finalPrice.toLocaleString()}
+                              </div>
+                              {(r.couponDiscount || 0) > 0 && (
+                                <div className="text-[10px] text-rose-600">
+                                  -¥{(r.couponDiscount || 0).toLocaleString()} 割引
+                                </div>
+                              )}
+                              <div className="text-[9px] text-plum-400">
+                                定価: ¥{r.price.toLocaleString()}
+                              </div>
+                            </td>
+
+                            <td className="p-4">
+                              <span
+                                className={`inline-flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full border ${
+                                  isConfirmed
+                                    ? "bg-amber-50 text-amber-800 border-amber-300"
+                                    : isCompleted
+                                    ? "bg-emerald-50 text-emerald-800 border-emerald-300"
+                                    : "bg-stone-100 text-stone-600 border-stone-300"
+                                }`}
+                              >
+                                {isConfirmed && <Clock className="w-3 h-3 text-amber-600" />}
+                                {isCompleted && <CheckCircle2 className="w-3 h-3 text-emerald-600" />}
+                                {isCancelled && <XCircle className="w-3 h-3 text-stone-500" />}
+                                <span>
+                                  {isConfirmed ? "予約確定" : isCompleted ? "来店完了" : "キャンセル済"}
+                                </span>
+                              </span>
+                            </td>
+
+                            <td className="p-4 text-right">
+                              <div className="flex items-center justify-end gap-1.5">
+                                {isConfirmed ? (
+                                  <>
+                                    <button
+                                      onClick={() => handleUpdateReservationStatus(r.id, "completed", r.menuName)}
+                                      disabled={updatingResId === r.id}
+                                      className="px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-[11px] shadow-xs cursor-pointer flex items-center gap-1"
+                                      title="施術を完了として処理"
+                                    >
+                                      <Check className="w-3 h-3" />
+                                      <span>来店完了</span>
+                                    </button>
+                                    <button
+                                      onClick={() => handleUpdateReservationStatus(r.id, "cancel", r.menuName)}
+                                      disabled={updatingResId === r.id}
+                                      className="px-2.5 py-1.5 rounded-lg bg-white border border-rose-300 hover:border-rose-500 text-rose-700 font-medium text-[11px] shadow-xs cursor-pointer flex items-center gap-1"
+                                      title="キャンセルし、空き枠を開放"
+                                    >
+                                      <X className="w-3 h-3" />
+                                      <span>キャンセル</span>
+                                    </button>
+                                  </>
+                                ) : (
+                                  <span className="text-[11px] text-plum-400 font-light">処理完了</span>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })
+                    )}
+                  </tbody>
+                </table>
               </div>
+            </div>
 
-              <div className="space-y-1.5">
-                <label className="block text-plum-800 font-medium">付与理由・施術内容</label>
-                <select
-                  value={grantReason}
-                  onChange={(e) => setGrantReason(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-lavender-300 text-plum-900 focus:outline-hidden focus:ring-2 focus:ring-lavender-400"
-                >
-                  <option value="施術ご来店ポイント（水光マグネットコース）">施術ご来店ポイント（水光マグネットコース）</option>
-                  <option value="施術ご来店ポイント（秋ニュアンスコース）">施術ご来店ポイント（秋ニュアンスコース）</option>
-                  <option value="施術ご来店ポイント（ワンカラー・パラジェルフィルイン）">施術ご来店ポイント（ワンカラー・パラジェルフィルイン）</option>
-                  <option value="お友達ご紹介特典ポイント">お友達ご紹介特典ポイント (+500pt)</option>
-                  <option value="Googleマップ口コミ投稿御礼ポイント">Googleマップ口コミ投稿御礼ポイント (+200pt)</option>
-                  <option value="その他">その他（自由入力）</option>
-                </select>
-
-                {grantReason === "その他" && (
-                  <input
-                    type="text"
-                    required
-                    placeholder="理由を入力してください"
-                    value={customReason}
-                    onChange={(e) => setCustomReason(e.target.value)}
-                    className="w-full mt-2 px-3.5 py-2 rounded-xl bg-white border border-lavender-300 text-plum-900 focus:outline-hidden"
-                  />
-                )}
-              </div>
-
-              <div className="p-3 rounded-xl bg-lavender-50/80 border border-lavender-200 space-y-1 text-[11px] text-plum-700">
-                <p className="font-medium text-lavender-800 flex items-center gap-1">
-                  <ShieldCheck className="w-3.5 h-3.5 text-lavender-600" />
-                  サーバー側APIトランザクション保証:
+            {/* アーキテクチャ解説コールアウト */}
+            <div className="pearl-glass p-5 rounded-2xl border border-lavender-200 bg-gradient-to-r from-lavender-50/50 to-white flex items-start gap-3 text-xs text-plum-700">
+              <ShieldCheck className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+              <div>
+                <p className="font-medium text-plum-950">二重予約防止と空き枠計算のバックエンド仕様（Java / Spring Boot API 想定）</p>
+                <p className="text-[11px] font-light mt-0.5 leading-relaxed">
+                  施術時間（例：75分、120分）に応じた必要スロットを連続算出し、重複する予約が存在する場合はAPIレベル（GET空き枠判定 ＆ POST登録時）でトランザクション排他制御を行います。
+                  スタッフが管理画面またはお客様がマイページからキャンセルを行うと、枠情報が即時に解放されます。
                 </p>
-                <p>• 改ざん防止のため、ポイント増減はNext.jsサーバーAPIで検証</p>
-                <p>• 付与後に累計ポイントに応じた会員ランク（Gold/Platinum）が自動昇格</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ========================================================= */}
+        {/* タブ②: メニュー・料金一元管理 */}
+        {/* ========================================================= */}
+        {activeTab === "menus" && (
+          <div className="space-y-6 animate-fade-in">
+            <div className="pearl-glass p-5 rounded-2xl border border-lavender-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-base font-serif font-bold text-plum-950">
+                    サロンメニュー ＆ 料金一元管理マスター
+                  </h2>
+                  <span className="text-[10px] bg-gold-100 text-gold-900 border border-gold-300 px-2 py-0.5 rounded-full font-mono">
+                    Single Source of Truth
+                  </span>
+                </div>
+                <p className="text-xs text-plum-600 font-light mt-0.5">
+                  レディース・メンズ全メニューの料金と所要時間を一元管理。予約画面やマイページと完全に整合します。
+                </p>
+              </div>
+
+              <div className="flex bg-lavender-100/70 p-1 rounded-xl text-xs text-plum-700">
+                <button
+                  onClick={() => setMenuFilter("all")}
+                  className={`px-3 py-1.5 rounded-lg transition-all ${menuFilter === "all" ? "bg-white font-medium text-plum-950 shadow-2xs" : ""}`}
+                >
+                  全メニュー ({menuList.length})
+                </button>
+                <button
+                  onClick={() => setMenuFilter("ladies")}
+                  className={`px-3 py-1.5 rounded-lg transition-all ${menuFilter === "ladies" ? "bg-white font-medium text-plum-950 shadow-2xs" : ""}`}
+                >
+                  レディース
+                </button>
+                <button
+                  onClick={() => setMenuFilter("mens")}
+                  className={`px-3 py-1.5 rounded-lg transition-all ${menuFilter === "mens" ? "bg-white font-medium text-plum-950 shadow-2xs" : ""}`}
+                >
+                  提携メンズHOMME
+                </button>
+              </div>
+            </div>
+
+            {/* メニューリスト */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {filteredMenus.map((menu) => {
+                const isEditing = editingMenuId === menu.id;
+
+                return (
+                  <div
+                    key={menu.id}
+                    className="pearl-glass p-5 rounded-2xl border border-lavender-200 bg-white/95 shadow-xs space-y-3 flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <span
+                          className={`text-[10px] font-mono uppercase px-2 py-0.5 rounded-full border ${
+                            menu.salonType === "mens"
+                              ? "bg-stone-900 text-stone-200 border-stone-800"
+                              : "bg-lavender-100 text-lavender-800 border-lavender-200"
+                          }`}
+                        >
+                          {menu.salonType === "mens" ? "MENS HOMME" : "LADIES"} • {menu.category}
+                        </span>
+                        <span className="text-[10px] text-plum-400 font-mono">ID: {menu.id}</span>
+                      </div>
+
+                      <h3 className="text-sm font-serif font-bold text-plum-950 mt-1 leading-snug">
+                        {menu.name}
+                      </h3>
+                      <p className="text-xs text-plum-600 font-light mt-1 leading-relaxed">
+                        {menu.description}
+                      </p>
+                    </div>
+
+                    <div className="pt-3 border-t border-lavender-100 space-y-2">
+                      {isEditing ? (
+                        <div className="p-3 rounded-xl bg-gold-50/70 border border-gold-300 space-y-2 text-xs">
+                          <p className="font-semibold text-gold-950 flex items-center gap-1">
+                            <Edit3 className="w-3.5 h-3.5" />
+                            <span>料金・所要時間の編集シミュレーション</span>
+                          </p>
+                          <div className="grid grid-cols-2 gap-2">
+                            <div>
+                              <label className="text-[10px] text-plum-700 block">料金 (税込・円)</label>
+                              <input
+                                type="number"
+                                step="100"
+                                value={editPrice}
+                                onChange={(e) => setEditPrice(Number(e.target.value))}
+                                className="w-full p-1.5 rounded-lg border border-gold-300 bg-white text-plum-950 font-bold"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] text-plum-700 block">施術時間 (分)</label>
+                              <input
+                                type="number"
+                                step="15"
+                                value={editDuration}
+                                onChange={(e) => setEditDuration(Number(e.target.value))}
+                                className="w-full p-1.5 rounded-lg border border-gold-300 bg-white text-plum-950 font-bold"
+                              />
+                            </div>
+                          </div>
+                          <div className="flex justify-end gap-2 pt-1">
+                            <button
+                              onClick={() => handleSaveMenuEdit(menu.id)}
+                              className="px-3 py-1 rounded-lg bg-plum-900 text-white font-medium text-xs shadow-xs"
+                            >
+                              保存する
+                            </button>
+                            <button
+                              onClick={() => setEditingMenuId(null)}
+                              className="px-2.5 py-1 rounded-lg bg-white border border-stone-300 text-stone-700 text-xs"
+                            >
+                              キャンセル
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-baseline gap-2">
+                            <span className="text-base font-serif font-bold text-plum-950">
+                              ¥{menu.price.toLocaleString()}
+                            </span>
+                            <span className="text-xs text-lavender-700 font-mono">
+                              ({menu.durationMinutes}分)
+                            </span>
+                            {menu.paragelIncluded && (
+                              <span className="text-[10px] text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+                                パラジェル込
+                              </span>
+                            )}
+                          </div>
+
+                          <button
+                            onClick={() => handleStartEditMenu(menu)}
+                            className="text-xs text-plum-700 hover:text-plum-950 underline font-medium flex items-center gap-1 cursor-pointer"
+                          >
+                            <Edit3 className="w-3.5 h-3.5 text-lavender-600" />
+                            <span>料金・時間編集</span>
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* ========================================================= */}
+        {/* タブ③: デザインカタログ管理 */}
+        {/* ========================================================= */}
+        {activeTab === "designs" && (
+          <div className="space-y-6 animate-fade-in">
+            <div className="pearl-glass p-5 rounded-2xl border border-lavender-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-base font-serif font-bold text-plum-950">
+                    ネイルデザインカタログ 公開・非公開管理
+                  </h2>
+                  <span className="text-[10px] bg-rose-100 text-rose-800 border border-rose-300 px-2 py-0.5 rounded-full font-mono">
+                    CMS Management
+                  </span>
+                </div>
+                <p className="text-xs text-plum-600 font-light mt-0.5">
+                  店頭デザインの公開状態をリアルタイムに切り替え可能。新規トレンドデザインの追加も即座に行えます。
+                </p>
               </div>
 
               <button
-                type="submit"
-                disabled={isGranting || !user}
-                className="w-full py-3 rounded-xl gold-button text-xs font-semibold flex items-center justify-center gap-2 cursor-pointer shadow-md disabled:opacity-50"
+                onClick={() => setIsAddingDesign(!isAddingDesign)}
+                className="py-2.5 px-4 rounded-xl luxe-button text-xs font-medium flex items-center gap-1.5 shadow-sm cursor-pointer"
               >
-                <span>{isGranting ? "付与処理中..." : `${grantAmount} ポイントを付与する`}</span>
-                <CheckCircle2 className="w-4 h-4" />
+                <PlusCircle className="w-4 h-4 text-gold-300" />
+                <span>{isAddingDesign ? "閉じる" : "新しいデザインを登録"}</span>
               </button>
-            </form>
-          </div>
+            </div>
 
-          {/* 右側：クーポン消込管理（5カラム） */}
-          <div className="md:col-span-5 pearl-glass p-6 rounded-[2rem] border border-lavender-200 shadow-md space-y-5 bg-white/95 flex flex-col justify-between">
-            <div>
-              <div className="border-b border-lavender-100 pb-3">
-                <h2 className="text-base font-serif text-plum-950 flex items-center gap-2">
-                  <FileCheck className="w-5 h-5 text-lavender-600" />
-                  <span>提示クーポンの消込</span>
-                </h2>
-                <p className="text-xs text-plum-600 font-light mt-0.5">
-                  お客様が提示されたクーポンを店頭で消込処理します。
-                </p>
-              </div>
+            {/* 新規デザイン追加フォーム */}
+            {isAddingDesign && (
+              <form
+                onSubmit={handleCreateDesign}
+                className="pearl-glass p-6 rounded-2xl border-2 border-gold-300 bg-gradient-to-br from-gold-50/50 via-white to-lavender-50/50 shadow-md space-y-4 animate-fade-in text-xs"
+              >
+                <div className="flex items-center justify-between border-b border-lavender-200 pb-2">
+                  <h3 className="font-serif font-bold text-plum-950 text-sm flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-gold-500" />
+                    <span>新規ネイルデザインの登録・即時公開</span>
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={() => setIsAddingDesign(false)}
+                    className="text-stone-400 hover:text-stone-600"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
 
-              <div className="mt-4 space-y-3">
-                {user?.coupons.filter(c => !c.isUsed).length === 0 ? (
-                  <div className="p-6 text-center text-xs text-plum-500 rounded-xl bg-stone-50 border border-stone-200">
-                    現在、利用可能な未消化クーポンはありません。
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                  <div className="space-y-1">
+                    <label className="text-plum-800 font-medium">デザイン名 *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="例: シャンパン水光グラデーション"
+                      value={newDesignTitle}
+                      onChange={(e) => setNewDesignTitle(e.target.value)}
+                      className="w-full p-2.5 rounded-xl border border-lavender-300 bg-white"
+                    />
                   </div>
-                ) : (
-                  user?.coupons
-                    .filter(c => !c.isUsed)
-                    .map((coupon) => (
-                      <div
-                        key={coupon.id}
-                        className="p-3.5 rounded-xl border border-gold-300/80 bg-gold-50/30 flex flex-col justify-between space-y-2"
-                      >
-                        <div>
-                          <div className="flex items-center justify-between">
-                            <span className="text-[10px] font-semibold text-gold-800 bg-gold-100 px-2 py-0.5 rounded-sm">
-                              {coupon.discount}
-                            </span>
-                            <span className="text-[10px] text-plum-500 font-mono">
-                              期限: {coupon.expiryDate}
-                            </span>
-                          </div>
-                          <p className="text-xs font-medium text-plum-950 mt-1">{coupon.title}</p>
-                        </div>
 
-                        <button
-                          onClick={() => handleRedeemCoupon(coupon.id, coupon.title)}
-                          disabled={processingCouponId === coupon.id}
-                          className="w-full py-1.5 px-3 rounded-lg luxe-button text-xs font-medium cursor-pointer shadow-2xs disabled:opacity-50 flex items-center justify-center gap-1"
-                        >
-                          {processingCouponId === coupon.id ? "消込中..." : "店頭で消し込む（利用済みにする）"}
-                        </button>
-                      </div>
-                    ))
-                )}
-              </div>
-            </div>
-
-            <div className="p-3 rounded-xl bg-stone-50 border border-stone-200 text-[10px] text-plum-600 space-y-1">
-              <p className="font-medium text-plum-800">※ 消込後の状態反映:</p>
-              <p>消し込まれたクーポンは即時で利用済みステータスに更新され、二重利用が防止されます。</p>
-            </div>
-          </div>
-
-        </div>
-
-        {/* 最近のトランザクション履歴 */}
-        {user && user.transactions.length > 0 && (
-          <div className="pearl-glass p-6 rounded-[2rem] border border-lavender-200 shadow-sm space-y-4">
-            <div className="flex items-center justify-between border-b border-lavender-100 pb-3">
-              <h2 className="text-sm font-serif text-plum-950 flex items-center gap-2">
-                <Clock className="w-4 h-4 text-plum-600" />
-                <span>監査用：直近のポイント取引ログ</span>
-              </h2>
-              <span className="text-[10px] text-plum-500 font-mono">Total {user.transactions.length} records</span>
-            </div>
-
-            <div className="space-y-2">
-              {user.transactions.slice(0, 5).map((tx) => (
-                <div
-                  key={tx.id}
-                  className="p-3 rounded-xl bg-white border border-lavender-100 text-xs flex items-center justify-between"
-                >
-                  <div className="space-y-0.5">
-                    <p className="font-medium text-plum-900">{tx.reason}</p>
-                    <p className="text-[10px] text-plum-500">
-                      {tx.createdAt} / 担当: {tx.staffName || "システム"}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <span
-                      className={`font-semibold font-mono ${
-                        tx.amount > 0 ? "text-emerald-700" : "text-plum-800"
-                      }`}
+                  <div className="space-y-1">
+                    <label className="text-plum-800 font-medium">カテゴリー</label>
+                    <select
+                      value={newDesignCategory}
+                      onChange={(e) => setNewDesignCategory(e.target.value as any)}
+                      className="w-full p-2.5 rounded-xl border border-lavender-300 bg-white"
                     >
-                      {tx.amount > 0 ? `+${tx.amount}` : tx.amount} pt
-                    </span>
-                    <p className="text-[10px] text-plum-500">残高: {tx.balanceAfter} pt</p>
+                      <option value="magnet">水光マグネット</option>
+                      <option value="office">オフィス向け</option>
+                      <option value="simple">シンプル</option>
+                      <option value="glam">華やかトレンド</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-plum-800 font-medium">料金 (税込・円)</label>
+                    <input
+                      type="number"
+                      step="100"
+                      value={newDesignPrice}
+                      onChange={(e) => setNewDesignPrice(Number(e.target.value))}
+                      className="w-full p-2.5 rounded-xl border border-lavender-300 bg-white"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-plum-800 font-medium">所要時間 (分)</label>
+                    <input
+                      type="number"
+                      step="15"
+                      value={newDesignDuration}
+                      onChange={(e) => setNewDesignDuration(Number(e.target.value))}
+                      className="w-full p-2.5 rounded-xl border border-lavender-300 bg-white"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex justify-end gap-2 pt-2">
+                  <button
+                    type="submit"
+                    className="py-2 px-5 rounded-xl gold-button text-xs font-semibold text-plum-950 shadow-sm cursor-pointer"
+                  >
+                    デザインを登録して公開
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {/* デザイングリッド一覧 */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {designList.map((d) => (
+                <div
+                  key={d.id}
+                  className={`pearl-glass rounded-2xl border overflow-hidden transition-all flex flex-col justify-between ${
+                    d.isPublished
+                      ? "border-lavender-200 bg-white/95 shadow-xs"
+                      : "border-stone-300 bg-stone-100/70 opacity-60"
+                  }`}
+                >
+                  <div className="relative h-44 w-full bg-stone-100">
+                    <Image
+                      src={d.image}
+                      alt={d.title}
+                      fill
+                      className="object-cover"
+                    />
+                    <div className="absolute top-3 left-3">
+                      <span
+                        className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border shadow-2xs ${
+                          d.isPublished
+                            ? "bg-emerald-500 text-white border-emerald-600"
+                            : "bg-stone-500 text-white border-stone-600"
+                        }`}
+                      >
+                        {d.isPublished ? "公開中" : "非公開"}
+                      </span>
+                    </div>
+
+                    <div className="absolute top-3 right-3">
+                      <button
+                        onClick={() => handleToggleDesignPublish(d.id)}
+                        className={`p-2 rounded-xl backdrop-blur-md shadow-sm transition-all cursor-pointer ${
+                          d.isPublished
+                            ? "bg-white/90 text-stone-700 hover:text-stone-900"
+                            : "bg-stone-800/90 text-white hover:bg-stone-900"
+                        }`}
+                        title={d.isPublished ? "非公開にする" : "公開する"}
+                      >
+                        {d.isPublished ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="p-4 space-y-2 flex-1 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between text-[11px] text-plum-500">
+                        <span>{d.categoryLabel}</span>
+                        <span className="font-mono">{d.duration}</span>
+                      </div>
+                      <h4 className="text-sm font-serif font-medium text-plum-950 mt-1 leading-snug">
+                        {d.title}
+                      </h4>
+                      <p className="text-xs text-plum-600 font-light mt-1 line-clamp-2">
+                        {d.description}
+                      </p>
+                    </div>
+
+                    <div className="pt-3 border-t border-lavender-100 flex items-center justify-between">
+                      <span className="text-base font-serif font-bold text-plum-950">
+                        {d.price}
+                      </span>
+                      <button
+                        onClick={() => handleToggleDesignPublish(d.id)}
+                        className="text-xs text-plum-700 hover:text-plum-950 font-medium underline"
+                      >
+                        {d.isPublished ? "非公開へ切替" : "公開へ戻す"}
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+
+        {/* ========================================================= */}
+        {/* タブ④: 顧客台帳・ポイント付与 */}
+        {/* ========================================================= */}
+        {activeTab === "customers" && (
+          <div className="space-y-6 animate-fade-in">
+            {/* 顧客情報サマリー（対象顧客カード） */}
+            <div className="pearl-glass p-6 rounded-[2rem] border border-lavender-200 shadow-md space-y-4">
+              <div className="flex items-center justify-between border-b border-lavender-100 pb-3">
+                <div className="flex items-center gap-2">
+                  <Users className="w-4 h-4 text-lavender-600" />
+                  <span className="text-xs font-serif font-medium text-plum-950">
+                    現在読み込み中のご来店顧客
+                  </span>
+                </div>
+                <span className="text-[11px] text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 font-mono">
+                  Status: Active In-Store
+                </span>
+              </div>
+
+              {user ? (
+                <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 text-xs">
+                  <div className="p-3.5 rounded-xl bg-white border border-lavender-100 space-y-1">
+                    <span className="text-[10px] text-plum-500 uppercase tracking-widest font-mono">お名前</span>
+                    <p className="font-serif font-medium text-sm text-plum-950">{user.name} 様</p>
+                    <p className="text-[10px] text-plum-500">{user.kana}</p>
+                  </div>
+
+                  <div className="p-3.5 rounded-xl bg-white border border-lavender-100 space-y-1">
+                    <span className="text-[10px] text-plum-500 uppercase tracking-widest font-mono">会員番号</span>
+                    <p className="font-mono font-medium text-plum-900">{user.memberNumber}</p>
+                    <p className="text-[10px] text-plum-500">ランク: ★ {user.rank}</p>
+                  </div>
+
+                  <div className="p-3.5 rounded-xl bg-white border border-lavender-100 space-y-1">
+                    <span className="text-[10px] text-plum-500 uppercase tracking-widest font-mono">現在のポイント</span>
+                    <p className="text-base font-serif font-semibold text-gold-700">
+                      {user.points.toLocaleString()} <span className="text-xs text-plum-600 font-normal">pt</span>
+                    </p>
+                    <p className="text-[10px] text-plum-500">1pt = ¥1</p>
+                  </div>
+
+                  <div className="p-3.5 rounded-xl bg-white border border-lavender-100 space-y-1">
+                    <span className="text-[10px] text-plum-500 uppercase tracking-widest font-mono">保有クーポン</span>
+                    <p className="text-sm font-medium text-lavender-700">
+                      {user.coupons.filter((c) => !c.isUsed).length} 枚 未利用
+                    </p>
+                    <p className="text-[10px] text-plum-500">（全{user.coupons.length}枚）</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="p-6 text-center text-xs text-plum-600">
+                  会員データが読み込まれていません。
+                </div>
+              )}
+            </div>
+
+            {/* 2大操作エリア：ポイント付与 ＆ クーポン消込 */}
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+              {/* 左側：ポイント付与フォーム（7カラム） */}
+              <div className="md:col-span-7 pearl-glass p-6 rounded-[2rem] border border-lavender-200 shadow-md space-y-5 bg-white/95">
+                <div className="border-b border-lavender-100 pb-3">
+                  <h2 className="text-base font-serif text-plum-950 flex items-center gap-2">
+                    <PlusCircle className="w-5 h-5 text-gold-600" />
+                    <span>来店施術ポイントの付与（サーバー側検証）</span>
+                  </h2>
+                  <p className="text-xs text-plum-600 font-light mt-0.5">
+                    お会計金額や施術メニューに応じてポイントを付与します。
+                  </p>
+                </div>
+
+                <form onSubmit={handleGrant} className="space-y-4 text-xs">
+                  <div className="space-y-1.5">
+                    <label className="block text-plum-800 font-medium">
+                      付与するポイント数 <span className="text-rose-500">*</span>
+                    </label>
+                    <div className="flex gap-2">
+                      <input
+                        type="number"
+                        min="1"
+                        max="10000"
+                        required
+                        value={grantAmount}
+                        onChange={(e) => setGrantAmount(Number(e.target.value))}
+                        className="flex-1 px-3.5 py-2.5 rounded-xl bg-white border border-lavender-300 text-plum-950 text-sm font-semibold focus:outline-hidden focus:ring-2 focus:ring-lavender-400"
+                      />
+                      <div className="flex gap-1.5">
+                        <button
+                          type="button"
+                          onClick={() => setGrantAmount(300)}
+                          className="px-2.5 py-1.5 rounded-lg bg-lavender-100 hover:bg-lavender-200 text-plum-800 text-[11px]"
+                        >
+                          +300
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setGrantAmount(500)}
+                          className="px-2.5 py-1.5 rounded-lg bg-lavender-100 hover:bg-lavender-200 text-plum-800 text-[11px]"
+                        >
+                          +500
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setGrantAmount(1000)}
+                          className="px-2.5 py-1.5 rounded-lg bg-lavender-100 hover:bg-lavender-200 text-plum-800 text-[11px]"
+                        >
+                          +1000
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="block text-plum-800 font-medium">
+                      付与理由・施術内容 <span className="text-rose-500">*</span>
+                    </label>
+                    <select
+                      value={grantReason}
+                      onChange={(e) => setGrantReason(e.target.value)}
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-lavender-300 text-plum-900 text-xs focus:outline-hidden focus:ring-2 focus:ring-lavender-400"
+                    >
+                      <option value="施術ご来店ポイント（水光マグネットコース）">
+                        施術ご来店ポイント（水光マグネットコース）
+                      </option>
+                      <option value="施術ご来店ポイント（自爪育成パラジェルコース）">
+                        施術ご来店ポイント（自爪育成パラジェルコース）
+                      </option>
+                      <option value="施術ご来店ポイント（メンズ身だしなみケア）">
+                        施術ご来店ポイント（メンズ身だしなみケア）
+                      </option>
+                      <option value="お友達ご紹介特典ボーナス">お友達ご紹介特典ボーナス (+500pt)</option>
+                      <option value="次回予約完了ボーナス">次回予約完了ボーナス (+200pt)</option>
+                      <option value="その他">その他（直接入力）</option>
+                    </select>
+
+                    {grantReason === "その他" && (
+                      <input
+                        type="text"
+                        placeholder="付与理由を入力"
+                        value={customReason}
+                        onChange={(e) => setCustomReason(e.target.value)}
+                        className="w-full mt-2 px-3.5 py-2 rounded-xl bg-white border border-lavender-300 text-plum-900 text-xs"
+                      />
+                    )}
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-lavender-50/70 border border-lavender-100 space-y-1">
+                    <div className="flex justify-between text-[11px] text-plum-700">
+                      <span>付与前ポイント:</span>
+                      <span className="font-mono">{user?.points || 0} pt</span>
+                    </div>
+                    <div className="flex justify-between text-xs font-semibold text-emerald-800">
+                      <span>付与後予定ポイント:</span>
+                      <span className="font-mono">{((user?.points || 0) + grantAmount).toLocaleString()} pt</span>
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isGranting}
+                    className="w-full py-3 rounded-xl luxe-button text-xs font-medium shadow-md cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
+                  >
+                    <PlusCircle className="w-4 h-4 text-gold-300" />
+                    <span>{isGranting ? "付与処理中..." : "ポイントを付与する"}</span>
+                  </button>
+                </form>
+              </div>
+
+              {/* 右側：クーポン消込（5カラム） */}
+              <div className="md:col-span-5 pearl-glass p-6 rounded-[2rem] border border-lavender-200 shadow-md space-y-5 bg-white/95">
+                <div className="border-b border-lavender-100 pb-3">
+                  <h2 className="text-base font-serif text-plum-950 flex items-center gap-2">
+                    <Ticket className="w-5 h-5 text-lavender-600" />
+                    <span>店頭クーポン消込処理</span>
+                  </h2>
+                  <p className="text-xs text-plum-600 font-light mt-0.5">
+                    お客様が提示されたクーポンを使用済みに更新します。
+                  </p>
+                </div>
+
+                <div className="space-y-3">
+                  {!user || user.coupons.filter((c) => !c.isUsed).length === 0 ? (
+                    <div className="p-6 text-center text-xs text-plum-500 bg-lavender-50/40 rounded-xl">
+                      現在未利用のクーポンはありません
+                    </div>
+                  ) : (
+                    user.coupons
+                      .filter((c) => !c.isUsed)
+                      .map((c) => (
+                        <div
+                          key={c.id}
+                          className="p-3.5 rounded-xl border border-gold-300/80 bg-gold-50/30 text-xs space-y-2"
+                        >
+                          <div className="flex justify-between items-start gap-2">
+                            <div>
+                              <p className="font-medium text-plum-950">{c.title}</p>
+                              <p className="text-[10px] text-plum-600">{c.description}</p>
+                            </div>
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-gold-100 text-gold-900 border border-gold-300 shrink-0">
+                              {c.discount}
+                            </span>
+                          </div>
+
+                          <div className="flex justify-between items-center pt-2 border-t border-gold-200/60">
+                            <span className="text-[10px] text-plum-500 font-mono">期限: {c.expiryDate}</span>
+                            <button
+                              onClick={() => handleRedeemCoupon(c.id, c.title)}
+                              disabled={processingCouponId === c.id}
+                              className="px-3 py-1.5 rounded-lg bg-plum-900 hover:bg-plum-950 text-white font-medium text-[11px] shadow-2xs cursor-pointer disabled:opacity-50"
+                            >
+                              {processingCouponId === c.id ? "消込中..." : "利用済みに消込"}
+                            </button>
+                          </div>
+                        </div>
+                      ))
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         )}

@@ -1,10 +1,13 @@
 "use client";
 
-import React from "react";
-import { Calendar, MapPin, Clock, Phone, ShieldCheck, Wifi, Coffee, CheckCircle2 } from "lucide-react";
+import React, { useState } from "react";
+import { Calendar, MapPin, Clock, Phone, ShieldCheck, Wifi, Coffee, CheckCircle2, Sparkles, ArrowRight } from "lucide-react";
 import { MENS_SALON_INFO } from "@/data/mensSalonData";
+import BookingModal from "@/components/BookingModal";
 
 export default function MensReservationSection() {
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+
   return (
     <section id="reservation" className="py-24 sm:py-32 mens-bg-subtle relative border-t border-zinc-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-16">
@@ -21,8 +24,8 @@ export default function MensReservationSection() {
           </h2>
 
           <p className="text-xs sm:text-sm text-zinc-400 font-light leading-relaxed">
-            24時間リアルタイムで空席確認・即時予約が可能です。<br />
-            完全個室・半個室空間にて、スタッフ一同心よりお待ちしております。
+            24時間リアルタイムで空席確認・サイト内即時予約が可能です。<br />
+            完全個室・半個室空間にて、男性スタッフ一同心よりお待ちしております。
           </p>
         </div>
 
@@ -34,15 +37,15 @@ export default function MensReservationSection() {
             <div className="space-y-2">
               <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-400 flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                本日・明日の空席状況をリアルタイム確認中
+                本日・明日の空席状況をリアルタイム自動計算中
               </span>
               <h3 className="text-xl sm:text-2xl font-serif font-light text-white leading-snug">
-                HOT PEPPER Beauty より<br />
-                今すぐ24時間即時予約
+                公式WEB即時予約システム<br />
+                24時間リアルタイム予約完了
               </h3>
               <p className="text-xs text-zinc-400 font-light leading-relaxed">
-                希望日時・担当男性ネイリスト・メニューを選択して、3ステップで予約完了。<br />
-                リクルートポイントも貯まる・使える安心の公式連携予約です。
+                希望日時・担当男性ネイリスト・メニューを選択して、その場で予約確定。<br />
+                施術所要時間に応じた空き枠を自動判定し、同じ時間帯への二重予約を完全防止します。
               </p>
             </div>
 
@@ -56,15 +59,20 @@ export default function MensReservationSection() {
               </p>
             </div>
 
-            <a
-              href={MENS_SALON_INFO.links.hotpepper}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mens-button-white w-full py-4 rounded-full text-xs font-semibold flex items-center justify-center gap-2 shadow-2xl tracking-wider cursor-pointer"
-            >
-              <Calendar className="w-4 h-4" />
-              <span>HOT PEPPER で空席確認・予約する</span>
-            </a>
+            <div className="space-y-3 pt-2">
+              <button
+                onClick={() => setIsBookingModalOpen(true)}
+                className="mens-button-white w-full py-4 rounded-full text-xs font-semibold flex items-center justify-center gap-2 shadow-2xl tracking-wider cursor-pointer"
+              >
+                <Calendar className="w-4 h-4 text-zinc-950" />
+                <span>空き枠を確認してWEB即時予約する</span>
+                <ArrowRight className="w-4 h-4 text-zinc-950" />
+              </button>
+
+              <p className="text-[10px] text-zinc-500 text-center font-light">
+                ※ 当サイトはポートフォリオ実績用デモシステムです。予約完了後はマイページで確認・キャンセル可能です。
+              </p>
+            </div>
           </div>
 
           {/* 右側：サロン情報＆アクセス（5カラム） */}
@@ -108,6 +116,13 @@ export default function MensReservationSection() {
         </div>
 
       </div>
+
+      {/* メンズWEB即時予約モーダル */}
+      <BookingModal
+        isOpen={isBookingModalOpen}
+        onClose={() => setIsBookingModalOpen(false)}
+        initialSalonType="mens"
+      />
     </section>
   );
 }
