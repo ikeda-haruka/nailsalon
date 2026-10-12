@@ -11,21 +11,21 @@ export default function MenuSection() {
         
         {/* セクションヘッダー */}
         <div className="text-center max-w-2xl mx-auto mb-14 space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-100 text-[#ff3366] text-xs font-black tracking-wider uppercase">
-            <Sparkles className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-lavender-100 text-lavender-700 text-xs font-black tracking-wider uppercase border border-lavender-200">
+            <Sparkles className="w-3.5 h-3.5 text-gold-500" />
             <span>Menu & Price</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-black text-[#2c181b]">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-black text-plum-900">
             明朗会計・パラジェル料金表
           </h2>
-          <p className="text-xs sm:text-sm text-[#5e4748] font-medium">
+          <p className="text-xs sm:text-sm text-plum-700 font-medium">
             全ハンドコースに自爪を削らないパラジェル＆高持続フィルイン込み。<br className="hidden sm:inline" />
             追加料金のない安心の明朗プライスです。
           </p>
         </div>
 
         {/* 公式LINE限定クーポン＆回数券バナー (チケット風リッチUI) */}
-        <div className="mb-16 p-6 sm:p-10 rounded-[2.5rem] bg-gradient-to-r from-emerald-500/10 via-pink-100/50 to-rose-400/10 border-2 border-[#06C755]/30 shadow-xl relative overflow-hidden">
+        <div className="mb-16 p-6 sm:p-10 rounded-[2.5rem] bg-gradient-to-r from-emerald-500/10 via-lavender-100/50 to-gold-400/10 border-2 border-[#06C755]/30 shadow-xl relative overflow-hidden">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-5">
               <div className="w-16 h-16 rounded-2xl bg-[#06C755] text-white flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/30 text-2xl">
@@ -35,10 +35,10 @@ export default function MenuSection() {
                 <span className="text-[10px] font-black text-[#06C755] uppercase tracking-wider bg-white px-2.5 py-0.5 rounded-full inline-block border border-[#06C755]/20 shadow-xs">
                   LINE FRIENDS ONLY
                 </span>
-                <h3 className="text-xl sm:text-2xl font-bold text-[#2c181b]">
+                <h3 className="text-xl sm:text-2xl font-bold text-plum-900">
                   お得な回数券 ＆ 毎月届く限定クーポン
                 </h3>
-                <p className="text-xs text-[#5e4748] font-medium">
+                <p className="text-xs text-plum-700 font-medium">
                   3回・5回のお得な回数券は公式LINEよりご購入いただけます。初回来店クーポンも配信中！
                 </p>
               </div>
@@ -62,9 +62,9 @@ export default function MenuSection() {
         <div className="space-y-12">
           {MENU_CATEGORIES.map((cat, idx) => (
             <div key={idx} className="space-y-6">
-              <div className="flex items-center gap-3 border-b-2 border-pink-100 pb-3">
-                <span className="w-3 h-3 rounded-full bg-[#ff3366]" />
-                <h3 className="text-xl sm:text-2xl font-serif font-black text-[#2c181b]">
+              <div className="flex items-center gap-3 border-b-2 border-lavender-100 pb-3">
+                <span className="w-3 h-3 rounded-full bg-lavender-500" />
+                <h3 className="text-xl sm:text-2xl font-serif font-black text-plum-900">
                   {cat.category}
                 </h3>
               </div>
@@ -73,49 +73,44 @@ export default function MenuSection() {
                 {cat.items.map((item, itemIdx) => (
                   <div
                     key={itemIdx}
-                    className={`jelly-glass rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 border ${
+                    className={`pearl-glass rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 border ${
                       item.recommended
-                        ? "border-[#ff3366] shadow-xl bg-white/90"
-                        : "border-pink-100/80 bg-white/70"
+                        ? "border-lavender-400 shadow-xl bg-white/95 ring-2 ring-lavender-200"
+                        : "border-lavender-100 bg-white/80"
                     }`}
                   >
                     <div>
                       {item.recommended && (
-                        <span className="inline-block px-3 py-0.5 rounded-full bg-[#ff3366] text-white text-[10px] font-black uppercase tracking-wider mb-2.5 shadow-sm">
+                        <span className="inline-block px-3 py-0.5 rounded-full bg-gold-500 text-plum-950 text-[10px] font-black uppercase tracking-wider mb-2.5 shadow-xs">
                           POPULAR ★ おすすめ
                         </span>
                       )}
                       <div className="flex items-start justify-between gap-4 mb-2">
-                        <h4 className="text-base font-bold text-[#2c181b] leading-snug">
+                        <h4 className="text-base font-bold text-plum-900 leading-snug">
                           {item.name}
                         </h4>
-                        <span className="text-xl font-serif font-black text-[#ff3366] shrink-0">
+                        <span className="text-xl font-serif font-black text-gold-600 shrink-0">
                           {item.price}
                         </span>
                       </div>
-                      <p className="text-xs text-[#5e4748] leading-relaxed mb-4 font-medium">
+                      <p className="text-xs text-plum-700 leading-relaxed mb-4 font-medium">
                         {item.description}
                       </p>
                     </div>
 
-                    <div className="flex items-center justify-between pt-3 border-t border-pink-100/60 text-xs">
-                      {item.time !== "-" ? (
-                        <span className="flex items-center gap-1 text-[11px] text-[#8c7374] font-medium">
-                          <Clock className="w-3.5 h-3.5 text-[#ff6584]" />
-                          目安: {item.time}
-                        </span>
-                      ) : (
-                        <span className="text-[11px] text-[#ff3366] font-bold">
-                          指名料: {SALON_INFO.nominationFee}
-                        </span>
-                      )}
+                    <div className="pt-3 border-t border-lavender-100 flex items-center justify-between text-xs">
+                      <span className="text-[10px] text-plum-500 flex items-center gap-1 font-medium">
+                        <Clock className="w-3.5 h-3.5 text-lavender-400" />
+                        目安: {item.time}
+                      </span>
                       <a
                         href={SALON_INFO.links.hotpepper}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-xs font-bold text-[#ff3366] hover:underline flex items-center gap-0.5"
+                        className="text-lavender-700 hover:text-lavender-900 font-bold flex items-center gap-1 group text-[11px]"
                       >
-                        予約する <ChevronRight className="w-3.5 h-3.5" />
+                        <span>予約へ</span>
+                        <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                       </a>
                     </div>
                   </div>
@@ -125,25 +120,27 @@ export default function MenuSection() {
           ))}
         </div>
 
-        {/* 決済・指名料カード */}
-        <div className="mt-14 p-6 sm:p-8 rounded-3xl bg-pink-50/50 border border-pink-200/60 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="space-y-1 text-center md:text-left">
-            <p className="text-xs font-bold text-[#2c181b] flex items-center justify-center md:justify-start gap-1.5">
-              <CreditCard className="w-4 h-4 text-[#ff3366]" />
-              キャッシュレス決済完全対応 ＆ 指名料金のご案内
-            </p>
-            <p className="text-[11px] text-[#5e4748] font-medium">
-              VISA / Master / JCB / Amex / Diners / デビット / PayPay / 交通系IC / 現金 対応<br />
-              在籍スタッフ指名料金は一律 <strong className="text-[#ff3366] font-bold">{SALON_INFO.nominationFee}</strong>（税込）です。
-            </p>
+        {/* 決済案内バナー */}
+        <div className="mt-16 p-6 sm:p-8 rounded-3xl bg-lavender-50/70 border border-lavender-200 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-white text-lavender-600 shadow-xs flex items-center justify-center shrink-0 border border-lavender-200">
+              <CreditCard className="w-6 h-6" />
+            </div>
+            <div>
+              <h4 className="text-sm font-bold text-plum-900">各種キャッシュレス決済に対応</h4>
+              <p className="text-xs text-plum-600 font-medium mt-0.5">
+                クレジットカード（VISA/Master/JCB/Amex/Diners）・デビット・PayPay・交通系IC・現金
+              </p>
+            </div>
           </div>
+
           <a
             href={SALON_INFO.links.hotpepper}
             target="_blank"
             rel="noopener noreferrer"
-            className="jelly-button px-6 py-3 rounded-full text-xs font-bold shrink-0 shadow-md"
+            className="luxe-button w-full md:w-auto px-6 py-3 rounded-full text-xs font-bold text-center shrink-0 shadow-md"
           >
-            クーポン一覧を見る
+            <span>クーポン一覧・ネット予約</span>
           </a>
         </div>
 

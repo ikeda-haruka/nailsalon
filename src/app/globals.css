@@ -3,28 +3,29 @@
 @tailwind utilities;
 
 :root {
-  --strawberry-bg: #fff5f7;
-  --strawberry-milk: #ffe8ee;
-  --strawberry-pink: #ff85a1;
-  --strawberry-vivid: #ff3366;
-  --strawberry-dark: #2c181b;
+  --color-pearl: #fdfcff;
+  --color-lavender: #8658cb;
+  --color-gold: #c59b4b;
+  --color-text-dark: #241a2f;
+  --color-text-body: #463b52;
 }
 
 html {
   scroll-behavior: smooth;
-  color: #2c181b;
-  background-color: #fff8f9;
+  color: var(--color-text-dark);
+  background-color: #faf8fc;
 }
 
 body {
   font-family: var(--font-jakarta), var(--font-sans-jp), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  color: #2c181b;
-  background: #fff8f9;
+  color: var(--color-text-dark);
+  background: #faf8fc;
   overflow-x: hidden;
+  letter-spacing: -0.01em;
 }
 
-/* 令和トレンド: オーロラ・イチゴミルク背景アニメーション */
-@keyframes aurora-flow {
+/* 20〜30代向け: シルキーラベンダー & シャンパンゴールドのオーロラ背景 */
+@keyframes silky-aurora {
   0% {
     background-position: 0% 50%;
   }
@@ -37,90 +38,103 @@ body {
 }
 
 .aurora-bg {
-  background: linear-gradient(125deg, #fff0f3, #ffe3ea, #ffd6e0, #fff5f8, #f8e8ee);
+  background: linear-gradient(135deg, #fbf9fd 0%, #f4edfc 30%, #fdfbf7 60%, #eee4fa 80%, #f7f1fc 100%);
   background-size: 300% 300%;
-  animation: aurora-flow 12s ease infinite;
+  animation: silky-aurora 14s ease infinite;
 }
 
-/* ぷっくりツヤ感（Jelly Glassmorphism） */
-.jelly-glass {
-  background: rgba(255, 255, 255, 0.78);
+/* 上品なパールすりガラス（Pearl Glassmorphism） */
+.pearl-glass {
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 12px 35px -8px rgba(255, 105, 180, 0.15),
-              0 2px 6px rgba(255, 182, 193, 0.15),
-              inset 0 1px 1px rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(228, 204, 162, 0.45);
+  box-shadow: 0 12px 35px -8px rgba(134, 88, 203, 0.08),
+              0 2px 8px rgba(197, 155, 75, 0.06),
+              inset 0 1px 1px rgba(255, 255, 255, 1);
 }
 
-.jelly-glass-hover {
+.pearl-glass-hover {
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.jelly-glass-hover:hover {
-  transform: translateY(-4px) scale(1.01);
-  background: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 20px 40px -10px rgba(255, 105, 180, 0.25),
-              0 4px 12px rgba(255, 182, 193, 0.25),
+.pearl-glass-hover:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(197, 155, 75, 0.7);
+  box-shadow: 0 20px 45px -10px rgba(134, 88, 203, 0.16),
+              0 4px 14px rgba(197, 155, 75, 0.12),
               inset 0 1px 2px rgba(255, 255, 255, 1);
-  border-color: rgba(255, 133, 161, 0.4);
 }
 
-/* ぷっくり3Dジェルボタン (Jelly Button) */
-.jelly-button {
-  background: linear-gradient(180deg, #ff6584 0%, #ff3366 100%);
+/* 大人のエレガントボタン (Luxe Purple Button) */
+.luxe-button {
+  background: linear-gradient(135deg, #9569d6 0%, #7645be 100%);
   color: white;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 8px 20px -4px rgba(255, 51, 102, 0.45),
-              inset 0 1px 2px rgba(255, 255, 255, 0.6),
-              inset 0 -2px 4px rgba(180, 0, 45, 0.2);
+  box-shadow: 0 8px 22px -4px rgba(118, 69, 190, 0.38),
+              inset 0 1px 1.5px rgba(255, 255, 255, 0.4),
+              inset 0 -1.5px 3px rgba(42, 30, 54, 0.2);
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.jelly-button::before {
+.luxe-button::before {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 45%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0) 100%);
+  height: 40%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 100%);
   border-radius: inherit;
   pointer-events: none;
 }
 
-.jelly-button:hover {
+.luxe-button:hover {
   transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 12px 25px -4px rgba(255, 51, 102, 0.6),
-              inset 0 1px 3px rgba(255, 255, 255, 0.8);
+  box-shadow: 0 12px 28px -4px rgba(118, 69, 190, 0.5),
+              inset 0 1px 2px rgba(255, 255, 255, 0.6);
 }
 
-.jelly-button:active {
+.luxe-button:active {
   transform: translateY(1px) scale(0.98);
 }
 
-/* キラキラ・スパークル光彩アニメーション */
-@keyframes sparkle-twinkle {
+/* 大人のシャンパンゴールドボタン (Gold Button) */
+.gold-button {
+  background: linear-gradient(135deg, #d4af6e 0%, #b88a38 100%);
+  color: #241a2f;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 20px -4px rgba(197, 155, 75, 0.35),
+              inset 0 1px 1.5px rgba(255, 255, 255, 0.5);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.gold-button:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 26px -4px rgba(197, 155, 75, 0.5);
+}
+
+/* 繊細なきらめき星アニメーション */
+@keyframes sparkle-refined {
   0%, 100% {
     opacity: 0.3;
-    transform: scale(0.8) rotate(0deg);
+    transform: scale(0.85);
   }
   50% {
     opacity: 1;
-    transform: scale(1.2) rotate(180deg);
+    transform: scale(1.15);
   }
 }
 
-.animate-twinkle {
-  animation: sparkle-twinkle 3s ease-in-out infinite;
+.animate-sparkle {
+  animation: sparkle-refined 3.5s ease-in-out infinite;
 }
 
-.animate-twinkle-fast {
-  animation: sparkle-twinkle 1.8s ease-in-out infinite;
-}
-
-/* 水光マグネット・リアル光彩エフェクト */
+/* 水光マグネット・ラベンダー＆ゴールドグラデーションテキスト */
 @keyframes water-shimmer-sweep {
   0% {
     background-position: -200% 0;
@@ -131,28 +145,32 @@ body {
 }
 
 .water-glow-text {
-  background: linear-gradient(90deg, #ff3366, #ff758f, #ffffff, #ff758f, #ff3366);
+  background: linear-gradient(90deg, #7043b3, #c59b4b, #9975cb, #d4af6e, #7043b3);
   background-size: 200% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: water-shimmer-sweep 5s linear infinite;
+  animation: water-shimmer-sweep 6s linear infinite;
 }
 
-/* Instagram ストーリーズ風リンググラデーション */
-.story-ring-pink {
-  background: linear-gradient(45deg, #ff85a1 0%, #ff3366 50%, #ffd1dc 100%);
+/* 上品なラベンダー＆ゴールドリング */
+.story-ring-lavender {
+  background: linear-gradient(135deg, #d7c2f3 0%, #c59b4b 50%, #9975cb 100%);
   padding: 2.5px;
   border-radius: 9999px;
   display: inline-block;
-  box-shadow: 0 4px 14px rgba(255, 51, 102, 0.25);
+  box-shadow: 0 4px 14px rgba(134, 88, 203, 0.18);
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.story-ring-pink:hover {
-  transform: scale(1.08);
+.story-ring-lavender:hover {
+  transform: scale(1.06);
 }
 
-/* カスタムスクロールバー非表示ユーティリティ */
+/* ゴールドボーダーアクセント */
+.gold-border {
+  border: 1px solid rgba(212, 175, 110, 0.35);
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }

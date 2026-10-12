@@ -6,19 +6,19 @@ import { SALON_INFO } from "@/data/salonData";
 
 export default function ReservationSection() {
   return (
-    <section id="reservation" className="py-24 bg-gradient-to-b from-white via-pink-50/40 to-[#fff0f3] relative">
+    <section id="reservation" className="py-24 bg-gradient-to-b from-white via-lavender-50/40 to-pearl-100 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* セクションヘッダー */}
         <div className="text-center max-w-2xl mx-auto mb-16 space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-100 text-[#ff3366] text-xs font-black tracking-wider uppercase">
-            <Calendar className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-lavender-100 text-lavender-700 text-xs font-black tracking-wider uppercase border border-lavender-200">
+            <Calendar className="w-3.5 h-3.5 text-gold-500" />
             <span>Easy Online Booking</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-black text-[#2c181b]">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-black text-plum-900">
             ご予約・空席状況
           </h2>
-          <p className="text-xs sm:text-sm text-[#5e4748] font-medium">
+          <p className="text-xs sm:text-sm text-plum-700 font-medium">
             HOT PEPPER Beauty または 公式LINE より24時間いつでもリアルタイム空席をご確認いただけます。
           </p>
         </div>
@@ -27,26 +27,26 @@ export default function ReservationSection() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-12">
           
           {/* HOT PEPPER Beauty */}
-          <div className="jelly-glass rounded-3xl p-6 sm:p-8 flex flex-col justify-between border-2 border-[#ff3366] shadow-xl relative bg-white/90">
+          <div className="pearl-glass rounded-3xl p-6 sm:p-8 flex flex-col justify-between border-2 border-lavender-400 shadow-xl relative bg-white/95">
             <div className="space-y-4">
-              <span className="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-[#ff3366] text-white uppercase tracking-wider inline-block">
+              <span className="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-gold-400 text-plum-950 uppercase tracking-wider inline-block">
                 RECOMMENDED / 24H即時予約
               </span>
               <div>
-                <h3 className="text-xl font-serif font-black text-[#2c181b]">
+                <h3 className="text-xl font-serif font-black text-plum-900">
                   HOT PEPPER Beauty
                 </h3>
-                <p className="text-xs text-[#8c7374] font-medium mt-1">
+                <p className="text-xs text-plum-500 font-medium mt-1">
                   ポイントが貯まる・使える公式Web予約
                 </p>
               </div>
-              <ul className="text-xs text-[#5e4748] space-y-2 pt-2 border-t border-pink-100 font-medium">
+              <ul className="text-xs text-plum-700 space-y-2 pt-2 border-t border-lavender-100 font-medium">
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-[#ff3366] shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-lavender-600 shrink-0" />
                   <span>リアルタイムの空席カレンダーを閲覧</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-[#ff3366] shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-lavender-600 shrink-0" />
                   <span>スタッフ指名予約（+550円）対応</span>
                 </li>
               </ul>
@@ -57,7 +57,7 @@ export default function ReservationSection() {
                 href={SALON_INFO.links.hotpepper}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="jelly-button w-full text-center py-3.5 rounded-full text-xs font-bold flex items-center justify-center gap-2 shadow-lg"
+                className="luxe-button w-full text-center py-3.5 rounded-full text-xs font-bold flex items-center justify-center gap-2 shadow-lg"
               >
                 <Calendar className="w-4 h-4" />
                 <span>空席確認・Web即時予約</span>
@@ -66,20 +66,20 @@ export default function ReservationSection() {
           </div>
 
           {/* 公式LINE */}
-          <div className="jelly-glass rounded-3xl p-6 sm:p-8 flex flex-col justify-between border border-[#06C755]/30 shadow-xl relative bg-white/90">
+          <div className="pearl-glass rounded-3xl p-6 sm:p-8 flex flex-col justify-between border border-[#06C755]/30 shadow-xl relative bg-white/95">
             <div className="space-y-4">
               <span className="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-[#06C755] text-white uppercase tracking-wider inline-block">
                 限定クーポン ＆ 回数券
               </span>
               <div>
-                <h3 className="text-xl font-serif font-black text-[#2c181b]">
+                <h3 className="text-xl font-serif font-black text-plum-900">
                   公式LINEアカウント
                 </h3>
-                <p className="text-xs text-[#8c7374] font-medium mt-1">
+                <p className="text-xs text-plum-500 font-medium mt-1">
                   友だち追加で限定クーポン・回数券をGET
                 </p>
               </div>
-              <ul className="text-xs text-[#5e4748] space-y-2 pt-2 border-t border-pink-100 font-medium">
+              <ul className="text-xs text-plum-700 space-y-2 pt-2 border-t border-lavender-100 font-medium">
                 <li className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-[#06C755] shrink-0" />
                   <span>メニューからワンタップで空席閲覧</span>
@@ -99,33 +99,33 @@ export default function ReservationSection() {
                 className="w-full text-center py-3.5 rounded-full text-xs font-bold bg-[#06C755] hover:bg-[#05a847] text-white flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 transition-all hover:scale-102"
               >
                 <MessageCircle className="w-4 h-4" />
-                <span>LINEでクーポンを受け取る</span>
+                <span>LINEでクーポン＆予約</span>
               </a>
             </div>
           </div>
 
-          {/* お電話予約 */}
-          <div className="jelly-glass rounded-3xl p-6 sm:p-8 flex flex-col justify-between border border-pink-100 shadow-xl relative bg-white/90">
+          {/* お電話 */}
+          <div className="pearl-glass rounded-3xl p-6 sm:p-8 flex flex-col justify-between border border-lavender-200 shadow-xl relative bg-white/95">
             <div className="space-y-4">
-              <span className="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-[#5e4748] text-white uppercase tracking-wider inline-block">
-                当日予約・お問い合わせ
+              <span className="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-lavender-100 text-lavender-700 uppercase tracking-wider inline-block border border-lavender-200">
+                お急ぎ・当日予約
               </span>
               <div>
-                <h3 className="text-xl font-serif font-black text-[#2c181b]">
-                  お電話でのご予約
+                <h3 className="text-xl font-serif font-black text-plum-900">
+                  お電話でのお問い合わせ
                 </h3>
-                <p className="text-xs text-[#8c7374] font-medium mt-1">
-                  当日の急な空き枠や道案内のお電話に
+                <p className="text-xs text-plum-500 font-medium mt-1">
+                  当日の空き状況やお時間の相談に
                 </p>
               </div>
-              <ul className="text-xs text-[#5e4748] space-y-2 pt-2 border-t border-pink-100 font-medium">
+              <ul className="text-xs text-plum-700 space-y-2 pt-2 border-t border-lavender-100 font-medium">
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-[#5e4748] shrink-0" />
-                  <span>営業時間: 10:00〜20:00（不定休）</span>
+                  <Clock className="w-4 h-4 text-gold-500 shrink-0" />
+                  <span>営業時間: 10:00〜20:00</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-[#5e4748] shrink-0" />
-                  <span>GW・お盆・シルバーウィークも営業中</span>
+                  <Sparkles className="w-4 h-4 text-gold-500 shrink-0" />
+                  <span>GW・お盆・SW休まず営業中</span>
                 </li>
               </ul>
             </div>
@@ -133,9 +133,9 @@ export default function ReservationSection() {
             <div className="pt-6">
               <a
                 href={`tel:${SALON_INFO.phone}`}
-                className="w-full text-center py-3.5 rounded-full text-xs font-bold bg-pink-50 hover:bg-pink-100 text-[#ff3366] border border-pink-200 flex items-center justify-center gap-2 transition-all"
+                className="w-full text-center py-3.5 rounded-full text-xs font-bold bg-white text-plum-900 border border-lavender-300 hover:bg-lavender-50 flex items-center justify-center gap-2 shadow-sm transition-all"
               >
-                <Phone className="w-4 h-4" />
+                <Phone className="w-4 h-4 text-lavender-600" />
                 <span>{SALON_INFO.phone}</span>
               </a>
             </div>

@@ -12,7 +12,7 @@ export default function StoryHighlights() {
       icon: "🌸",
       href: "#gallery",
       isNew: true,
-      bg: "from-pink-300 via-rose-300 to-amber-200",
+      bg: "from-lavender-300 via-pink-200 to-gold-200",
     },
     {
       id: "magnet",
@@ -21,7 +21,7 @@ export default function StoryHighlights() {
       icon: "🧲",
       href: "#magnet-lab",
       isNew: true,
-      bg: "from-fuchsia-400 via-pink-400 to-rose-300",
+      bg: "from-lavender-400 via-lavender-300 to-gold-300",
     },
     {
       id: "paragel",
@@ -30,7 +30,7 @@ export default function StoryHighlights() {
       icon: "💅",
       href: "#concept",
       isNew: false,
-      bg: "from-rose-400 via-pink-300 to-pink-100",
+      bg: "from-lavender-200 via-pearl-100 to-gold-200",
     },
     {
       id: "staff",
@@ -39,7 +39,7 @@ export default function StoryHighlights() {
       icon: "✨",
       href: "#staff",
       isNew: false,
-      bg: "from-pink-400 via-rose-400 to-purple-300",
+      bg: "from-gold-300 via-lavender-200 to-lavender-400",
     },
     {
       id: "drink",
@@ -48,7 +48,7 @@ export default function StoryHighlights() {
       icon: "☕️",
       href: "#salon-info",
       isNew: false,
-      bg: "from-amber-300 via-orange-300 to-pink-300",
+      bg: "from-gold-200 via-amber-100 to-lavender-200",
     },
     {
       id: "parking",
@@ -57,16 +57,16 @@ export default function StoryHighlights() {
       icon: "🚗",
       href: "#salon-info",
       isNew: false,
-      bg: "from-sky-300 via-pink-300 to-rose-300",
+      bg: "from-lavender-200 via-sky-100 to-gold-200",
     },
     {
       id: "holiday",
       title: "連休営業",
       en: "GW/お盆",
-      icon: "🎀",
+      icon: "✦",
       href: "#salon-info",
       isNew: false,
-      bg: "from-red-400 via-pink-400 to-amber-200",
+      bg: "from-gold-300 via-lavender-300 to-lavender-500",
     },
     {
       id: "pet-kids",
@@ -75,7 +75,7 @@ export default function StoryHighlights() {
       icon: "🐾",
       href: "#salon-info",
       isNew: false,
-      bg: "from-emerald-300 via-teal-300 to-pink-300",
+      bg: "from-lavender-300 via-emerald-100 to-gold-200",
     },
   ];
 
@@ -89,8 +89,8 @@ export default function StoryHighlights() {
             className="flex flex-col items-center gap-1.5 shrink-0 group focus:outline-none"
           >
             <div className="relative">
-              {/* Instagram風グラデーションリング */}
-              <div className="story-ring-pink p-[3px] rounded-full group-hover:scale-105 transition-transform duration-300">
+              {/* Instagram風ラベンダー＆ゴールドグラデーションリング */}
+              <div className="p-[3px] rounded-full bg-gradient-to-tr from-lavender-500 via-gold-400 to-lavender-300 shadow-sm group-hover:scale-105 transition-transform duration-300">
                 <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-full bg-white p-1 flex items-center justify-center">
                   <div className={`w-full h-full rounded-full bg-gradient-to-tr ${story.bg} flex items-center justify-center text-xl sm:text-2xl shadow-inner group-hover:rotate-6 transition-transform`}>
                     {story.icon}
@@ -100,17 +100,17 @@ export default function StoryHighlights() {
 
               {/* NEWバッジ */}
               {story.isNew && (
-                <span className="absolute -top-1 -right-1 px-1.5 py-0.5 rounded-full bg-[#ff3366] text-white text-[9px] font-black tracking-wider uppercase shadow-md animate-pulse">
+                <span className="absolute -top-1 -right-1 px-1.5 py-0.5 rounded-full bg-gold-500 text-plum-950 text-[9px] font-black tracking-wider uppercase shadow-md animate-pulse">
                   NEW
                 </span>
               )}
             </div>
 
             <div className="text-center">
-              <span className="block text-[11px] font-bold text-[#2c181b] group-hover:text-[#ff3366] transition-colors leading-tight">
+              <span className="block text-[11px] font-bold text-plum-900 group-hover:text-lavender-700 transition-colors leading-tight">
                 {story.title}
               </span>
-              <span className="block text-[9px] text-[#a08587] font-semibold tracking-wider uppercase">
+              <span className="block text-[9px] text-plum-500 font-semibold tracking-wider uppercase">
                 {story.en}
               </span>
             </div>

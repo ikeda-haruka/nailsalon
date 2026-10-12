@@ -11,40 +11,40 @@ export default function MagnetGlowLab() {
 
   const magnetTones = [
     {
-      id: "strawberry-milk",
-      name: "水光いちごみるく",
-      en: "Water Strawberry",
-      desc: "当店人気No.1！透明感あるイチゴミルクベースに水面の光彩が揺らめく",
-      bgGradient: "linear-gradient(135deg, #ffd1dc 0%, #ff85a1 50%, #fca5b9 100%)",
-      shimmerColor: "rgba(255, 255, 255, 0.95)",
-      pillBg: "bg-pink-100 text-[#ff3366]",
-    },
-    {
-      id: "pink-beige",
-      name: "大人ピンクベージュ",
-      en: "Nude Shimmer",
-      desc: "オフィスネイル人気No.1。肌馴染み抜群で血色感をアップさせる上品カラー",
-      bgGradient: "linear-gradient(135deg, #f7d6cb 0%, #e0b0a2 50%, #cca295 100%)",
-      shimmerColor: "rgba(255, 245, 230, 0.95)",
-      pillBg: "bg-amber-100 text-[#a06048]",
-    },
-    {
-      id: "champagne",
-      name: "強光シャンパンゴールド",
-      en: "Strong Beam",
-      desc: "光の筋がシャープに走る強光タイプ。爪先が細く長く見える指長効果",
-      bgGradient: "linear-gradient(135deg, #fdecd2 0%, #e8ca94 50%, #d4af37 100%)",
+      id: "water-lavender",
+      name: "水光ペールラベンダー",
+      en: "Water Lavender",
+      desc: "当店人気No.1！透明感ある澄んだラベンダーに水面の光彩が揺らめく洗練カラー",
+      bgGradient: "linear-gradient(135deg, #f5f0ff 0%, #d8b4fe 50%, #9975cb 100%)",
       shimmerColor: "rgba(255, 255, 255, 0.98)",
-      pillBg: "bg-yellow-100 text-[#967425]",
+      pillBg: "bg-lavender-100 text-lavender-700 border-lavender-200",
     },
     {
-      id: "rosy-bordeaux",
-      name: "秋色ロージーボルドー",
-      en: "Deep Rosy",
-      desc: "深みのあるボルドーに微粒子マグネットが溶け込んだシックな大人カラー",
-      bgGradient: "linear-gradient(135deg, #c76d81 0%, #8b263e 50%, #591024 100%)",
-      shimmerColor: "rgba(255, 200, 220, 0.9)",
-      pillBg: "bg-rose-100 text-[#8b263e]",
+      id: "champagne-gold",
+      name: "シャンパンゴールドビーム",
+      en: "Champagne Beam",
+      desc: "光の筋がシャープに走る強光タイプ。指先が細く長く見える大人ゴールド",
+      bgGradient: "linear-gradient(135deg, #fef9c3 0%, #eab308 40%, #c59b4b 100%)",
+      shimmerColor: "rgba(255, 255, 240, 0.98)",
+      pillBg: "bg-gold-100 text-gold-700 border-gold-200",
+    },
+    {
+      id: "milky-pearl",
+      name: "ミルキーパールホワイト",
+      en: "Milky Pearl",
+      desc: "シルキーな白磁に微細なオーロラパウダーを重ねた大人の清潔感あふれるカラー",
+      bgGradient: "linear-gradient(135deg, #ffffff 0%, #f3e8ff 50%, #d8b4fe 100%)",
+      shimmerColor: "rgba(255, 255, 255, 1)",
+      pillBg: "bg-pearl-100 text-plum-900 border-lavender-200",
+    },
+    {
+      id: "mauve-plum",
+      name: "モーブプラム＆ゴールド",
+      en: "Mauve Plum",
+      desc: "深みのあるモーブパープルに微粒子ゴールドが溶け込んだシックな夜のニュアンス",
+      bgGradient: "linear-gradient(135deg, #a855f7 0%, #6b21a8 50%, #241a2f 100%)",
+      shimmerColor: "rgba(254, 240, 138, 0.95)",
+      pillBg: "bg-plum-100 text-plum-900 border-plum-200",
     },
   ];
 
@@ -68,26 +68,26 @@ export default function MagnetGlowLab() {
   const current = magnetTones[activeColor];
 
   return (
-    <section id="magnet-lab" className="py-20 bg-gradient-to-b from-white via-pink-50/40 to-white relative overflow-hidden">
+    <section id="magnet-lab" className="py-20 bg-gradient-to-b from-white via-lavender-50/40 to-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* セクション見出し */}
         <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-100 text-[#ff3366] text-xs font-black tracking-wider uppercase">
-            <Sparkles className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-lavender-100 text-lavender-700 text-xs font-black tracking-wider uppercase border border-lavender-200">
+            <Sparkles className="w-3.5 h-3.5 text-gold-500" />
             <span>Interactive Magnet Lab</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-serif font-black text-[#2c181b]">
+          <h2 className="text-3xl sm:text-4xl font-serif font-black text-plum-900">
             水光マグネット体験シミュレーター
           </h2>
-          <p className="text-xs sm:text-sm text-[#5e4748] font-medium">
+          <p className="text-xs sm:text-sm text-plum-700 font-medium">
             画面の爪にマウスを乗せたり指でなぞると、光の筋がちゅるんと動きます。<br className="hidden sm:inline" />
-            50種類以上ある特殊マグネットの繊細な輝きを体感してください。
+            50種類以上ある特殊マグネットパウダーの繊細な光沢を体感してください。
           </p>
         </div>
 
         {/* インタラクティブカード */}
-        <div className="max-w-4xl mx-auto jelly-glass rounded-[2.5rem] p-6 sm:p-10 border border-white shadow-2xl">
+        <div className="max-w-4xl mx-auto pearl-glass rounded-[2.5rem] p-6 sm:p-10 border border-lavender-200 shadow-2xl">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
             
             {/* 左側: リアルタイム追従する水光ネイルのビジュアル */}
@@ -123,7 +123,7 @@ export default function MagnetGlowLab() {
 
                 {/* アクション指示テキスト */}
                 <div className="absolute bottom-6 left-4 right-4 text-center pointer-events-none">
-                  <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-black/40 backdrop-blur-md text-white text-[11px] font-bold">
+                  <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-plum-950/50 backdrop-blur-md text-white text-[11px] font-bold">
                     <Eye className="w-3.5 h-3.5" /> 触ると光が動きます
                   </span>
                 </div>
@@ -133,20 +133,20 @@ export default function MagnetGlowLab() {
             {/* 右側: カラー切り替え & 説明 */}
             <div className="md:col-span-6 space-y-6">
               <div>
-                <span className={`text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider inline-block mb-2 ${current.pillBg}`}>
+                <span className={`text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider inline-block mb-2 border ${current.pillBg}`}>
                   {current.en}
                 </span>
-                <h3 className="text-2xl font-serif font-black text-[#2c181b]">
+                <h3 className="text-2xl font-serif font-black text-plum-900">
                   {current.name}
                 </h3>
-                <p className="text-xs sm:text-sm text-[#5e4748] mt-2 leading-relaxed font-medium">
+                <p className="text-xs sm:text-sm text-plum-700 mt-2 leading-relaxed font-medium">
                   {current.desc}
                 </p>
               </div>
 
               {/* カラーセレクターボタン */}
               <div className="space-y-2">
-                <p className="text-xs font-bold text-[#2c181b]">カラーパレットを選択:</p>
+                <p className="text-xs font-bold text-plum-900">大人可愛いカラーパレットを選択:</p>
                 <div className="grid grid-cols-2 gap-2.5">
                   {magnetTones.map((tone, idx) => (
                     <button
@@ -154,8 +154,8 @@ export default function MagnetGlowLab() {
                       onClick={() => setActiveColor(idx)}
                       className={`p-3 rounded-2xl text-left border transition-all flex items-center gap-3 ${
                         activeColor === idx
-                          ? "bg-white border-[#ff3366] shadow-md scale-102"
-                          : "bg-white/60 border-pink-100 hover:bg-white"
+                          ? "bg-white border-lavender-500 shadow-md scale-102 ring-2 ring-lavender-200"
+                          : "bg-white/70 border-lavender-100 hover:bg-white"
                       }`}
                     >
                       <div
@@ -163,8 +163,8 @@ export default function MagnetGlowLab() {
                         style={{ background: tone.bgGradient }}
                       />
                       <div className="truncate">
-                        <span className="block text-xs font-bold text-[#2c181b] truncate">{tone.name}</span>
-                        <span className="text-[10px] text-[#a08587] truncate block">{tone.en}</span>
+                        <span className="block text-xs font-bold text-plum-900 truncate">{tone.name}</span>
+                        <span className="text-[10px] text-plum-400 truncate block">{tone.en}</span>
                       </div>
                     </button>
                   ))}
@@ -176,14 +176,14 @@ export default function MagnetGlowLab() {
                   href={SALON_INFO.links.hotpepper}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="jelly-button text-center py-3.5 px-6 rounded-full text-xs font-bold flex items-center justify-center gap-2 shadow-lg"
+                  className="luxe-button text-center py-3.5 px-6 rounded-full text-xs font-bold flex items-center justify-center gap-2 shadow-lg"
                 >
                   <Calendar className="w-4 h-4" />
                   <span>水光マグネットコースを予約する</span>
                 </a>
               </div>
 
-              <p className="text-[10px] text-[#8c7374] leading-relaxed">
+              <p className="text-[10px] text-plum-500 leading-relaxed">
                 ※サロン店頭ではさらに50色以上の微粒子・水光・強光パウダーを直接お試しいただけます。
               </p>
             </div>

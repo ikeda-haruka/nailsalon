@@ -14,7 +14,7 @@ export default function InteractiveSection() {
     {
       q: "あなたの普段のライフスタイルや職場の規定は？",
       options: [
-        { text: "規定が厳しめ / 上品でちゅるんとした美爪が好き", cat: "office" },
+        { text: "規定が厳しめ / 上品でちゅるんとした美爪・血色感が好き", cat: "office" },
         { text: "トレンドに敏感 / 水光マグネットのうるうるな輝きが好き", cat: "magnet" },
         { text: "季節の移ろいを感じるフラワーやイベントアートが好き", cat: "spring" },
         { text: "シックで大人っぽい深みボルドーやニュアンスが好き", cat: "autumn" }
@@ -23,10 +23,10 @@ export default function InteractiveSection() {
     {
       q: "指先で一番叶えたい理想の雰囲気は？",
       options: [
-        { text: "血色感あふれる「ちゅるん」とした大人可愛い手元", cat: "office" },
+        { text: "透け感ラベンダーやピンクベージュの大人可愛い手元", cat: "office" },
         { text: "角度で光が揺らめく「水光マグネット」の透明感", cat: "magnet" },
         { text: "春の桜やタンポポのようなパステルカラーの愛らしさ", cat: "spring" },
-        { text: "くすみカラーやボルドーの洗練されたニュアンス", cat: "autumn" }
+        { text: "くすみカラーやゴールドを効かせた洗練されたニュアンス", cat: "autumn" }
       ]
     },
     {
@@ -70,7 +70,7 @@ export default function InteractiveSection() {
           particleCount: 80,
           spread: 70,
           origin: { y: 0.6 },
-          colors: ["#ff3366", "#ff85a1", "#ffd1dc", "#ffffff"]
+          colors: ["#9975cb", "#d4af6e", "#e9d5ff", "#ffffff", "#fef08a"]
         });
       } catch (e) {
         // ignore
@@ -85,183 +85,188 @@ export default function InteractiveSection() {
   };
 
   const vacancyData = [
-    { day: "今日 (10/11)", status: "△ 残り1席", hot: true, time: "17:00〜" },
-    { day: "明日 (10/12)", status: "◎ 空席あり", hot: false, time: "11:00〜, 15:30〜" },
-    { day: "10/13 (火)", status: "◎ 空席あり", hot: false, time: "終日OK" },
-    { day: "10/14 (水)", status: "○ 残り2席", hot: false, time: "13:00〜, 18:00〜" },
-    { day: "10/15 (木)", status: "◎ 空席あり", hot: false, time: "10:30〜, 14:00〜" },
-    { day: "10/16 (金)", status: "△ 残り1席", hot: true, time: "16:00〜" },
-    { day: "10/17 (土)", status: "○ 残り2席", hot: false, time: "12:00〜, 17:30〜" },
+    { day: "今日 (10/12)", status: "△ 残り1席", hot: true, time: "17:00〜" },
+    { day: "明日 (10/13)", status: "◎ 空席あり", hot: false, time: "11:00〜, 15:30〜" },
+    { day: "10/14 (水)", status: "◎ 空席あり", hot: false, time: "終日OK" },
+    { day: "10/15 (木)", status: "○ 残り2席", hot: false, time: "13:00〜, 18:00〜" },
+    { day: "10/16 (金)", status: "◎ 空席あり", hot: false, time: "10:30〜, 14:00〜" },
+    { day: "10/17 (土)", status: "△ 残り1席", hot: true, time: "16:00〜" },
+    { day: "10/18 (日)", status: "○ 残り2席", hot: false, time: "12:00〜, 17:30〜" },
   ];
 
   return (
     <section className="py-24 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* セクションヘッダー */}
-        <div className="text-center max-w-2xl mx-auto mb-14 space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-100 text-[#ff3366] text-xs font-black tracking-wider uppercase">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Nail Style Diagnostic</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-black text-[#2c181b]">
-            3問でわかる！<br className="sm:hidden" />
-            大人可愛いネイル診断
-          </h2>
-          <p className="text-xs sm:text-sm text-[#5e4748] font-medium">
-            あなたの好みやライフスタイルに寄り添う、一番輝くデザインをお届けします。
-          </p>
-        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+          
+          {/* 左側: 3秒パーソナル診断 */}
+          <div className="lg:col-span-6 pearl-glass rounded-[2.5rem] p-6 sm:p-10 border border-lavender-200 shadow-xl">
+            <div className="mb-6 space-y-1">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-lavender-100 text-lavender-700 text-xs font-black tracking-wider uppercase border border-lavender-200">
+                <Sparkles className="w-3.5 h-3.5 text-gold-500" />
+                <span>Nail Styling Quiz</span>
+              </div>
+              <h3 className="text-2xl font-serif font-black text-plum-900">
+                3問でわかる！似合わせネイル診断
+              </h3>
+              <p className="text-xs text-plum-700 font-medium">
+                あなたの好みやライフスタイルにぴったりのデザインをAIが提案します。
+              </p>
+            </div>
 
-        {/* 診断カード */}
-        <div className="max-w-xl mx-auto jelly-glass rounded-[2.5rem] p-6 sm:p-10 border border-white shadow-2xl mb-20 relative">
-          {currentStep < 3 ? (
-            <div>
-              <div className="flex items-center justify-between mb-6">
-                <span className="text-xs font-black text-[#ff3366] tracking-wider uppercase">
-                  QUESTION 0{currentStep + 1}
-                </span>
-                <div className="flex gap-1.5">
-                  {[0, 1, 2].map((s) => (
+            {currentStep < 3 ? (
+              <div className="space-y-6">
+                {/* プログレスバー */}
+                <div className="space-y-1.5">
+                  <div className="flex justify-between text-[11px] font-bold text-plum-500">
+                    <span>QUESTION {currentStep + 1} / 3</span>
+                    <span>{Math.round(((currentStep + 1) / 3) * 100)}%</span>
+                  </div>
+                  <div className="w-full h-2 rounded-full bg-lavender-100 overflow-hidden">
                     <div
-                      key={s}
-                      className={`h-2 rounded-full transition-all duration-300 ${
-                        s === currentStep
-                          ? "w-8 bg-[#ff3366]"
-                          : s < currentStep
-                          ? "w-4 bg-pink-300"
-                          : "w-4 bg-pink-100"
-                      }`}
+                      className="h-full bg-gradient-to-r from-lavender-500 to-gold-400 transition-all duration-300"
+                      style={{ width: `${((currentStep + 1) / 3) * 100}%` }}
                     />
+                  </div>
+                </div>
+
+                {/* 質問文 */}
+                <div className="p-4 rounded-2xl bg-white/90 border border-lavender-100 shadow-xs">
+                  <h4 className="text-sm sm:text-base font-bold text-plum-900">
+                    {questions[currentStep].q}
+                  </h4>
+                </div>
+
+                {/* 選択肢ボタン */}
+                <div className="space-y-2.5">
+                  {questions[currentStep].options.map((opt, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => handleSelectOption(idx)}
+                      className="w-full p-4 rounded-2xl bg-white hover:bg-lavender-50 border border-lavender-200/80 text-left text-xs font-bold text-plum-900 transition-all hover:scale-101 hover:border-lavender-400 flex items-center justify-between group shadow-xs"
+                    >
+                      <span>{opt.text}</span>
+                      <ArrowRight className="w-4 h-4 text-lavender-400 group-hover:text-lavender-700 group-hover:translate-x-1 transition-all shrink-0" />
+                    </button>
                   ))}
                 </div>
               </div>
-
-              <h3 className="text-base sm:text-lg font-bold text-[#2c181b] mb-6 leading-snug">
-                {questions[currentStep].q}
-              </h3>
-
-              <div className="space-y-2.5">
-                {questions[currentStep].options.map((opt, i) => (
-                  <button
-                    key={i}
-                    onClick={() => handleSelectOption(i)}
-                    className="w-full p-4 rounded-2xl text-left text-xs sm:text-sm font-semibold text-[#5e4748] bg-white/80 hover:bg-white border border-pink-100 hover:border-[#ff3366] hover:text-[#ff3366] transition-all flex items-center justify-between group shadow-xs hover:shadow-md"
-                  >
-                    <span>{opt.text}</span>
-                    <ArrowRight className="w-4 h-4 text-pink-300 group-hover:text-[#ff3366] group-hover:translate-x-1 transition-all shrink-0 ml-2" />
-                  </button>
-                ))}
-              </div>
-            </div>
-          ) : (
-            result && (
-              <div className="text-center space-y-5 animate-in zoom-in-95 duration-300">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-100 text-[#ff3366] text-xs font-black">
-                  <Heart className="w-3.5 h-3.5 fill-[#ff3366]" />
-                  <span>診断結果・あなたに一番似合うおすすめスタイル</span>
-                </div>
-
-                <div className="bg-white rounded-3xl p-5 border border-pink-100 shadow-md sm:flex items-center gap-5 text-left">
-                  <div className="w-full sm:w-32 h-32 rounded-2xl overflow-hidden relative shrink-0 mb-3 sm:mb-0 bg-pink-100">
-                    <img
-                      src={result.image}
-                      alt={result.title}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <span className="text-[10px] font-black bg-[#ff3366] text-white px-2 py-0.5 rounded-full inline-block">
-                      {result.categoryLabel}
+            ) : (
+              /* 結果画面 */
+              <div className="space-y-5 animate-in zoom-in-95 duration-300">
+                <div className="p-5 rounded-3xl bg-gradient-to-br from-lavender-50 to-gold-50 border border-lavender-200 space-y-3">
+                  <span className="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-gold-500 text-plum-950 uppercase tracking-wider inline-block">
+                    Your Best Match
+                  </span>
+                  <h4 className="text-xl font-serif font-black text-plum-900">
+                    {result?.title}
+                  </h4>
+                  <p className="text-xs text-plum-700 leading-relaxed font-medium">
+                    {result?.description}
+                  </p>
+                  <div className="flex items-center justify-between pt-2 border-t border-lavender-200/60 text-xs">
+                    <span className="font-serif font-black text-lg text-gold-600">
+                      {result?.price}
                     </span>
-                    <h4 className="text-base font-bold text-[#2c181b]">
-                      {result.title}
-                    </h4>
-                    <p className="text-xs text-[#5e4748] font-medium line-clamp-2">
-                      {result.description}
-                    </p>
-                    <p className="text-xs font-serif font-black text-[#ff3366] pt-1">
-                      目安料金: {result.price} ({result.duration})
-                    </p>
+                    <span className="text-[10px] text-plum-500 flex items-center gap-1 font-medium">
+                      <Clock className="w-3.5 h-3.5 text-lavender-400" />
+                      {result?.duration}
+                    </span>
                   </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+                <div className="flex gap-2.5">
                   <a
                     href={SALON_INFO.links.hotpepper}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="jelly-button w-full sm:w-auto px-7 py-3.5 rounded-full text-xs font-bold flex items-center justify-center gap-2 shadow-lg"
+                    className="luxe-button flex-1 text-center py-3.5 rounded-full text-xs font-bold flex items-center justify-center gap-1.5 shadow-lg"
                   >
                     <Calendar className="w-4 h-4" />
-                    <span>このスタイルで空席を探す</span>
+                    <span>この診断結果で予約</span>
                   </a>
                   <button
                     onClick={handleReset}
-                    className="px-5 py-3 rounded-full text-xs font-bold text-[#5e4748] bg-white border border-pink-100 hover:bg-pink-50 flex items-center gap-1.5"
+                    className="p-3.5 rounded-full bg-white border border-lavender-200 text-plum-700 hover:bg-lavender-50 transition-colors shrink-0 shadow-xs"
+                    aria-label="もう一度診断する"
                   >
-                    <RotateCcw className="w-3.5 h-3.5" />
-                    <span>再診断</span>
+                    <RotateCcw className="w-4 h-4" />
                   </button>
                 </div>
               </div>
-            )
-          )}
-        </div>
+            )}
+          </div>
 
-        {/* 直近の空席目安カレンダー */}
-        <div className="jelly-glass rounded-[2.5rem] p-6 sm:p-10 border border-white shadow-xl max-w-4xl mx-auto">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-            <div>
-              <div className="flex items-center gap-2">
-                <Clock className="w-5 h-5 text-[#ff3366]" />
-                <h3 className="text-xl font-serif font-black text-[#2c181b]">
-                  直近の空席目安カレンダー
-                </h3>
+          {/* 右側: リアルタイム空席カレンダー */}
+          <div className="lg:col-span-6 pearl-glass rounded-[2.5rem] p-6 sm:p-10 border border-lavender-200 shadow-xl">
+            <div className="mb-6 space-y-1">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gold-100 text-gold-700 text-xs font-black tracking-wider uppercase border border-gold-200">
+                <Calendar className="w-3.5 h-3.5" />
+                <span>Real-time Vacancy</span>
               </div>
-              <p className="text-xs text-[#8c7374] font-medium mt-1">
-                ハンド2席・フット2席 / リアルタイム空席はHOT PEPPER Beautyにてご確認いただけます
+              <h3 className="text-2xl font-serif font-black text-plum-900">
+                直近の空席速報
+              </h3>
+              <p className="text-xs text-plum-700 font-medium">
+                HOT PEPPER Beauty および 公式LINE と連動した最新の空き状況です。
               </p>
             </div>
-            <a
-              href={SALON_INFO.links.hotpepper}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="jelly-button px-5 py-2.5 rounded-full text-xs font-bold flex items-center gap-1.5 self-start sm:self-auto shrink-0 shadow-md"
-            >
-              <Calendar className="w-3.5 h-3.5" />
-              <span>最新の空席表を見る</span>
-            </a>
-          </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2.5">
-            {vacancyData.map((item, idx) => (
-              <div
-                key={idx}
-                className={`p-3 rounded-2xl text-center border transition-all ${
-                  item.hot
-                    ? "bg-pink-100/70 border-pink-300 shadow-sm"
-                    : "bg-white/80 border-pink-100"
-                }`}
-              >
-                <p className="text-[11px] font-bold text-[#2c181b] mb-1">
-                  {item.day}
-                </p>
-                <p className={`text-xs font-black mb-1 ${
-                  item.status.includes("◎") ? "text-[#06C755]" : item.status.includes("○") ? "text-[#ff3366]" : "text-[#b00030]"
-                }`}>
-                  {item.status}
-                </p>
-                <p className="text-[10px] text-[#8c7374] font-medium">
-                  {item.time}
-                </p>
+            {/* 空席スケジュールリスト */}
+            <div className="space-y-2 mb-6">
+              {vacancyData.map((slot, idx) => (
+                <div
+                  key={idx}
+                  className="p-3 rounded-2xl bg-white border border-lavender-100 flex items-center justify-between text-xs shadow-xs hover:border-lavender-300 transition-colors"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="font-bold text-plum-900 w-24">{slot.day}</span>
+                    <span className="text-[11px] text-plum-500 font-medium">{slot.time}</span>
+                  </div>
+                  <div>
+                    <span
+                      className={`px-3 py-1 rounded-full text-[10px] font-extrabold ${
+                        slot.hot
+                          ? "bg-lavender-100 text-lavender-700 border border-lavender-200"
+                          : "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                      }`}
+                    >
+                      {slot.status}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* 予約誘導 */}
+            <div className="p-4 rounded-2xl bg-lavender-50/80 border border-lavender-200 space-y-3">
+              <p className="text-xs font-bold text-plum-900">
+                空席はリアルタイムで変動します。24時間即時確定はこちら：
+              </p>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <a
+                  href={SALON_INFO.links.hotpepper}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="luxe-button flex-1 text-center py-3 rounded-full text-xs font-bold flex items-center justify-center gap-1.5 shadow-md"
+                >
+                  <Calendar className="w-4 h-4" />
+                  <span>HOT PEPPER で空席確認</span>
+                </a>
+                <a
+                  href={SALON_INFO.links.line}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 text-center py-3 rounded-full bg-[#06C755] hover:bg-[#05a847] text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-md transition-all hover:scale-102"
+                >
+                  <span>LINEで空席チェック</span>
+                </a>
               </div>
-            ))}
+            </div>
+
           </div>
 
-          <p className="mt-4 text-center text-[11px] text-[#ff3366] font-bold">
-            ※GW・お盆・シルバーウィークなどの連休中も休まず10:00〜20:00営業しております
-          </p>
         </div>
 
       </div>
