@@ -48,6 +48,7 @@ import { getRankPointRate } from "@/data/memberData";
 import MensHeader from "@/components/mens/MensHeader";
 import MensFooter from "@/components/mens/MensFooter";
 import MensBrandLogoPlaceholder from "@/components/mens/MensBrandLogoPlaceholder";
+import ProductImage from "@/components/ProductImage";
 
 interface MensCartItem {
   product: MensShopProduct;
@@ -649,20 +650,13 @@ export default function MensShopPage() {
                 >
                   <div>
                     <div className="relative aspect-[4/3] w-full overflow-hidden bg-zinc-950">
-                      {p.image && (p.image.endsWith(".jpg") || p.image.endsWith(".png")) && !p.image.includes("hero.jpg") && !p.image.includes("gallery-") ? (
-                        <Image
-                          src={p.image}
-                          alt={p.name}
-                          fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 contrast-125"
-                        />
-                      ) : (
-                        <MensBrandLogoPlaceholder
-                          productName={p.name}
-                          itemCode={p.itemCode}
-                          categoryLabel={p.categoryLabel}
-                        />
-                      )}
+                      <ProductImage
+                        product={p}
+                        alt={p.name}
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        placeholderSize="md"
+                        className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 contrast-125"
+                      />
 
                       <span className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-zinc-900/90 text-white text-[10px] font-mono border border-zinc-700">
                         {p.tag}
@@ -1070,21 +1064,13 @@ export default function MensShopPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-start">
               <div className="sm:col-span-5 aspect-square rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 relative">
-                {selectedProduct.image && (selectedProduct.image.endsWith(".jpg") || selectedProduct.image.endsWith(".png")) && !selectedProduct.image.includes("hero.jpg") && !selectedProduct.image.includes("gallery-") ? (
-                  <Image
-                    src={selectedProduct.image}
-                    alt={selectedProduct.name}
-                    fill
-                    className="object-cover"
-                  />
-                ) : (
-                  <MensBrandLogoPlaceholder
-                    productName={selectedProduct.name}
-                    itemCode={selectedProduct.itemCode}
-                    categoryLabel={selectedProduct.categoryLabel}
-                    size="lg"
-                  />
-                )}
+                <ProductImage
+                  product={selectedProduct}
+                  alt={selectedProduct.name}
+                  sizes="(max-width: 640px) 100vw, 40vw"
+                  placeholderSize="lg"
+                  className="object-cover"
+                />
               </div>
 
               <div className="sm:col-span-7 space-y-3 text-xs text-zinc-300">
