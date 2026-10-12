@@ -302,13 +302,13 @@ export default function MyPage() {
         {isBirthdayMonth && (
           <div className="pearl-glass p-6 sm:p-7 rounded-[2rem] border-2 border-rose-300 bg-gradient-to-r from-rose-50/90 via-white to-amber-50/90 shadow-xl space-y-3 relative overflow-hidden animate-fade-in">
             <div className="absolute top-0 right-0 -mr-10 -mt-10 w-44 h-44 bg-rose-300/20 rounded-full blur-2xl pointer-events-none" />
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div className="flex items-start gap-3.5">
+            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+              <div className="flex items-start gap-3.5 min-w-0 flex-1">
                 <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-rose-500 to-amber-500 text-white flex items-center justify-center shadow-md shrink-0">
                   <Cake className="w-6 h-6" />
                 </div>
-                <div>
-                  <div className="flex items-center gap-2">
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-2">
                     <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-300 flex items-center gap-1">
                       <Sparkles className="w-3 h-3 text-rose-600" />
                       <span>HAPPY BIRTHDAY MONTH 🎉</span>
@@ -317,7 +317,7 @@ export default function MyPage() {
                       {userBirthdayMonth}月のお誕生日特別ご優待
                     </span>
                   </div>
-                  <h2 className="text-lg sm:text-2xl font-serif text-plum-950 mt-1">
+                  <h2 className="text-lg sm:text-xl font-serif text-plum-950 mt-1">
                     {user.name} 様、お誕生日おめでとうございます！
                   </h2>
                   <p className="text-xs text-plum-700 font-light mt-0.5 leading-relaxed">
@@ -326,17 +326,17 @@ export default function MyPage() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 w-full sm:w-auto">
+              <div className="flex flex-wrap sm:flex-nowrap items-center gap-2.5 w-full lg:w-auto shrink-0 justify-start lg:justify-end">
                 <Link
                   href="/shop"
-                  className="flex-1 sm:flex-none py-2.5 px-4 rounded-xl gold-button text-xs font-semibold flex items-center justify-center gap-1.5 shadow-md shrink-0"
+                  className="flex-1 sm:flex-none py-2.5 px-4 rounded-xl gold-button text-xs font-semibold flex items-center justify-center gap-1.5 shadow-md shrink-0 whitespace-nowrap"
                 >
                   <ShoppingBag className="w-4 h-4 text-plum-950" />
                   <span>公式ECで50%OFFで買い物</span>
                 </Link>
                 <button
                   onClick={() => setActiveTab("coupons")}
-                  className="flex-1 sm:flex-none py-2.5 px-3.5 rounded-xl bg-white border border-rose-200 hover:border-rose-400 text-rose-900 text-xs font-medium transition-all shadow-2xs text-center"
+                  className="flex-1 sm:flex-none py-2.5 px-3.5 rounded-xl bg-white border border-rose-200 hover:border-rose-400 text-rose-900 text-xs font-medium transition-all shadow-2xs text-center shrink-0 whitespace-nowrap cursor-pointer"
                 >
                   クーポンを見る
                 </button>
@@ -347,7 +347,7 @@ export default function MyPage() {
 
         {/* トップバー：ユーザー概要とログアウト */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pearl-glass p-5 rounded-2xl border border-lavender-200">
-          <div>
+          <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2">
               <span className={`text-[11px] px-2.5 py-0.5 rounded-full ${currentRankInfo.badge}`}>
                 {user.rank} Member
@@ -362,11 +362,10 @@ export default function MyPage() {
             </p>
           </div>
 
-
-          <div className="flex items-center gap-2.5 w-full sm:w-auto">
+          <div className="flex items-center gap-2.5 w-full sm:w-auto shrink-0">
             <Link
               href="/admin"
-              className="flex-1 sm:flex-none text-center py-2 px-3.5 rounded-xl bg-plum-900 hover:bg-plum-950 text-white text-xs font-medium transition-all shadow-2xs flex items-center justify-center gap-1.5"
+              className="flex-1 sm:flex-none text-center py-2 px-3.5 rounded-xl bg-plum-900 hover:bg-plum-950 text-white text-xs font-medium transition-all shadow-2xs flex items-center justify-center gap-1.5 shrink-0 whitespace-nowrap"
               title="スタッフ専用画面でポイント付与などを試せます"
             >
               <UserCheck className="w-3.5 h-3.5 text-gold-400" />
@@ -379,7 +378,7 @@ export default function MyPage() {
                   router.push("/");
                 }
               }}
-              className="py-2 px-3 rounded-xl bg-white border border-lavender-200 hover:border-lavender-400 text-plum-700 hover:text-plum-900 text-xs font-light transition-all flex items-center justify-center gap-1 cursor-pointer"
+              className="py-2 px-3 rounded-xl bg-white border border-lavender-200 hover:border-lavender-400 text-plum-700 hover:text-plum-900 text-xs font-light transition-all flex items-center justify-center gap-1 cursor-pointer shrink-0 whitespace-nowrap"
             >
               <LogOut className="w-3.5 h-3.5" />
               <span>ログアウト</span>
