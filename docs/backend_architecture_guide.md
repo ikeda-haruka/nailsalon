@@ -270,7 +270,7 @@ spring:
   datasource:
     driver-class-name: org.h2.Driver
     # ./data/nailsalon.mv.db に永続化保存（アプリ再起動でもデータ保持）
-    url: jdbc:h2:file:./data/nailsalon;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDER=HIGH;AUTO_SERVER=TRUE
+    url: jdbc:h2:file:./data/nailsalon;MODE=PostgreSQL;AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1
     username: sa
     password: ""
     hikari:
@@ -281,9 +281,9 @@ spring:
 
   # JPA / Hibernate 設定
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: update # テーブル自動生成・更新
+      ddl-auto: none # schema.sql で初期化するため none に設定
+    defer-datasource-initialization: true
     show-sql: true
     properties:
       hibernate:
