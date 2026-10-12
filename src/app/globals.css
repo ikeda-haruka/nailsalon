@@ -189,3 +189,73 @@ h1, h2, h3, h4, h5, h6 {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* 優雅な自動スクロール無限マーキーアニメーション */
+@keyframes marquee-flow {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee-flow {
+  display: flex;
+  width: max-content;
+  animation: marquee-flow 45s linear infinite;
+}
+
+.animate-marquee-flow:hover {
+  animation-play-state: paused;
+}
+
+/* カードを走る水光ハイライトシマー */
+@keyframes light-shimmer-sweep {
+  0% {
+    transform: translateX(-180%) skewX(-25deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.85;
+  }
+  80% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateX(280%) skewX(-25deg);
+    opacity: 0;
+  }
+}
+
+.shimmer-sweep {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 20%,
+    rgba(255, 255, 255, 0.75) 50%,
+    rgba(255, 255, 255, 0.1) 80%,
+    transparent 100%
+  );
+  animation: light-shimmer-sweep 4.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  pointer-events: none;
+}
+
+/* オーラ呼吸アニメーション */
+@keyframes aura-pulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(153, 117, 203, 0.25), 0 0 30px rgba(212, 175, 110, 0.15);
+    border-color: rgba(212, 175, 110, 0.45);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(153, 117, 203, 0.45), 0 0 45px rgba(212, 175, 110, 0.35);
+    border-color: rgba(197, 155, 75, 0.8);
+  }
+}
+
+.aura-breathing {
+  animation: aura-pulse 3.5s ease-in-out infinite;
+}
+
