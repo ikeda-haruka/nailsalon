@@ -70,7 +70,7 @@ export default function Header() {
     { num: "05", name: "Staff", jp: "在籍ネイリスト", href: "/#staff", desc: "在籍12名（毎日2〜3名シフト/EC出荷兼務）" },
     { num: "06", name: "Salon Info", jp: "サロン案内・設備", href: "/#salon-info", desc: "ハンド2/フット2・駐車場3台・カフェ" },
     { num: "07", name: "Recruit", jp: "ネイリスト採用情報", href: "/#recruit", desc: "HPB WORK & Indeed にて掲載中" },
-    { num: "08", name: "Online Shop", jp: "公式ショップ・ネイルチップ", href: "/shop", desc: "自爪を削らないパラジェルチップ＆サロン専売品" },
+    { num: "08", name: "Online Shop", jp: "公式オンラインショップ", href: "/shop", desc: "自爪を削らないパラジェル＆サロン専売品" },
   ];
 
   return (
@@ -166,17 +166,14 @@ export default function Header() {
                   </Link>
                 )}
 
-                {/* 公式オンラインショップボタン（パラジェル ネイルチップ主力） */}
+                {/* 公式オンラインショップボタン */}
                 <Link
                   href="/shop"
                   className="flex items-center gap-1.5 text-xs font-medium px-3 sm:px-3.5 py-2 rounded-full bg-linear-to-r from-lavender-50 via-white to-gold-50/60 text-plum-900 border border-lavender-200 hover:border-gold-400 hover:shadow-xs shadow-2xs transition-all tracking-wide whitespace-nowrap shrink-0 group"
-                  title="公式オンラインショップ・パラジェル ネイルチップ"
+                  title="公式オンラインショップ"
                 >
                   <ShoppingBag className="w-3.5 h-3.5 text-gold-600 group-hover:scale-110 transition-transform shrink-0" />
                   <span className="whitespace-nowrap">ショップ</span>
-                  <span className="hidden md:inline text-[9px] px-1.5 py-0.2 rounded-full bg-gold-400/25 text-gold-800 font-serif font-bold">
-                    チップ
-                  </span>
                 </Link>
 
                 {/* 即時予約ボタン（改行防止・1行表示を確実に固定） */}
