@@ -67,7 +67,7 @@ export default function Header() {
     { num: "02", name: "Catalog", jp: "最旬デザインカタログ", href: "/#gallery", desc: "季節のアート・オフィスシンプル" },
     { num: "03", name: "Magnet Lab", jp: "水光マグネット体験", href: "/#magnet-lab", desc: "50種類以上の光彩シミュレーター" },
     { num: "04", name: "Menu & Price", jp: "明朗会計・料金表", href: "/#menu", desc: "全コース丁寧なウォーターケア込み" },
-    { num: "05", name: "Staff", jp: "在籍ネイリスト", href: "/#staff", desc: "池田・高橋・水野（指名料+550円）" },
+    { num: "05", name: "Staff", jp: "在籍ネイリスト", href: "/#staff", desc: "在籍12名（毎日2〜3名シフト/EC出荷兼務）" },
     { num: "06", name: "Salon Info", jp: "サロン案内・設備", href: "/#salon-info", desc: "ハンド2/フット2・駐車場3台・カフェ" },
     { num: "07", name: "Recruit", jp: "ネイリスト採用情報", href: "/#recruit", desc: "HPB WORK & Indeed にて掲載中" },
     { num: "08", name: "Online Shop", jp: "公式ショップ・ネイルチップ", href: "/shop", desc: "自爪を削らないパラジェルチップ＆サロン専売品" },

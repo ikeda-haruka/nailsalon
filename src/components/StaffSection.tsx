@@ -20,7 +20,8 @@ export default function StaffSection() {
             在籍ネイリスト
           </h2>
           <p className="text-xs sm:text-sm text-plum-700 font-light tracking-wide leading-relaxed">
-            丁寧なカウンセリングと確かな自爪育成フィルイン技術で、理想の指先を叶えます。<br className="hidden sm:inline" />
+            サロンには総勢12名のプロネイリストが在籍（毎日2〜3名シフト勤務）。<br className="hidden sm:inline" />
+            丁寧なサロン施術に加え、公式オンラインショップのネイルチップ制作・出荷梱包もスタッフが責任を持って担当しています。<br className="hidden sm:inline" />
             スタッフ指名料: <strong className="text-gold-700 font-serif font-medium tracking-wider">{SALON_INFO.nominationFee}</strong>
           </p>
         </div>
@@ -124,9 +125,15 @@ export default function StaffSection() {
           ))}
         </div>
 
-        {/* 指名料金案内 */}
-        <div className="text-center">
+        {/* 指名料金 ＆ 体制案内 */}
+        <div className="text-center space-y-1.5 max-w-2xl mx-auto">
+          <p className="text-xs text-plum-900 font-medium tracking-wide">
+            ✦ 在籍ネイリスト総勢12名体制（代表ネイリスト池田・高橋・水野をはじめ全12名が在籍／毎日2〜3名がシフト出勤）
+          </p>
           <p className="text-[11px] text-plum-600 font-light tracking-wide">
+            ※毎日のサロンワークに加え、公式オンラインショップ（自爪を削らないネイルチップ等）の検品梱包・出荷業務もスタッフが兼任しております。
+          </p>
+          <p className="text-[11px] text-plum-500 font-light tracking-wide">
             ※スタッフをご指名いただく場合、メニュー料金に追加で指名料金（550円）を頂戴いたします。
           </p>
         </div>

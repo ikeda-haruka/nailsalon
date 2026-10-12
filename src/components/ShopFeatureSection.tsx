@@ -120,6 +120,7 @@ export default function ShopFeatureSection() {
 
                 <div className="pt-2 border-t border-lavender-100 flex items-center justify-between">
                   <div>
+                    <span className="text-[10px] text-plum-500 font-mono block">コード: {product.itemCode}</span>
                     <span className="text-[10px] text-plum-400 font-light">税込価格</span>
                     <p className="font-serif text-base font-medium text-plum-900">
                       ¥{product.price.toLocaleString()}
@@ -146,15 +147,15 @@ export default function ShopFeatureSection() {
             <div className="space-y-3 text-center lg:text-left max-w-2xl">
               <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2">
                 <span className="px-3 py-1 rounded-full bg-gold-400 text-plum-950 text-xs font-serif font-bold tracking-wider">
-                  全品正規取扱い
+                  新規会員登録で1,000pt進呈 (1pt=¥1)
                 </span>
                 <span className="text-xs text-gold-200 font-light flex items-center gap-1">
                   <Truck className="w-3.5 h-3.5 text-gold-400" />
-                  ¥8,000以上で全国送料無料
+                  ¥20,000以上で全国送料無料（宅急便のみ）
                 </span>
                 <span className="text-xs text-lavender-200 font-light flex items-center gap-1">
                   <Award className="w-3.5 h-3.5 text-gold-400" />
-                  会員ポイント1pt=¥1利用可
+                  サロン＆EC共通ポイント
                 </span>
               </div>
 
@@ -166,7 +167,8 @@ export default function ShopFeatureSection() {
               </h3>
 
               <p className="text-xs sm:text-sm text-white/80 font-light leading-relaxed">
-                主力ネイルチップ3色、クリアジェル（ベース・トップ）、カラージェル（水光マグネット・ナチュラル）、コーティングジェル、LEDライト、スターターキット、パラポリッシュまで全12アイテムを取り揃えております。
+                全12アイテムに商品コード（TIP-001等）を完備。キーワード検索や商品コード入力ですぐにご注文可能です。<br className="hidden sm:inline" />
+                配送はヤマト運輸【宅急便】のみ対応。お支払いはクレジットカード・銀行振込・代金引換・コンビニ決済をご利用いただけます（※日曜・祝日は出荷休業）。
               </p>
             </div>
 

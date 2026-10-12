@@ -11,12 +11,16 @@ export default function RecruitSection() {
       desc: "パラジェルの認定技術とフィルイン（一層残し）を基礎から丁寧に指導。手荒れに悩むネイリストにも優しい環境です。"
     },
     {
-      title: "アットホームで余裕のある施術時間配分",
-      desc: "在籍ネイリスト3名の少人数サロン。ハンド2席・フット2席で、お客様一人ひとりと丁寧に向き合える上質なおもてなし。"
+      title: "在籍12名体制・毎日2〜3名シフトで無理のないゆったり施術",
+      desc: "サロンには総勢12名のネイリストが在籍し、毎日2〜3名のスタッフが交代でシフト勤務。ハンド2席・フット2席で余裕を持った時間配分のため、一人ひとりのお客様へ上質なおもてなしができます。"
+    },
+    {
+      title: "公式オンラインショップの出荷業務も担当（EC専任スタッフ不要の効率体制）",
+      desc: "サロンスタッフが公式オンラインショップ（パラジェルネイルチップ・専売ジェル等）の検品・梱包出荷も担当します。12名が在籍し毎日2〜3名が常時勤務しているため、EC運営のみを行う別スタッフを雇う必要がなく、サロンワークとEC運営を無理なく両立できる安定したビジネスモデルです。"
     },
     {
       title: "安心の評価制度 ＆ 指名料高率還元",
-      desc: "指名料（550円/件）は高率バック！頑張りがしっかり給与に反映される安心のインセンティブ体制です。"
+      desc: "指名料（550円/件）は高率バック！物販・EC売上実績も評価に反映される安心のインセンティブ体制です。"
     }
   ];
 
@@ -102,15 +106,19 @@ export default function RecruitSection() {
               <ul className="space-y-2 text-plum-700 font-light">
                 <li className="flex justify-between border-b border-lavender-50 pb-1.5">
                   <span className="text-plum-400 font-serif">職種:</span>
-                  <span className="text-plum-900 font-normal">ネイリスト（経験者優遇）</span>
+                  <span className="text-plum-900 font-normal">ネイリスト（サロン施術 ＆ EC出荷担当）</span>
+                </li>
+                <li className="flex justify-between border-b border-lavender-50 pb-1.5">
+                  <span className="text-plum-400 font-serif">仕事内容:</span>
+                  <span className="text-plum-800 text-[11px] text-right">サロン施術・接客、公式EC商品の検品・梱包出荷</span>
                 </li>
                 <li className="flex justify-between border-b border-lavender-50 pb-1.5">
                   <span className="text-plum-400 font-serif">給与:</span>
                   <span className="text-plum-900 font-normal font-serif">月給25万〜45万円 + 指名手当</span>
                 </li>
                 <li className="flex justify-between border-b border-lavender-50 pb-1.5">
-                  <span className="text-plum-400 font-serif">勤務時間:</span>
-                  <span className="font-serif">10:00〜20:00（シフト制）</span>
+                  <span className="text-plum-400 font-serif">勤務体制:</span>
+                  <span className="font-serif">在籍12名 / 毎日2〜3名シフト勤務 (10:00〜20:00)</span>
                 </li>
                 <li className="flex justify-between border-b border-lavender-50 pb-1.5">
                   <span className="text-plum-400 font-serif">休日:</span>

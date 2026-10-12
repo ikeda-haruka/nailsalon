@@ -20,7 +20,8 @@ import {
   QrCode,
   Calendar,
   Layers,
-  ArrowRight
+  ArrowRight,
+  ShoppingBag
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { REWARD_ITEMS } from "@/data/memberData";
@@ -314,6 +315,12 @@ export default function MyPage() {
                 <span className="text-sm font-serif text-plum-700 font-medium">pt</span>
               </div>
 
+              {/* サロン施術＆公式オンラインショップ共通ポイントの案内バッジ */}
+              <div className="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gold-50/90 border border-gold-300 text-[10px] text-gold-950 font-medium shadow-2xs">
+                <Sparkles className="w-3 h-3 text-gold-600 shrink-0" />
+                <span>サロン施術 ＆ 公式EC共通ポイント（1pt=¥1）</span>
+              </div>
+
               {/* ランクアップ案内 */}
               <div className="mt-4 p-3 rounded-xl bg-lavender-50/70 border border-lavender-100 space-y-1.5">
                 <div className="flex justify-between text-[11px] text-plum-700">
@@ -334,9 +341,16 @@ export default function MyPage() {
 
             {/* クイックアクションボタン */}
             <div className="space-y-2 pt-2">
+              <Link
+                href="/shop"
+                className="w-full py-2.5 px-4 rounded-xl gold-button text-xs font-semibold flex items-center justify-center gap-2 cursor-pointer shadow-sm text-plum-950 hover:opacity-95 transition-opacity"
+              >
+                <ShoppingBag className="w-4 h-4 text-plum-950" />
+                <span>公式オンラインショップでポイントを使う</span>
+              </Link>
               <button
                 onClick={() => setActiveTab("rewards")}
-                className="w-full py-2.5 px-4 rounded-xl luxe-button text-xs font-medium flex items-center justify-center gap-2 cursor-pointer shadow-md"
+                className="w-full py-2.5 px-4 rounded-xl luxe-button text-xs font-medium flex items-center justify-center gap-2 cursor-pointer shadow-xs"
               >
                 <Gift className="w-4 h-4 text-gold-300" />
                 <span>ポイントを特典と交換する</span>
@@ -344,7 +358,7 @@ export default function MyPage() {
               <a
                 href="#reservation"
                 onClick={() => router.push("/#reservation")}
-                className="w-full py-2.5 px-4 rounded-xl bg-white border border-lavender-300 hover:border-lavender-500 text-plum-900 text-xs font-medium flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                className="w-full py-2 px-4 rounded-xl bg-white border border-lavender-300 hover:border-lavender-500 text-plum-900 text-xs font-medium flex items-center justify-center gap-1.5 transition-all cursor-pointer"
               >
                 <Calendar className="w-3.5 h-3.5 text-lavender-600" />
                 <span>次回のご来店を予約する</span>
@@ -377,7 +391,7 @@ export default function MyPage() {
             }`}
           >
             <Gift className="w-4 h-4 text-gold-500" />
-            <span>特典交換所 (4種)</span>
+            <span>特典交換所 ({REWARD_ITEMS.length}種)</span>
           </button>
 
           <button

@@ -22,9 +22,13 @@ import {
   RefreshCw,
   Gift,
   ArrowRight,
-  Info
+  Info,
+  CreditCard,
+  Package,
+  Calendar,
+  AlertCircle
 } from "lucide-react";
-import { SHOP_PRODUCTS, SHOP_CATEGORIES, ShopCategory, ShopProduct } from "@/data/shopData";
+import { SHOP_PRODUCTS, SHOP_CATEGORIES, SHOP_POLICY, ShopCategory, ShopProduct } from "@/data/shopData";
 import { useAuth } from "@/context/AuthContext";
 
 interface CartItem {
@@ -39,6 +43,11 @@ export default function ShopPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"featured" | "priceAsc" | "priceDesc" | "rating">("featured");
   const [selectedProduct, setSelectedProduct] = useState<ShopProduct | null>(null);
+
+  // 商品コード直接注文（クイックオーダー）State
+  const [codeOrderInput, setCodeOrderInput] = useState("");
+  const [codeOrderQuantity, setCodeOrderQuantity] = useState(1);
+  const [codeOrderNotification, setCodeOrderNotification] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
   // カートState
   const [cart, setCart] = useState<CartItem[]>([
@@ -57,17 +66,28 @@ export default function ShopPage() {
     setFavorites(prev => ({ ...prev, [productId]: !prev[productId] }));
   };
 
-  // フィルタリング ＆ ソート
+  // 入力された商品コードから商品をリアルタイム検索
+  const matchedProductByCode = useMemo(() => {
+    if (!codeOrderInput.trim()) return null;
+    const q = codeOrderInput.trim().toUpperCase();
+    return SHOP_PRODUCTS.find((p) => p.itemCode.toUpperCase() === q) || null;
+  }, [codeOrderInput]);
+
+  // キーワード（商品名・商品コード・説明文）＆ カテゴリによる複合検索
   const filteredProducts = useMemo(() => {
     let list = SHOP_PRODUCTS.filter((item) => {
+      // カテゴリ絞り込み
       if (activeCategory !== "all" && item.category !== activeCategory) return false;
+      
+      // キーワード検索（商品名、商品コード、サブタイトル、説明文、カテゴリ名）
       if (searchQuery.trim()) {
-        const query = searchQuery.toLowerCase();
+        const query = searchQuery.toLowerCase().trim();
         const matchesName = item.name.toLowerCase().includes(query);
+        const matchesCode = item.itemCode.toLowerCase().includes(query);
         const matchesSub = item.subtitle.toLowerCase().includes(query);
         const matchesDesc = item.description.toLowerCase().includes(query);
         const matchesCategory = item.categoryLabel.toLowerCase().includes(query);
-        if (!matchesName && !matchesSub && !matchesDesc && !matchesCategory) return false;
+        if (!matchesName && !matchesCode && !matchesSub && !matchesDesc && !matchesCategory) return false;
       }
       return true;
     });
@@ -121,19 +141,78 @@ export default function ShopPage() {
     setCart((prev) => prev.filter((item) => item.product.id !== productId));
   };
 
-  // 金額計算
+  // 商品コードでの直接クイック注文処理
+  const handleCodeOrderSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!matchedProductByCode) {
+      setCodeOrderNotification({
+        type: "error",
+        text: `商品コード「${codeOrderInput}」に該当する製品が見つかりません。一覧のコード（TIP-001, CLR-001等）をご確認ください。`
+      });
+      return;
+    }
+
+    const qty = Math.max(1, codeOrderQuantity);
+    setCart((prev) => {
+      const existing = prev.find((item) => item.product.id === matchedProductByCode.id);
+      if (existing) {
+        return prev.map((item) =>
+          item.product.id === matchedProductByCode.id
+            ? { ...item, quantity: item.quantity + qty }
+            : item
+        );
+      }
+      return [...prev, { product: matchedProductByCode, quantity: qty }];
+    });
+
+    setCodeOrderNotification({
+      type: "success",
+      text: `【コード注文完了】[${matchedProductByCode.itemCode}] ${matchedProductByCode.name} × ${qty}点 をカートに追加しました！`
+    });
+    setCodeOrderInput("");
+    setCodeOrderQuantity(1);
+    setIsCartOpen(true);
+  };
+
+  // 金額計算（20,000円以上のご購入で送料無料）
+  const FREE_SHIPPING_THRESHOLD = 20000;
   const subtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
   const totalItemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const shippingFee = subtotal >= 8000 || subtotal === 0 ? 0 : 550;
+  const shippingFee = subtotal >= FREE_SHIPPING_THRESHOLD || subtotal === 0 ? 0 : 550;
   const userPointBalance = user?.points || 0;
   const appliedPoints = usePoints ? Math.min(userPointBalance, subtotal) : 0;
   const grandTotal = Math.max(0, subtotal + shippingFee - appliedPoints);
+  const earnedPoints = Math.floor(grandTotal * 0.02); // 購入金額の2%をサロン・ショップ共通ポイントとして付与
 
-  // 注文完了処理
-  const handleCheckout = () => {
+  const [checkoutDetail, setCheckoutDetail] = useState<{
+    usedPoints: number;
+    earnedPoints: number;
+    grandTotal: number;
+    prevBalance: number;
+  }>({ usedPoints: 0, earnedPoints: 0, grandTotal: 0, prevBalance: 0 });
+
+  const { checkoutShop } = useAuth();
+
+  // 注文完了処理（サロン会員情報・ポイント残高との完全同期）
+  const handleCheckout = async () => {
     if (cart.length === 0) return;
+    const orderSummary = cart.map((i) => `${i.product.name}×${i.quantity}`).join(", ");
+    const prevBalance = user?.points || 0;
+
+    setCheckoutDetail({
+      usedPoints: appliedPoints,
+      earnedPoints,
+      grandTotal,
+      prevBalance
+    });
+
+    if (user) {
+      await checkoutShop(appliedPoints, earnedPoints, orderSummary);
+    }
+
     setOrderCompleteModal(true);
     setCart([]);
+    setUsePoints(false);
     setIsCartOpen(false);
   };
 
@@ -172,9 +251,75 @@ export default function ShopPage() {
                 className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gold-50 border border-gold-200 text-xs text-plum-900"
               >
                 <Award className="w-3.5 h-3.5 text-gold-600" />
-                <span>保有: <strong>{user.points} pt</strong></span>
+                <span>サロン共通: <strong>{user.points} pt</strong> (¥{user.points})</span>
               </Link>
             )}
+          </div>
+        </div>
+
+        {/* ★ 新規会員登録1,000pt進呈バナー ＆ サロン・ショップ共通ポイント（1pt=1円換算） ＆ 20,000円以上送料無料 特集バナー */}
+        <div className="pearl-glass p-5 sm:p-7 rounded-3xl border-2 border-gold-300 shadow-md bg-linear-to-r from-gold-50/85 via-white to-lavender-50/80 relative overflow-hidden">
+          <div className="shimmer-sweep pointer-events-none opacity-30"></div>
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-6 relative z-10">
+            <div className="space-y-2 text-center lg:text-left flex-1">
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2">
+                <span className="px-3 py-0.5 rounded-full bg-linear-to-r from-gold-400 to-amber-500 text-plum-950 text-xs font-serif font-bold tracking-wider shadow-2xs">
+                  新規会員登録特典
+                </span>
+                <span className="px-2.5 py-0.5 rounded-full bg-lavender-100 text-lavender-800 text-[11px] font-medium border border-lavender-200">
+                  サロン ＆ ショップ共通ポイント
+                </span>
+                <span className="px-2.5 py-0.5 rounded-full bg-white text-gold-800 text-[11px] font-medium border border-gold-300">
+                  1ポイント = 1円換算
+                </span>
+                <span className="px-2.5 py-0.5 rounded-full bg-plum-900 text-white text-[11px] font-serif">
+                  ¥20,000以上で送料無料
+                </span>
+              </div>
+
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-serif text-plum-950 font-normal leading-snug">
+                新規WEB会員登録で、公式オンラインショップで使える
+                <span className="text-gold-700 font-bold mx-1 text-2xl sm:text-3xl">1,000ポイント</span>
+                を進呈！
+              </h2>
+
+              <p className="text-xs sm:text-sm text-plum-700 leading-relaxed font-light max-w-3xl">
+                サロン施術でも公式オンラインショップでも、<strong className="text-plum-950 font-medium">会員情報・ポイント残高（1pt＝1円換算）は完全に共有</strong>されます。
+                自爪を削らない主力ネイルチップやサロン専売ジェルのご購入時に、即座にポイント割引をご利用いただけます。
+                また、公式オンラインショップは<strong className="text-gold-800 font-semibold underline decoration-gold-400 decoration-2 underline-offset-2">20,000円以上のご購入で全国送料無料</strong>にてお届けいたします。
+              </p>
+            </div>
+
+            {/* 会員状態別アクションカード */}
+            <div className="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-2.5 w-full lg:w-auto">
+              {user ? (
+                <div className="text-center p-3.5 rounded-2xl bg-white border border-gold-300 shadow-2xs space-y-1 min-w-[220px]">
+                  <span className="text-[10px] text-plum-500 block font-serif tracking-wide">
+                    サロン＆ショップ共通ポイント
+                  </span>
+                  <p className="text-base sm:text-lg font-serif font-medium text-plum-950">
+                    {user.name} 様: <span className="text-gold-700 font-bold text-xl">{user.points} pt</span>
+                  </p>
+                  <p className="text-[10px] text-lavender-700">
+                    （¥{user.points.toLocaleString()} 相当・カートで即時利用可）
+                  </p>
+                  <Link
+                    href="/mypage"
+                    className="inline-block mt-1 text-[11px] text-plum-600 hover:text-lavender-700 underline underline-offset-2"
+                  >
+                    マイページで確認する →
+                  </Link>
+                </div>
+              ) : (
+                <Link
+                  href="/login"
+                  className="px-6 py-3.5 rounded-full bg-linear-to-r from-plum-900 to-purple-900 text-white font-medium text-xs shadow-md hover:shadow-xl hover:scale-105 active:scale-95 transition-all text-center flex items-center justify-center gap-2 tracking-wider"
+                >
+                  <Sparkles className="w-4 h-4 text-gold-300" />
+                  <span>新規登録して1,000pt受け取る</span>
+                </Link>
+              )}
+            </div>
           </div>
         </div>
 
@@ -258,50 +403,258 @@ export default function ShopPage() {
           </div>
         </div>
 
-        {/* ショップ特典・安心保証バナー */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 text-xs text-plum-900">
-          <div className="pearl-glass p-4 rounded-2xl border border-lavender-200 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gold-50 border border-gold-200 flex items-center justify-center text-gold-600 shrink-0">
-              <Truck className="w-5 h-5" />
+        {/* 公式オンラインショップご利用案内・配送・決済・出荷ポリシー（4大特徴パネル） */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+          {/* 1. 配送方法 */}
+          <div className="pearl-glass p-4 rounded-2xl border border-lavender-200/90 space-y-1.5 bg-white/90">
+            <div className="flex items-center gap-2 text-plum-950 font-serif font-medium">
+              <div className="w-8 h-8 rounded-lg bg-lavender-100 text-lavender-700 flex items-center justify-center shrink-0">
+                <Truck className="w-4 h-4" />
+              </div>
+              <div>
+                <p className="leading-tight">配送は宅急便のみ</p>
+                <span className="text-[10px] text-gold-700 font-sans font-semibold">ヤマト運輸 宅急便限定</span>
+              </div>
             </div>
-            <div>
-              <p className="font-medium text-plum-950">¥8,000以上で送料無料</p>
-              <p className="text-[11px] text-plum-700">ヤマト運輸・丁寧なギフトBOX配送</p>
-            </div>
+            <p className="text-[11px] text-plum-600 leading-relaxed font-light">
+              繊細なネイルチップやジェルを安全にお届けするため、<strong className="text-plum-900 font-medium">ヤマト運輸 宅急便にてのみ</strong>配送可能です（メール便・定形外不可）。
+            </p>
           </div>
 
-          <div className="pearl-glass p-4 rounded-2xl border border-lavender-200 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-lavender-50 border border-lavender-200 flex items-center justify-center text-lavender-600 shrink-0">
-              <ShieldCheck className="w-5 h-5" />
+          {/* 2. 送料無料条件 */}
+          <div className="pearl-glass p-4 rounded-2xl border border-gold-300/80 space-y-1.5 bg-linear-to-br from-gold-50/40 via-white to-lavender-50/40">
+            <div className="flex items-center gap-2 text-plum-950 font-serif font-medium">
+              <div className="w-8 h-8 rounded-lg bg-gold-100 text-gold-800 flex items-center justify-center shrink-0">
+                <Gift className="w-4 h-4" />
+              </div>
+              <div>
+                <p className="leading-tight">¥20,000以上で送料無料</p>
+                <span className="text-[10px] text-gold-800 font-sans font-semibold">全品全国どこでも無料</span>
+              </div>
             </div>
-            <div>
-              <p className="font-medium text-plum-950">パラジェル公式正規品保証</p>
-              <p className="text-[11px] text-plum-700">サロン認定正規ルート仕入れ100%</p>
-            </div>
+            <p className="text-[11px] text-plum-600 leading-relaxed font-light">
+              1回のご注文合計が<strong className="text-gold-800 font-semibold">20,000円（税込）以上で送料無料</strong>となります（20,000円未満は一律550円）。
+            </p>
           </div>
 
-          <div className="pearl-glass p-4 rounded-2xl border border-lavender-200 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gold-50 border border-gold-200 flex items-center justify-center text-gold-600 shrink-0">
-              <Award className="w-5 h-5" />
+          {/* 3. 決済方法 */}
+          <div className="pearl-glass p-4 rounded-2xl border border-lavender-200/90 space-y-1.5 bg-white/90">
+            <div className="flex items-center gap-2 text-plum-950 font-serif font-medium">
+              <div className="w-8 h-8 rounded-lg bg-lavender-100 text-lavender-700 flex items-center justify-center shrink-0">
+                <CreditCard className="w-4 h-4" />
+              </div>
+              <div>
+                <p className="leading-tight">多彩な決済に対応</p>
+                <span className="text-[10px] text-lavender-700 font-sans">4つの安心決済方法</span>
+              </div>
             </div>
-            <div>
-              <p className="font-medium text-plum-950">会員ポイントが使える・貯まる</p>
-              <p className="text-[11px] text-plum-700">1pt=¥1として利用可能（還元率2%〜）</p>
+            <p className="text-[11px] text-plum-600 leading-relaxed font-light">
+              <strong className="text-plum-900 font-medium">クレジットカード・銀行振込・代金引換・コンビニ決済</strong>がご使用いただけます。
+            </p>
+          </div>
+
+          {/* 4. 出荷スケジュール ＆ スタッフ体制 */}
+          <div className="pearl-glass p-4 rounded-2xl border border-lavender-200/90 space-y-1.5 bg-white/90">
+            <div className="flex items-center gap-2 text-plum-950 font-serif font-medium">
+              <div className="w-8 h-8 rounded-lg bg-rose-50 text-rose-700 flex items-center justify-center shrink-0">
+                <Calendar className="w-4 h-4" />
+              </div>
+              <div>
+                <p className="leading-tight">日曜・祝日は出荷休業</p>
+                <span className="text-[10px] text-rose-700 font-sans font-medium">平日・土曜に出荷対応</span>
+              </div>
             </div>
+            <p className="text-[11px] text-plum-600 leading-relaxed font-light">
+              <strong className="text-plum-900 font-medium">日曜・祝日は商品出荷を行っておりません</strong>。サロン在籍スタッフ（12名／毎日2〜3名シフト勤務）が丁寧に出荷検品を行っております。
+            </p>
           </div>
         </div>
 
-        {/* 商品カタログセクション */}
-        <div id="shop-catalog" className="space-y-6 pt-4">
+        {/* ======================================================== */}
+        {/* ★ 商品コードで注文（クイックオーダー）セクション */}
+        {/* ======================================================== */}
+        <div className="pearl-glass p-6 sm:p-7 rounded-3xl border-2 border-lavender-300 shadow-md bg-linear-to-r from-white via-lavender-50/50 to-white space-y-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-lavender-200/70 pb-3">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-plum-900 text-gold-300 flex items-center justify-center">
+                <Package className="w-4 h-4" />
+              </div>
+              <div>
+                <h3 className="font-serif text-sm sm:text-base font-medium text-plum-950 flex items-center gap-2">
+                  <span>商品コードで直接注文</span>
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-gold-400 text-plum-950 font-sans font-bold">
+                    Quick Order
+                  </span>
+                </h3>
+                <p className="text-[11px] text-plum-600 font-light">
+                  商品コード（例: TIP-001, CLR-001）を入力して、そのまま直接カートに追加できます
+                </p>
+              </div>
+            </div>
+
+            {/* 代表コードのクイック入力ピル */}
+            <div className="flex flex-wrap items-center gap-1.5 text-[10px]">
+              <span className="text-plum-400 font-mono">人気コード例:</span>
+              {[
+                { code: "TIP-001", name: "水光チップ" },
+                { code: "TIP-002", name: "ヌードチップ" },
+                { code: "CLR-001", name: "EXベース" },
+                { code: "COL-001", name: "マグネット" },
+                { code: "LGT-001", name: "LEDライト" },
+                { code: "KIT-001", name: "スターター" }
+              ].map((p) => (
+                <button
+                  key={p.code}
+                  type="button"
+                  onClick={() => {
+                    setCodeOrderInput(p.code);
+                    setCodeOrderNotification(null);
+                  }}
+                  className="px-2 py-1 rounded-md bg-white hover:bg-lavender-100 border border-lavender-200 text-plum-800 font-mono transition-colors cursor-pointer"
+                  title={`${p.code}: ${p.name}`}
+                >
+                  {p.code}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* クイック注文フォーム */}
+          <form onSubmit={handleCodeOrderSubmit} className="space-y-3">
+            <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+              
+              {/* 商品コード入力 */}
+              <div className="sm:col-span-5 relative">
+                <label className="block text-[10px] font-mono text-plum-500 mb-1">
+                  商品コード (Item Code)
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="TIP-001, CLR-001, LGT-001 等..."
+                    value={codeOrderInput}
+                    onChange={(e) => {
+                      setCodeOrderInput(e.target.value);
+                      setCodeOrderNotification(null);
+                    }}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-lavender-200 text-xs text-plum-900 font-mono uppercase placeholder:text-plum-400 focus:outline-hidden focus:ring-2 focus:ring-gold-400"
+                  />
+                  {codeOrderInput && (
+                    <button
+                      type="button"
+                      onClick={() => setCodeOrderInput("")}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-plum-400 hover:text-plum-700"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* 数量 */}
+              <div className="sm:col-span-3">
+                <label className="block text-[10px] text-plum-500 mb-1">
+                  注文数量
+                </label>
+                <div className="flex items-center border border-lavender-200 rounded-xl bg-white overflow-hidden">
+                  <button
+                    type="button"
+                    onClick={() => setCodeOrderQuantity((q) => Math.max(1, q - 1))}
+                    className="w-9 h-9 flex items-center justify-center text-plum-700 hover:bg-lavender-50 cursor-pointer"
+                  >
+                    <Minus className="w-3.5 h-3.5" />
+                  </button>
+                  <span className="flex-1 text-center font-mono text-xs text-plum-950 font-medium">
+                    {codeOrderQuantity}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setCodeOrderQuantity((q) => Math.min(10, q + 1))}
+                    className="w-9 h-9 flex items-center justify-center text-plum-700 hover:bg-lavender-50 cursor-pointer"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* カート追加ボタン */}
+              <div className="sm:col-span-4 self-end">
+                <button
+                  type="submit"
+                  disabled={!codeOrderInput.trim()}
+                  className="w-full py-2.5 px-4 rounded-xl gold-button text-xs font-semibold flex items-center justify-center gap-2 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                >
+                  <ShoppingBag className="w-4 h-4" />
+                  <span>商品コードでカートに追加</span>
+                </button>
+              </div>
+            </div>
+
+            {/* リアルタイム一致商品のプレビュー */}
+            {matchedProductByCode && (
+              <div className="p-3 rounded-xl bg-white border border-gold-300 shadow-2xs flex items-center justify-between text-xs animate-in fade-in duration-200">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg overflow-hidden relative shrink-0 border border-lavender-200">
+                    <Image
+                      src={matchedProductByCode.image}
+                      alt={matchedProductByCode.name}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div>
+                    <span className="font-mono text-[10px] text-gold-700 font-bold block">
+                      [{matchedProductByCode.itemCode}] {matchedProductByCode.categoryLabel}
+                    </span>
+                    <p className="font-serif font-medium text-plum-950 line-clamp-1">
+                      {matchedProductByCode.name}
+                    </p>
+                  </div>
+                </div>
+                <div className="text-right shrink-0">
+                  <span className="font-serif font-medium text-plum-950 text-sm">
+                    {matchedProductByCode.priceFormatted}
+                  </span>
+                  <span className="text-[10px] text-plum-500 block">
+                    (小計: ¥{(matchedProductByCode.price * codeOrderQuantity).toLocaleString()})
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {/* 通知メッセージ */}
+            {codeOrderNotification && (
+              <div
+                className={`p-3 rounded-xl text-xs flex items-center gap-2 ${
+                  codeOrderNotification.type === "success"
+                    ? "bg-emerald-50 text-emerald-900 border border-emerald-300"
+                    : "bg-rose-50 text-rose-900 border border-rose-300"
+                }`}
+              >
+                {codeOrderNotification.type === "success" ? (
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                ) : (
+                  <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+                )}
+                <span>{codeOrderNotification.text}</span>
+              </div>
+            )}
+          </form>
+        </div>
+
+        {/* ======================================================== */}
+        {/* 商品カタログセクション（キーワード検索 ＆ カテゴリ検索） */}
+        {/* ======================================================== */}
+        <div id="shop-catalog" className="space-y-6 pt-2">
 
           {/* 検索・ソートコントロールバー */}
           <div className="pearl-glass p-4 rounded-2xl border border-lavender-200 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
-            {/* 検索インプット */}
+            {/* 検索インプット（キーワード名 ＆ 商品コード検索） */}
             <div className="relative flex-1 max-w-md">
               <Search className="w-4 h-4 text-plum-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
-                placeholder="商品名、パラジェル、マグネット、キットで検索..."
+                placeholder="商品名、商品コード（TIP-001等）、キーワードで検索..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-9 pr-3.5 py-2 rounded-xl bg-white border border-lavender-200 text-xs text-plum-900 placeholder:text-plum-400 focus:outline-hidden focus:ring-2 focus:ring-lavender-400"
@@ -437,10 +790,19 @@ export default function ShopPage() {
                       <div className="p-4 sm:p-5 space-y-2">
                         <div className="flex items-center justify-between text-[11px] text-plum-600">
                           <span className="font-serif text-gold-700 font-medium">{product.categoryLabel}</span>
-                          <span className="flex items-center gap-1 font-mono">
-                            <Star className="w-3.5 h-3.5 fill-gold-400 text-gold-400" />
-                            {product.rating} ({product.reviewCount})
-                          </span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setCodeOrderInput(product.itemCode);
+                              const el = document.getElementById("shop-catalog");
+                              if (el) el.scrollIntoView({ behavior: "smooth" });
+                            }}
+                            className="font-mono text-[10px] font-semibold px-2 py-0.5 rounded bg-lavender-100 hover:bg-gold-300 text-plum-900 border border-lavender-200 transition-colors cursor-pointer"
+                            title="クリックして商品コードで直接注文"
+                          >
+                            コード: {product.itemCode} ✎
+                          </button>
                         </div>
 
                         <h3 className="text-sm font-serif font-medium text-plum-950 group-hover:text-lavender-700 transition-colors line-clamp-2 leading-snug">
@@ -451,9 +813,13 @@ export default function ShopPage() {
                           {product.subtitle}
                         </p>
 
-                        <p className="text-[10px] text-plum-500 font-mono">
-                          {product.volumeOrSpec}
-                        </p>
+                        <div className="flex items-center justify-between text-[10px] text-plum-500 pt-0.5">
+                          <span className="font-mono truncate max-w-[180px]">{product.volumeOrSpec}</span>
+                          <span className="flex items-center gap-1 font-mono shrink-0">
+                            <Star className="w-3.5 h-3.5 fill-gold-400 text-gold-400" />
+                            {product.rating} ({product.reviewCount})
+                          </span>
+                        </div>
                       </div>
                     </div>
 
@@ -466,13 +832,15 @@ export default function ShopPage() {
                         </span>
                       </div>
 
-                      <button
-                        onClick={(e) => addToCart(product, e)}
-                        className="py-2 px-3.5 rounded-full luxe-button text-xs font-medium flex items-center gap-1.5 shadow-sm transition-all hover:scale-103 cursor-pointer shrink-0"
-                      >
-                        <ShoppingBag className="w-3.5 h-3.5" />
-                        <span>カートへ</span>
-                      </button>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <button
+                          onClick={(e) => addToCart(product, e)}
+                          className="py-2 px-3.5 rounded-full luxe-button text-xs font-medium flex items-center gap-1.5 shadow-sm transition-all hover:scale-103 cursor-pointer shrink-0"
+                        >
+                          <ShoppingBag className="w-3.5 h-3.5" />
+                          <span>カートへ</span>
+                        </button>
+                      </div>
                     </div>
 
                   </div>
@@ -499,6 +867,7 @@ export default function ShopPage() {
             <div className="w-screen max-w-md bg-white shadow-2xl flex flex-col justify-between overflow-y-auto animate-in slide-in-from-right duration-300">
               
               {/* カートヘッダー */}
+              {/* カートヘッダー */}
               <div className="p-5 sm:p-6 border-b border-lavender-100 flex items-center justify-between bg-lavender-50/50">
                 <div className="flex items-center gap-2 text-plum-950 font-serif">
                   <ShoppingBag className="w-5 h-5 text-gold-600" />
@@ -510,6 +879,27 @@ export default function ShopPage() {
                 >
                   <X className="w-4 h-4" />
                 </button>
+              </div>
+
+              {/* 送料無料プログレスバー（20,000円基準） */}
+              <div className="px-5 py-3 bg-white border-b border-lavender-100 space-y-1.5">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-serif text-plum-950 flex items-center gap-1.5 font-medium">
+                    <Truck className="w-3.5 h-3.5 text-gold-600" />
+                    <span>
+                      {subtotal >= 20000
+                        ? "送料無料でお届けします！（宅急便）"
+                        : `あと ¥${(20000 - subtotal).toLocaleString()} で送料無料`}
+                    </span>
+                  </span>
+                  <span className="text-[10px] text-plum-500 font-mono">送料無料ライン: ¥20,000</span>
+                </div>
+                <div className="w-full bg-lavender-100 h-1.5 rounded-full overflow-hidden">
+                  <div
+                    className="bg-linear-to-r from-lavender-500 to-gold-500 h-full transition-all duration-300"
+                    style={{ width: `${Math.min(100, (subtotal / 20000) * 100)}%` }}
+                  />
+                </div>
               </div>
 
               {/* カート内アイテム一覧 */}
@@ -532,6 +922,14 @@ export default function ShopPage() {
                       </div>
 
                       <div className="flex-1 space-y-1 text-xs">
+                        <div className="flex items-center gap-1.5">
+                          <span className="font-mono text-[9px] px-1.5 py-0.2 rounded bg-lavender-100 text-plum-800 border border-lavender-200 font-semibold">
+                            {item.product.itemCode}
+                          </span>
+                          <span className="text-[10px] text-gold-700 font-serif font-medium truncate max-w-[140px]">
+                            {item.product.categoryLabel}
+                          </span>
+                        </div>
                         <h4 className="font-serif font-medium text-plum-950 line-clamp-1">
                           {item.product.name}
                         </h4>
@@ -575,7 +973,7 @@ export default function ShopPage() {
                 )}
               </div>
 
-              {/* カートフッター（金額・ポイント割引・注文確定） */}
+              {/* カートフッター（金額・ポイント割引・配送決済注記・注文確定） */}
               {cart.length > 0 && (
                 <div className="p-5 sm:p-6 bg-lavender-50/70 border-t border-lavender-200 space-y-3.5">
                   
@@ -585,7 +983,7 @@ export default function ShopPage() {
                       <div className="flex items-center justify-between">
                         <span className="font-medium text-plum-950 flex items-center gap-1.5">
                           <Award className="w-4 h-4 text-gold-600" />
-                          <span>会員ポイントを利用する</span>
+                          <span>会員ポイントを利用する（1pt=¥1）</span>
                         </span>
                         <input
                           type="checkbox"
@@ -595,10 +993,25 @@ export default function ShopPage() {
                         />
                       </div>
                       <p className="text-[11px] text-plum-600">
-                        所持: <strong>{user.points} pt</strong> （最大 ¥{Math.min(user.points, subtotal).toLocaleString()} 割引）
+                        サロン共通保有: <strong>{user.points} pt</strong> （最大 ¥{Math.min(user.points, subtotal).toLocaleString()} 割引）
                       </p>
                     </div>
                   )}
+
+                  {/* 配送・決済・出荷の明記ボックス */}
+                  <div className="p-2.5 rounded-xl bg-white/90 border border-lavender-200/80 text-[10px] text-plum-700 space-y-1">
+                    <p className="flex items-center gap-1 font-medium text-plum-900">
+                      <Truck className="w-3 h-3 text-lavender-600 shrink-0" />
+                      <span>配送: <strong>ヤマト運輸 宅急便</strong>（※宅急便のみ対応）</span>
+                    </p>
+                    <p className="flex items-center gap-1 font-medium text-plum-900">
+                      <CreditCard className="w-3 h-3 text-lavender-600 shrink-0" />
+                      <span>決済: クレジット / 銀行振込 / 代金引換 / コンビニ</span>
+                    </p>
+                    <p className="text-rose-700 font-medium">
+                      ※ 日曜・祝日は商品出荷を行っておりません（平日・土曜にサロン常勤スタッフ12名が出荷検品対応）
+                    </p>
+                  </div>
 
                   {/* 料金明細 */}
                   <div className="space-y-1.5 text-xs text-plum-800">
@@ -608,15 +1021,15 @@ export default function ShopPage() {
                     </div>
 
                     <div className="flex justify-between">
-                      <span>送料（¥8,000以上で無料）</span>
+                      <span>送料（¥20,000以上で無料）</span>
                       <span className="font-mono">
-                        {shippingFee === 0 ? "無料" : `¥${shippingFee.toLocaleString()}`}
+                        {shippingFee === 0 ? "無料（宅急便）" : `¥${shippingFee.toLocaleString()}`}
                       </span>
                     </div>
 
                     {appliedPoints > 0 && (
                       <div className="flex justify-between text-rose-600 font-medium">
-                        <span>ポイント割引</span>
+                        <span>サロン共通ポイント割引</span>
                         <span className="font-mono">-¥{appliedPoints.toLocaleString()}</span>
                       </div>
                     )}
@@ -634,7 +1047,7 @@ export default function ShopPage() {
                     onClick={handleCheckout}
                     className="w-full py-3.5 rounded-full gold-button text-xs font-semibold flex items-center justify-center gap-2 shadow-lg cursor-pointer tracking-wider"
                   >
-                    <span>デモ注文を確定する（送料無料対象）</span>
+                    <span>デモ注文を確定する（ヤマト宅急便）</span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
 
@@ -731,12 +1144,12 @@ export default function ShopPage() {
       {/* ======================================================== */}
       {orderCompleteModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-plum-950/60 backdrop-blur-xs animate-in fade-in duration-200">
-          <div className="pearl-glass max-w-md w-full rounded-[2rem] border border-gold-300 shadow-2xl p-8 text-center space-y-5 bg-white">
-            <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 mx-auto flex items-center justify-center border border-emerald-300">
-              <CheckCircle2 className="w-8 h-8" />
+          <div className="pearl-glass max-w-md w-full rounded-[2rem] border border-gold-300 shadow-2xl p-7 text-center space-y-4 bg-white">
+            <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-700 mx-auto flex items-center justify-center border border-emerald-300">
+              <CheckCircle2 className="w-7 h-7" />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               <span className="text-[10px] font-mono tracking-widest uppercase px-2.5 py-0.5 rounded-full bg-gold-100 text-gold-900 border border-gold-300">
                 Demo Order Completed
               </span>
@@ -749,9 +1162,37 @@ export default function ShopPage() {
               </p>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-lavender-50 border border-lavender-200 text-xs text-plum-800 space-y-1">
-              <p className="font-semibold text-lavender-800">★ 会員特典ポイント進呈:</p>
-              <p>お買い上げ金額の2%のサロンポイントが付与されました！</p>
+            {/* 配送・決済・出荷・サロン共通ポイント情報詳細 */}
+            <div className="p-3.5 rounded-xl bg-lavender-50 border border-lavender-200 text-xs text-plum-800 space-y-2.5 text-left">
+              <div className="flex items-start gap-2">
+                <Truck className="w-4 h-4 text-lavender-700 shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-semibold text-plum-950">配送: ヤマト運輸 宅急便（宅急便のみ）</p>
+                  <p className="text-[11px] text-plum-600 leading-snug">
+                    ※ 日曜・祝日は出荷休業のため、翌営業日に常勤スタッフ12名（毎日2〜3名体制）が丁寧に梱包・出荷いたします。
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-2 pt-1 border-t border-lavender-200/60">
+                <CreditCard className="w-4 h-4 text-lavender-700 shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-semibold text-plum-950">決済: クレカ / 銀行振込 / 代引 / コンビニ</p>
+                  <p className="text-[11px] text-plum-600 leading-snug">
+                    ご指定の決済方法にて安全にお手続きを完了いたしました（デモ）。
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-2 pt-1 border-t border-lavender-200/60">
+                <Sparkles className="w-4 h-4 text-gold-600 shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-semibold text-gold-800">サロン ＆ EC共通ポイント同期完了:</p>
+                  <p className="text-[11px] text-plum-700 leading-snug">
+                    今回の獲得ポイントがサロン共通残高に即時反映されました。店舗施術でもオンラインショップでも相互にご利用可能です。
+                  </p>
+                </div>
+              </div>
             </div>
 
             <div className="pt-2 space-y-2">
@@ -763,9 +1204,9 @@ export default function ShopPage() {
               </button>
               <Link
                 href="/mypage"
-                className="w-full py-2.5 rounded-full bg-white border border-lavender-200 text-xs font-medium text-plum-800 block hover:bg-lavender-50"
+                className="w-full py-2.5 rounded-full bg-white border border-lavender-200 text-xs font-medium text-plum-800 block hover:bg-lavender-50 transition-colors"
               >
-                マイページでポイントを確認する
+                マイページで共通ポイントを確認する
               </Link>
             </div>
           </div>

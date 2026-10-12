@@ -100,6 +100,60 @@ export async function POST(request: Request) {
       });
     }
 
+    // 3. オンラインショップ決済（ポイント利用減算 ＆ 購入還元、サロン・ショップ完全共通同期）
+    if (action === "shop_checkout") {
+      const usedPoints = Math.max(0, Number(body.usedPoints) || 0);
+      const earnedPoints = Math.max(0, Number(body.earnedPoints) || 0);
+      const orderSummary = body.orderSummary || "公式オンラインショップご注文";
+
+      if (usedPoints > user.points) {
+        return NextResponse.json({
+          success: false,
+          message: `利用ポイントが保有残高を超えています（保有: ${user.points}pt）`
+        }, { status: 400 });
+      }
+
+      let currentBalance = user.points;
+      const newTransactions: PointTransaction[] = [];
+
+      // ポイント利用の減算
+      if (usedPoints > 0) {
+        currentBalance -= usedPoints;
+        newTransactions.push({
+          id: `tx-shop-use-${Date.now()}`,
+          userId: user.id,
+          type: "redeem",
+          amount: -usedPoints,
+          balanceAfter: currentBalance,
+          reason: `公式オンラインショップご注文割引（1pt=¥1） [${orderSummary}]`,
+          createdAt: new Date().toLocaleString("ja-JP")
+        });
+      }
+
+      // 購入付与の加算
+      if (earnedPoints > 0) {
+        currentBalance += earnedPoints;
+        newTransactions.push({
+          id: `tx-shop-earn-${Date.now() + 1}`,
+          userId: user.id,
+          type: "grant",
+          amount: earnedPoints,
+          balanceAfter: currentBalance,
+          reason: `公式オンラインショップご購入還元ポイント [${orderSummary}]`,
+          createdAt: new Date().toLocaleString("ja-JP")
+        });
+      }
+
+      user.points = currentBalance;
+      user.transactions = [...newTransactions, ...user.transactions];
+
+      return NextResponse.json({
+        success: true,
+        user,
+        message: `ご注文が完了しました！ポイント残高が更新されました（現在: ${currentBalance}pt）`
+      });
+    }
+
     return NextResponse.json({ success: false, message: "無効なアクションです" }, { status: 400 });
   } catch (error) {
     return NextResponse.json({ success: false, message: "サーバー側処理中にエラーが発生しました" }, { status: 500 });

@@ -12,6 +12,7 @@ export type ShopCategory =
 
 export interface ShopProduct {
   id: string;
+  itemCode: string; // 商品コード（例: TIP-001, CLR-001）
   name: string;
   subtitle: string;
   category: ShopCategory;
@@ -31,6 +32,20 @@ export interface ShopProduct {
   usage: string;
 }
 
+// 公式オンラインショップ利用規約・配送・決済ポリシー
+export const SHOP_POLICY = {
+  freeShippingThreshold: 20000, // 20,000円以上のご購入で送料無料
+  shippingCarrier: "ヤマト運輸 宅急便（※宅急便にてのみ配送可能）",
+  paymentMethods: [
+    { id: "credit", name: "クレジットカード", desc: "VISA / Mastercard / JCB / AMEX / Diners（即時決済）" },
+    { id: "bank", name: "銀行振込", desc: "三井住友銀行 / ご入金確認後の出荷（振込手数料お客様ご負担）" },
+    { id: "cod", name: "代金引換", desc: "ヤマト運輸 宅急便コレクト（代引手数料 一律330円税込）" },
+    { id: "convenience", name: "コンビニ決済", desc: "セブン-イレブン / ローソン / ファミリーマート等" }
+  ],
+  shippingSchedule: "日曜・祝日は商品出荷を行っておりません（平日・土曜のみ出荷対応）",
+  staffOperationNotice: "サロン在籍スタッフ（12名／毎日2〜3名シフト勤務）が、サロンワークの合間にご注文商品の検品・梱包・出荷を一貫して担当しております。"
+};
+
 export const SHOP_CATEGORIES: { id: ShopCategory; label: string; desc: string }[] = [
   { id: "all", label: "ALL ITEMS", desc: "全商品一覧" },
   { id: "tips", label: "NAIL TIPS", desc: "パラジェル ネイルチップ（主力商品）" },
@@ -48,6 +63,7 @@ export const SHOP_PRODUCTS: ShopProduct[] = [
   // ==========================================
   {
     id: "tip-waterglow-lavender",
+    itemCode: "TIP-001",
     name: "パラジェル ネイルチップ 【透き通る水光ラベンダー × ゴールド】",
     subtitle: "自爪を傷めないプロ仕様。サイズオーダー・粘着グミ＆測定用チップ付属",
     category: "tips",
@@ -72,6 +88,7 @@ export const SHOP_PRODUCTS: ShopProduct[] = [
   },
   {
     id: "tip-nude-french",
+    itemCode: "TIP-002",
     name: "パラジェル ネイルチップ 【大人上品ヌードベージュ × スキニーフレンチ】",
     subtitle: "オフィスやブライダルにも映える血色感美爪チップ",
     category: "tips",
@@ -94,6 +111,7 @@ export const SHOP_PRODUCTS: ShopProduct[] = [
   },
   {
     id: "tip-autumn-nuance",
+    itemCode: "TIP-003",
     name: "パラジェル ネイルチップ 【シックボルドー × シェルニュアンス】",
     subtitle: "深みのある天然石風奥行きアートとゴールド箔の煌めき",
     category: "tips",
@@ -121,6 +139,7 @@ export const SHOP_PRODUCTS: ShopProduct[] = [
   // ==========================================
   {
     id: "gel-clear-ex",
+    itemCode: "CLR-001",
     name: "パラジェル EX クリアジェル 4g",
     subtitle: "自爪を一切削らないノンサンディング密着ベースジェル",
     category: "clear",
@@ -143,6 +162,7 @@ export const SHOP_PRODUCTS: ShopProduct[] = [
   },
   {
     id: "gel-top-clear",
+    itemCode: "CLR-002",
     name: "パラジェル トップジェル 4g",
     subtitle: "濡れたような極上の艶が3〜4週間続く最高峰トップジェル",
     category: "clear",
@@ -168,6 +188,7 @@ export const SHOP_PRODUCTS: ShopProduct[] = [
   // ==========================================
   {
     id: "gel-magnet-waterglow",
+    itemCode: "COL-001",
     name: "パラジェル 水光マグネットジェル 【MG01 オーロララベンダー】",
     subtitle: "微粒子パウダーが水面のように揺らめくサロンシグネチャーカラー",
     category: "color",
@@ -190,6 +211,7 @@ export const SHOP_PRODUCTS: ShopProduct[] = [
   },
   {
     id: "gel-color-natural-pink",
+    itemCode: "COL-002",
     name: "パラジェル ナチュラルシアーカラー 【NC03 ベールピンク】",
     subtitle: "オフィスでも愛される自然な血色感とちゅるん感",
     category: "color",
@@ -214,6 +236,7 @@ export const SHOP_PRODUCTS: ShopProduct[] = [
   // ==========================================
   {
     id: "gel-coating-nonwipe",
+    itemCode: "COT-001",
     name: "パラジェル ノンワイプ トップコーティング 7ml",
     subtitle: "拭き取り不要！ボトルタイプで手軽に極上ガラスコーティング",
     category: "coating",
@@ -239,6 +262,7 @@ export const SHOP_PRODUCTS: ShopProduct[] = [
   // ==========================================
   {
     id: "light-led-paragel",
+    itemCode: "LGT-001",
     name: "パラジェル専用 プロフェッショナル LEDライト 36W",
     subtitle: "波長405nm・硬化熱軽減ローヒートモード搭載",
     category: "light",
@@ -266,6 +290,7 @@ export const SHOP_PRODUCTS: ShopProduct[] = [
   // ==========================================
   {
     id: "kit-paragel-starter",
+    itemCode: "KIT-001",
     name: "パラジェル オールインワン スターターフルキット",
     subtitle: "削らないベース・トップ・36W LEDライト・ケア用品が全て揃う",
     category: "kit",
@@ -289,6 +314,7 @@ export const SHOP_PRODUCTS: ShopProduct[] = [
   },
   {
     id: "kit-magnet-glow",
+    itemCode: "KIT-002",
     name: "水光マグネット体験キット 【ジェル2色 ＆ 専用ダブルヘッド磁石付】",
     subtitle: "ちゅるんとした光彩アートを自宅で完全再現できるスペシャルセット",
     category: "kit",
@@ -314,6 +340,7 @@ export const SHOP_PRODUCTS: ShopProduct[] = [
   // ==========================================
   {
     id: "polish-parapolish-gel",
+    itemCode: "POL-001",
     name: "パラポリッシュ カラージェル 7ml 【PL01 シルキーモーブ】",
     subtitle: "サンディング不要・ハケ付きボトルで15分時短完成",
     category: "polish",
@@ -335,6 +362,7 @@ export const SHOP_PRODUCTS: ShopProduct[] = [
   },
   {
     id: "polish-top-shine",
+    itemCode: "POL-002",
     name: "パラポリッシュ シャイントップ 7ml",
     subtitle: "パラポリッシュ専用の超光沢トップコート",
     category: "polish",

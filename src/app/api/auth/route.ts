@@ -41,7 +41,7 @@ export async function POST(request: Request) {
         role: "member",
         memberNumber: `FR-2026-${Math.floor(1000 + Math.random() * 9000)}`,
         rank: "Regular",
-        points: 100, // 新規登録特典 100ptプレゼント
+        points: 1000, // 新規会員登録特典：公式オンラインショップ＆サロン共通1,000pt進呈（1pt=1円換算）
         joinedDate: new Date().toISOString().split("T")[0],
         coupons: [
           {
@@ -58,9 +58,9 @@ export async function POST(request: Request) {
             id: `tx-${Date.now()}`,
             userId: `user-${Date.now()}`,
             type: "grant",
-            amount: 100,
-            balanceAfter: 100,
-            reason: "新規WEB会員登録プレゼントポイント",
+            amount: 1000,
+            balanceAfter: 1000,
+            reason: "新規会員登録特典：公式オンラインショップ1,000ポイント進呈（1pt=1円換算・サロン共通）",
             createdAt: new Date().toLocaleString("ja-JP")
           }
         ]
@@ -69,7 +69,7 @@ export async function POST(request: Request) {
       return NextResponse.json({
         success: true,
         user: newUser,
-        message: "会員登録が完了しました！初回¥1,000OFFクーポンと100ptをプレゼントしました。"
+        message: "会員登録が完了しました！公式オンラインショップで今すぐ使える1,000ポイント（1pt=1円換算）を進呈しました。"
       });
     }
 

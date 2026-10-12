@@ -60,9 +60,9 @@ export default function StoryHighlights() {
     },
     {
       id: "staff",
-      title: "在籍ネイリスト3名",
-      en: "Top Nailists",
-      desc: "池田・高橋・水野",
+      title: "在籍ネイリスト12名",
+      en: "12 Top Nailists",
+      desc: "毎日2〜3名シフト/EC出荷兼任",
       tag: "TEAM",
       href: "#staff",
       icon: Users,

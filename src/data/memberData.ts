@@ -9,7 +9,7 @@ export const INITIAL_DEMO_USER: MemberUser = {
   role: "member",
   memberNumber: "FR-2026-8823",
   rank: "Gold",
-  points: 750,
+  points: 1650,
   joinedDate: "2026-04-15",
   lastVisit: "2026-09-28",
   coupons: [
@@ -44,9 +44,9 @@ export const INITIAL_DEMO_USER: MemberUser = {
       id: "tx-001",
       userId: "user-demo-01",
       type: "grant",
-      amount: 100,
-      balanceAfter: 100,
-      reason: "新規WEB会員登録プレゼント",
+      amount: 1000,
+      balanceAfter: 1000,
+      reason: "新規会員登録特典（公式オンラインショップ1,000pt進呈・サロン共通）",
       createdAt: "2026-04-15 11:00"
     },
     {
@@ -119,5 +119,13 @@ export const REWARD_ITEMS: RewardItem[] = [
     category: "gift",
     description: "サロン厳選のオリジナルキューティクルケアオイル（ラベンダーの香り）。店頭にてお渡しいたします。",
     expiryDays: 120
+  },
+  {
+    id: "rw-shop-chip-1500",
+    title: "公式EC限定 ネイルチップ ¥1,500 OFFクーポン",
+    pointsRequired: 1000,
+    category: "discount",
+    description: "公式オンラインショップにてパラジェルネイルチップご購入時に使える限定特別優待クーポンです（サロン共通ポイント）。",
+    expiryDays: 90
   }
 ];

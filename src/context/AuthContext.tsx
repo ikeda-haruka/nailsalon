@@ -17,6 +17,7 @@ interface AuthContextType {
   grantPoints: (amount: number, reason: string, targetUserId?: string) => Promise<{ success: boolean; message: string }>;
   redeemReward: (rewardId: string) => Promise<{ success: boolean; message: string }>;
   useCoupon: (couponId: string) => Promise<{ success: boolean; message: string }>;
+  checkoutShop: (usedPoints: number, earnedPoints: number, orderSummary: string) => Promise<{ success: boolean; message: string }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -204,6 +205,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  // オンラインショップでの決済（ポイント利用減算 ＆ 購入還元、サロン・ショップ完全共通同期）
+  const checkoutShop = async (usedPoints: number, earnedPoints: number, orderSummary: string) => {
+    if (!user) return { success: false, message: "ログインが必要です" };
+
+    try {
+      const res = await fetch("/api/points", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "shop_checkout",
+          currentUser: user,
+          usedPoints,
+          earnedPoints,
+          orderSummary
+        }),
+      });
+
+      const data = await res.json();
+      if (data.success && data.user) {
+        persistUser(data.user);
+        return { success: true, message: data.message };
+      }
+      return { success: false, message: data.message || "決済処理に失敗しました" };
+    } catch (e) {
+      return { success: false, message: "通信エラーが発生しました" };
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -219,6 +248,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         grantPoints,
         redeemReward,
         useCoupon,
+        checkoutShop,
       }}
     >
       {children}
