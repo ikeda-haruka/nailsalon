@@ -335,7 +335,7 @@ export default function ShopPage() {
 
 
   return (
-    <div className="min-h-screen pt-36 sm:pt-40 lg:pt-44 pb-24 aurora-bg">
+    <div className="min-h-screen pt-48 sm:pt-44 lg:pt-48 pb-24 aurora-bg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
 
         {/* ページパンくず＆トップナビ */}

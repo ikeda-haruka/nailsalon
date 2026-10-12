@@ -111,8 +111,8 @@ export default function Header() {
             <div className="flex items-center justify-between">
               
               {/* ロゴ */}
-              <Link href="/" className="flex items-center gap-3 group">
-                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full p-0.5 bg-gradient-to-tr from-[#9975cb] via-[#b895ea] to-[#d4af6e] shadow-md shadow-lavender-400/30 group-hover:scale-105 transition-transform relative shrink-0">
+              <Link href="/" className="flex items-center gap-2 sm:gap-3 group shrink-0">
+                <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-full p-0.5 bg-gradient-to-tr from-[#9975cb] via-[#b895ea] to-[#d4af6e] shadow-md shadow-lavender-400/30 group-hover:scale-105 transition-transform relative shrink-0">
                   <div className="w-full h-full rounded-full overflow-hidden relative bg-white">
                     <Image
                       src="/images/brand_emblem.svg"
@@ -124,16 +124,16 @@ export default function Header() {
                     />
                   </div>
                 </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xl sm:text-2xl font-serif font-normal tracking-wide text-plum-dark">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    <span className="text-base sm:text-2xl font-serif font-normal tracking-wide text-plum-dark whitespace-nowrap">
                       Salon de Fraise
                     </span>
-                    <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-lavender-100 text-lavender-700 border border-lavender-200 font-medium tracking-wider hidden sm:inline-block">
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-lavender-100 text-lavender-700 border border-lavender-200 font-medium tracking-wider hidden sm:inline-block">
                       PARAGEL
                     </span>
                   </div>
-                  <p className="text-[10px] text-gold-500 font-normal tracking-widest uppercase font-serif">
+                  <p className="text-[9px] sm:text-[10px] text-gold-500 font-normal tracking-widest uppercase font-serif whitespace-nowrap hidden sm:block">
                     Paragel & Water-Glow Magnet Salon
                   </p>
                 </div>

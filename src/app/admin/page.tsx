@@ -304,7 +304,7 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen pt-36 sm:pt-40 lg:pt-44 pb-24 px-4 sm:px-6 lg:px-8 aurora-bg">
+    <div className="min-h-screen pt-48 sm:pt-44 lg:pt-48 pb-24 px-4 sm:px-6 lg:px-8 aurora-bg">
       <div className="max-w-6xl mx-auto space-y-8">
 
         {/* トースト通知 */}

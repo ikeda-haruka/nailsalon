@@ -10,7 +10,7 @@ import MensBrandLogoPlaceholder from "@/components/mens/MensBrandLogoPlaceholder
 export default function MensHeroSection() {
   const [imageError, setImageError] = useState(false);
   return (
-    <section className="relative min-h-[92vh] flex items-center justify-center pt-36 sm:pt-40 pb-20 overflow-hidden mens-bg">
+    <section className="relative min-h-[92vh] flex items-center justify-center pt-48 sm:pt-44 pb-20 overflow-hidden mens-bg">
       {/* 背景のモノトーンメッシュグラデーション */}
       <div className="absolute top-1/4 -left-48 w-96 h-96 rounded-full bg-radial from-zinc-700/20 to-transparent blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 -right-48 w-96 h-96 rounded-full bg-radial from-zinc-600/15 to-transparent blur-3xl pointer-events-none" />

@@ -62,7 +62,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen pt-36 sm:pt-40 lg:pt-44 pb-20 px-4 sm:px-6 lg:px-8 aurora-bg flex items-center justify-center">
+    <div className="min-h-screen pt-48 sm:pt-44 lg:pt-48 pb-20 px-4 sm:px-6 lg:px-8 aurora-bg flex items-center justify-center">
       <div className="max-w-md w-full space-y-6">
         
         {/* ヘッダータイトル */}
