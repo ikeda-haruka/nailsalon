@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Sparkles, ShoppingBag, ArrowRight, ShieldCheck, CheckCircle2, Star, Truck, Award, Gift } from "lucide-react";
 import { SHOP_PRODUCTS } from "@/data/shopData";
+import ProductImage from "@/components/ProductImage";
 
 export default function ShopFeatureSection() {
   // ネイルチップの主力3商品と、プロ用LEDライト・ベースジェルをピックアップ
@@ -91,10 +92,9 @@ export default function ShopFeatureSection() {
               className="bg-white rounded-3xl border border-lavender-200 overflow-hidden shadow-xs hover:shadow-xl hover:border-gold-400 transition-all duration-300 flex flex-col group"
             >
               <div className="relative aspect-4/3 w-full overflow-hidden bg-pearl-100">
-                <Image
-                  src={product.image}
+                <ProductImage
+                  product={product}
                   alt={product.name}
-                  fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />

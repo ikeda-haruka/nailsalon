@@ -1,6 +1,7 @@
 import HeroSection from "@/components/HeroSection";
 import StoryHighlights from "@/components/StoryHighlights";
 import ConceptSection from "@/components/ConceptSection";
+import BrandLogoStorySection from "@/components/BrandLogoStorySection";
 import GallerySection from "@/components/GallerySection";
 import MagnetGlowLab from "@/components/MagnetGlowLab";
 import InteractiveSection from "@/components/InteractiveSection";
@@ -23,6 +24,9 @@ export default function Home() {
 
       {/* コンセプト（パラジェル専門・アセトン不使用フィルイン・3〜4週持続ケア） */}
       <ConceptSection />
+
+      {/* ブランドロゴに込められたメッセージセクション（5枚の苺の花弁・ゴールド二重環・水光の光彩） */}
+      <BrandLogoStorySection />
 
       {/* 最旬デザインカタログ（Instagram風タイル・いいね・モーダル詳細） */}
       <GallerySection />

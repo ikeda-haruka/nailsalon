@@ -43,6 +43,8 @@ import {
   MessageCardTheme
 } from "@/data/shopData";
 import { useAuth } from "@/context/AuthContext";
+import ProductImage from "@/components/ProductImage";
+import BrandLogoStorySection from "@/components/BrandLogoStorySection";
 
 interface CartItem {
   product: ShopProduct;
@@ -682,11 +684,10 @@ export default function ShopPage() {
               <div className="p-3 rounded-xl bg-white border border-gold-300 shadow-2xs flex items-center justify-between text-xs animate-in fade-in duration-200">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-lg overflow-hidden relative shrink-0 border border-lavender-200">
-                    <Image
-                      src={matchedProductByCode.image}
+                    <ProductImage
+                      product={matchedProductByCode}
                       alt={matchedProductByCode.name}
-                      fill
-                      className="object-cover"
+                      placeholderSize="sm"
                     />
                   </div>
                   <div>
@@ -838,10 +839,9 @@ export default function ShopPage() {
                     <div>
                       {/* 写真コンテナ */}
                       <div className="relative aspect-square overflow-hidden bg-lavender-100">
-                        <Image
-                          src={product.image}
+                        <ProductImage
+                          product={product}
                           alt={product.name}
-                          fill
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                           className="object-cover group-hover:scale-105 transition-transform duration-500"
                         />
@@ -938,6 +938,13 @@ export default function ShopPage() {
 
         </div>
 
+        {/* ======================================================== */}
+        {/* ★ ブランドロゴに込められたメッセージセクション */}
+        {/* ======================================================== */}
+        <div className="pt-6">
+          <BrandLogoStorySection />
+        </div>
+
       </div>
 
       {/* ======================================================== */}
@@ -1000,11 +1007,10 @@ export default function ShopPage() {
                   cart.map((item) => (
                     <div key={item.product.id} className="pt-4 first:pt-0 flex gap-3.5 items-center">
                       <div className="relative w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-lavender-200 bg-lavender-50">
-                        <Image
-                          src={item.product.image}
+                        <ProductImage
+                          product={item.product}
                           alt={item.product.name}
-                          fill
-                          className="object-cover"
+                          placeholderSize="sm"
                         />
                       </div>
 
@@ -1373,11 +1379,10 @@ export default function ShopPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-start">
               <div className="sm:col-span-5 relative aspect-square rounded-2xl overflow-hidden border border-lavender-200">
-                <Image
-                  src={selectedProduct.image}
+                <ProductImage
+                  product={selectedProduct}
                   alt={selectedProduct.name}
-                  fill
-                  className="object-cover"
+                  placeholderSize="lg"
                 />
               </div>
 
