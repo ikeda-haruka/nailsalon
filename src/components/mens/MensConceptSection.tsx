@@ -41,8 +41,9 @@ export default function MensConceptSection() {
           </div>
 
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-light text-white leading-tight">
-            「ネイル＝女性のもの」という<br />
-            固定概念を、私たちは壊す。
+            <span className="inline-block">「ネイル＝女性のもの」という</span>
+            <br className="hidden sm:inline" />
+            <span className="inline-block">固定概念を、私たちは壊す。</span>
           </h2>
 
           <p className="text-xs sm:text-sm text-zinc-400 font-light leading-relaxed">

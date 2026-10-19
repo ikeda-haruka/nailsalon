@@ -140,17 +140,23 @@ export default function Header() {
               </Link>
 
               {/* デスクトップ用インラインナビゲーション */}
-              <nav className="hidden xl:flex items-center gap-4 2xl:gap-7">
-                {navLinks.slice(0, 5).map((link) => (
+              <nav className="hidden xl:flex items-center gap-5 2xl:gap-8">
+                {[
+                  { name: "Concept", jp: "サロンのこだわり", href: "/#concept" },
+                  { name: "Catalog", jp: "最旬カタログ", href: "/#gallery" },
+                  { name: "Magnet Lab", jp: "水光マグネット", href: "/#magnet-lab" },
+                  { name: "Menu & Price", jp: "料金・メニュー", href: "/#menu" },
+                  { name: "Staff", jp: "在籍ネイリスト", href: "/#staff" },
+                ].map((link) => (
                   <Link
                     key={link.name}
                     href={link.href}
-                    className="group flex flex-col items-center text-xs font-normal text-plum-body hover:text-lavender-600 transition-colors py-1"
+                    className="group flex flex-col items-center text-xs font-normal text-plum-body hover:text-lavender-600 transition-colors py-1 shrink-0"
                   >
-                    <span className="font-serif tracking-widest text-sm font-normal text-plum-dark group-hover:text-lavender-600 transition-colors">
+                    <span className="font-serif tracking-widest text-sm font-normal text-plum-dark group-hover:text-lavender-600 transition-colors whitespace-nowrap">
                       {link.name}
                     </span>
-                    <span className="text-[10px] text-plum-700 group-hover:text-gold-600 transition-colors font-normal">
+                    <span className="text-[10px] text-plum-700 group-hover:text-gold-600 transition-colors font-normal whitespace-nowrap">
                       {link.jp}
                     </span>
                   </Link>

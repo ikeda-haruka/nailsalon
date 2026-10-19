@@ -33,19 +33,28 @@ export default function MensHeroSection() {
               <p className="font-serif text-sm sm:text-base text-zinc-400 tracking-[0.2em] uppercase">
                 Fix The Stereotype ──
               </p>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-light text-white leading-[1.25] tracking-tight">
-                「男なのに、なんでネイル？」<br />
-                その言葉に、もう息苦しさを<br className="hidden sm:inline" />
-                <span className="font-medium mens-silver-text">感じなくていい。</span>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.6rem] xl:text-[3.2rem] font-serif font-light text-white leading-[1.3] sm:leading-[1.35] tracking-tight">
+                <span className="inline-block">「男なのに、</span>
+                <span className="inline-block">なんでネイル？」</span>
+                <br />
+                <span className="inline-block">その言葉に、</span>
+                <span className="inline-block">もう息苦しさを</span>
+                <br className="hidden sm:inline" />
+                <span className="inline-block font-medium mens-silver-text">感じなくていい。</span>
               </h1>
             </div>
 
             {/* サブコピー */}
             <p className="text-xs sm:text-sm md:text-base text-zinc-300 font-light leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              「ネイル＝女性のもの」という固定概念を壊すために立ち上がった、メンズ専用パラジェルサロン。<br />
-              手元はビジネスでも日常でも、自分と他人の視界に最も入る場所だからこそ。<br />
-              自爪を削らず守るパラジェルと、塗っていることがバレない完全マット仕上げで、<br className="hidden sm:inline" />
-              堂々とした清潔感と自信をあなたの指先に宿します。
+              <span className="inline-block">「ネイル＝女性のもの」という固定概念を壊すために立ち上がった、</span>
+              <span className="inline-block">メンズ専用パラジェルサロン。</span>
+              <br className="hidden sm:inline" />
+              <span className="inline-block">手元はビジネスでも日常でも、</span>
+              <span className="inline-block">自分と他人の視界に最も入る場所だからこそ。</span>
+              <br className="hidden sm:inline" />
+              <span className="inline-block">自爪を削らず守るパラジェルと、</span>
+              <span className="inline-block">塗っていることがバレない完全マット仕上げで、</span>
+              <span className="inline-block">堂々とした清潔感と自信をあなたの指先に宿します。</span>
             </p>
 
             {/* 3つの安心ポイント */}

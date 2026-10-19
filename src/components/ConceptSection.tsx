@@ -115,9 +115,11 @@ export default function ConceptSection() {
                 <span>Relaxing Luxury Atmosphere</span>
               </div>
 
-              <h3 className="text-2xl sm:text-3xl font-serif font-normal text-plum-900 leading-relaxed tracking-wide">
-                白・淡い紫・シャンパンゴールドの洗練された空間で、<br />
-                心までほどける贅沢なひとときを
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-serif font-normal text-plum-900 leading-relaxed tracking-wide">
+                <span className="inline-block">白・淡い紫・シャンパンゴールドの</span>
+                <span className="inline-block">洗練された空間で、</span>
+                <br className="hidden sm:inline" />
+                <span className="inline-block">心までほどける贅沢なひとときを</span>
               </h3>
 
               <p className="text-xs sm:text-sm text-plum-800 leading-relaxed font-normal tracking-wide">
