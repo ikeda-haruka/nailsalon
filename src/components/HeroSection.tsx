@@ -31,29 +31,34 @@ export default function HeroSection() {
             </div>
 
             {/* 大見出し */}
-            <div className="space-y-2">
+            <div className="space-y-3 sm:space-y-4">
               <p className="font-serif italic text-sm sm:text-base text-gold-600 font-light tracking-widest">
                 — Pure Luster & Healthy Nails —
               </p>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.6rem] xl:text-[3.1rem] font-serif font-normal text-plum-900 leading-[1.35] sm:leading-[1.4] tracking-wide">
-                <span className="inline-block">自爪を削らない、</span>
-                <span className="inline-block">うるおい美爪。</span>
-                <br />
-                <span className="inline-block"><span className="water-glow-text">透き通る水光ラベンダー</span>と</span>
-                <br className="sm:hidden" />
-                <span className="inline-block">シャンパンゴールドの煌めき</span>
+              <h1 className="text-2xl sm:text-3xl lg:text-[2.35rem] xl:text-[2.85rem] font-serif font-normal text-plum-900 tracking-wide leading-[1.65] sm:leading-[1.75] space-y-2.5 sm:space-y-3.5">
+                <span className="block">
+                  <span className="inline-block">自爪を削らない、</span>
+                  <span className="inline-block">うるおい美爪。</span>
+                </span>
+                <span className="block">
+                  <span className="inline-block"><span className="water-glow-text">透き通る水光ラベンダー</span>と</span>
+                  <span className="inline-block">シャンパンゴールドの煌めき</span>
+                </span>
               </h1>
             </div>
 
             {/* リード文 */}
-            <p className="text-xs sm:text-sm text-plum-900 leading-relaxed max-w-xl mx-auto lg:mx-0 font-normal tracking-wide">
-              <span className="inline-block">自爪を削らず健やかに守る<strong className="text-lavender-700 font-semibold">「パラジェル専門」</strong>。</span>
-              <span className="inline-block">丁寧なウォーターケアと高持続フィルインで、</span>
-              <span className="inline-block"><strong className="text-plum-950 font-semibold">3〜4週間綺麗な状態</strong>をキープ。</span>
-              <br className="hidden sm:inline" />
-              <span className="inline-block">50色以上の水光マグネットと上品なニュアンスアートで、</span>
-              <span className="inline-block">大人の手元に洗練された輝きを宿します。</span>
-            </p>
+            <div className="text-xs sm:text-sm text-plum-900 leading-[1.85] sm:leading-[1.95] max-w-xl mx-auto lg:mx-0 font-normal tracking-wide space-y-1.5">
+              <p>
+                <span className="inline-block">自爪を削らず健やかに守る<strong className="text-lavender-700 font-semibold">「パラジェル専門」</strong>。</span>
+                <span className="inline-block">丁寧なウォーターケアと高持続フィルインで、</span>
+                <span className="inline-block"><strong className="text-plum-950 font-semibold">3〜4週間綺麗な状態</strong>をキープ。</span>
+              </p>
+              <p>
+                <span className="inline-block">50色以上の水光マグネットと上品なニュアンスアートで、</span>
+                <span className="inline-block">大人の手元に洗練された輝きを宿します。</span>
+              </p>
+            </div>
 
             {/* こだわりポイント（絵文字を排除し洗練されたピルタグへ） */}
             <div className="flex flex-wrap justify-center lg:justify-start gap-2 pt-0.5">
